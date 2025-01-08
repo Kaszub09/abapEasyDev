@@ -4,7 +4,6 @@
 *&
 *&---------------------------------------------------------------------*
 REPORT zed_screens_ex_display_with_f.
-TYPE-POOLS icon.
 
 "Table with data to display something
 TYPES:
@@ -24,8 +23,8 @@ ENDCLASS.
 CLASS lcl_handler IMPLEMENTATION.
   METHOD zif_ed_screens_handler~pbo_get_toolbar_commands.
     "Add commands to toolbar - screen with toolbar should be called
-    commands_to_set = VALUE #( ( command = 'COMMAND_1' description = VALUE #( icon_id = icon_okay text = 'Command 1' icon_text = 'Command 1' ) )
-      ( command = 'COMMAND_2' description = VALUE #( icon_id = icon_calculation text = 'Command 2' icon_text = 'Command 2' ) ) ).
+    commands_to_set = VALUE #( ( command = 'COMMAND_1' description = VALUE #( icon_id = '@0V@' text = 'Command 1' icon_text = 'Command 1' ) )
+      ( command = 'COMMAND_2' description = VALUE #( icon_id = '@0M@' text = 'Command 2' icon_text = 'Command 2' ) ) ).
   ENDMETHOD.
 
   METHOD zif_ed_screens_handler~pai.
