@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_SCREENS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Easy ALV screen - for easy displaying stuff in container wit</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CALL_NEXT_SCREEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>&lt;em&gt;prepare_next_screen&lt;/em&gt; must be called before</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_SCREEN_CONTAINER</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Use inside PBO when calling screen in popup, since if you wa</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>PREPARE_NEXT_SCREEN</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Must be called every time before &lt;em&gt;call_next_screen&lt;/em&gt;</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>PREPARE_NEXT_SCREEN</CMPNAME>
+     <SCONAME>CONTAINER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Returns created container or not bound if &lt;em&gt;create_contain</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>PREPARE_NEXT_SCREEN</CMPNAME>
+     <SCONAME>CREATE_CONTAINER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Create container on screen. It&apos;s freed after calling screen.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>PREPARE_NEXT_SCREEN</CMPNAME>
+     <SCONAME>HANDLER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Handler to be called in PBO/PAI events. If empty default han</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>PREPARE_NEXT_SCREEN</CMPNAME>
+     <SCONAME>WITH_TOOLBAR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Use screen with toolbar (commands supplied via handler)</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>
