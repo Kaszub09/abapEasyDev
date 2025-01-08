@@ -23,7 +23,7 @@ START-OF-SELECTION.
   ENDIF.
   image-image_binary = cl_bcs_convert=>solix_to_xstring( data_tab ).
 
-  MODIFY zed_images FROM image.
+  MODIFY zed_images FROM @image.
   MESSAGE |Success| TYPE 'S'.
 
 

@@ -7,7 +7,7 @@ CLASS zcl_ed_image DEFINITION PUBLIC FINAL CREATE PUBLIC.
       zif_ed_screens_handler.
 
     CLASS-METHODS:
-      read_from_db IMPORTING image_id TYPE zed_images-image_id RETURNING VALUE(image) TYPE REF TO zcl_ed_image RAISING zcx_exception.
+      read_from_db IMPORTING image_id TYPE zed_images-image_id RETURNING VALUE(image) TYPE REF TO zcl_ed_image RAISING zcx_ed_exception.
 
     METHODS:
         constructor IMPORTING image TYPE xstring OPTIONAL,
@@ -81,7 +81,7 @@ CLASS zcl_ed_image IMPLEMENTATION.
   METHOD read_from_db.
     SELECT SINGLE FROM zed_images FIELDS image_binary WHERE image_id = @image_id INTO @DATA(image_binary).
     IF sy-subrc <> 0.
-      RAISE EXCEPTION TYPE zcx_exception EXPORTING custom_message = |Image '{ image_id }' not found.|.
+      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |Image '{ image_id }' not found.|.
     ENDIF.
     image = NEW zcl_ed_image( image_binary ).
   ENDMETHOD.

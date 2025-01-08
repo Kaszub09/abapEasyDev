@@ -4,6 +4,7 @@
 *&
 *&---------------------------------------------------------------------*
 REPORT zed_screens_ex_display_with_f.
+TYPE-POOLS icon.
 
 "Table with data to display something
 TYPES:
