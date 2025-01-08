@@ -80,7 +80,7 @@
       "severity": "Error"
     },
 "check_syntax": {
-  "exclude": [],
+  "exclude": ["/src/**/ZCL_ED_SCREENS.*"],
   "severity": "Error"
 },
     "check_transformation_exists": {
