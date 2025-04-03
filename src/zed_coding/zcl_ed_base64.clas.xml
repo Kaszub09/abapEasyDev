@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_BASE64</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Base64 encoding and decoding</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>DECODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Try different encodings with &lt;em&gt;zcl_ed_coding&lt;/em&gt; in case</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>ENCODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Try different encodings with &lt;em&gt;zcl_ed_coding&lt;/em&gt; in case</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>DECODE</CMPNAME>
+     <SCONAME>IN_CODEPAGE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Original codepage before decoding</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>ENCODE</CMPNAME>
+     <SCONAME>OUT_CODEPAGE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Convert to codepage before encoding</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

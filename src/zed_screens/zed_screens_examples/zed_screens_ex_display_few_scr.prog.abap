@@ -74,7 +74,7 @@ CLASS lcl_handler IMPLEMENTATION.
     DATA(container) = zcl_ed_screens=>get_screen_container( dynnr ).
     cl_salv_table=>factory( EXPORTING r_container = container IMPORTING r_salv_table = DATA(salv_table) CHANGING t_table = table ).
     salv_table->display( ).
-    first_time_pbo = abap_true.
+    first_time_pbo = abap_false.
   ENDMETHOD.
 
 

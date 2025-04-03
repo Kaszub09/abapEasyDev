@@ -1,4 +1,6 @@
 
+"! <p class="shorttext synchronized" lang="en">Easy ALV screen - for easy displaying stuff in containers
+"! <br/>TAGS: display; screen</p>
 CLASS zcl_ed_screens DEFINITION PUBLIC FINAL CREATE PUBLIC.
   PUBLIC SECTION.
     INTERFACES:
