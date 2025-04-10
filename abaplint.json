@@ -1,7 +1,7 @@
 {
   "global": {
     "files": "/src/**/*.*", 
-    "exclude": ["src/zed_coding/zcl_ed_base64.clas.testclasses.abap"],
+    "exclude": ["src/zed_coding/zcl_ed_base64.clas.testclasses.abap","src/zed_coding/zcl_ed_coding.clas.testclasses.abap"],
     "noIssues": [],
     "skipGeneratedBOPFInterfaces": false,
     "skipGeneratedFunctionGroups": false,
