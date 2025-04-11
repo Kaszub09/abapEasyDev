@@ -73,7 +73,7 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
         position_insert_failed  = 5                " G/L account number
         OTHERS                  = 6.
     IF sy-subrc = 2 AND skip_no_pos_ins_error = abap_false.
-      RAISE EXCEPTION TYPE zcx_cd_no_position_inserted.
+      RAISE EXCEPTION TYPE zcx_ed_change_doc_no_pos_ins.
     ELSEIF  sy-subrc <> 0.
       RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_CLOSE subrc={ sy-subrc }|.
     ENDIF.
@@ -276,10 +276,10 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_save_info.
-    info-docu_delete = COND #( WHEN save_fields_on_deletion = zif_ed_change_doc~c_save_mode-none THEN abap_false ELSE abap_true ).
-    info-docu_delete_if = COND #( WHEN save_fields_on_deletion = zif_ed_change_doc~c_save_mode-all THEN abap_true ELSE abap_false ).
-    info-docu_insert = COND #( WHEN save_fields_on_insertion = zif_ed_change_doc~c_save_mode-none THEN abap_false ELSE abap_true ).
-    info-docu_insert_if = COND #( WHEN save_fields_on_insertion = zif_ed_change_doc~c_save_mode-all THEN abap_true ELSE abap_false ).
+    info-docu_delete = xsdbool( save_fields_on_deletion <> zif_ed_change_doc~c_save_mode-none ).
+    info-docu_delete_if = xsdbool( save_fields_on_deletion <> zif_ed_change_doc~c_save_mode-all ).
+    info-docu_insert = xsdbool( save_fields_on_insertion <> zif_ed_change_doc~c_save_mode-none ).
+    info-docu_insert_if = xsdbool( save_fields_on_insertion <> zif_ed_change_doc~c_save_mode-all ).
   ENDMETHOD.
 
   METHOD force_cd_if_needed.

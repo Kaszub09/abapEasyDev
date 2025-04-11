@@ -65,7 +65,7 @@ INTERFACE zif_ed_change_doc PUBLIC.
                     username                TYPE syst_uname DEFAULT sy-uname
                     object_change_indicator TYPE cdchngindh DEFAULT 'U'
                     skip_no_pos_ins_error   TYPE abap_bool DEFAULT abap_true
-          EXPORTING changenumber            TYPE cdchangenr
+          RETURNING VALUE(changenumber)     TYPE cdchangenr
           RAISING   zcx_ed_exception
                     zcx_ed_change_doc_no_pos_ins,
     "! <p class="shorttext synchronized">Converts table to be used with <em>change_multi</em></p>
