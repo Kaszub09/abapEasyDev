@@ -12,7 +12,7 @@ DATA(cd) = zcl_ed_change_doc_factory=>create( objectclass = 'TADIR_TAB' table_na
 "INSERTED
 DATA(inserted) = VALUE tt_tadir(
     ( object = 'R3TR' obj_name = 'ZED_CD_INSERTED1' author = 'INSERTED' )
-    ( object = 'R3TR' obj_name = 'ZED_CD_INSERTED2' author = 'INSERTED2' devclass = 'PACKAGE')
+    ( object = 'R3TR' obj_name = 'ZED_CD_INSERTED2' author = 'INSERTED2' devclass = 'PACKAGE' )
 ).
 
 "Each object should have it's own ID
@@ -32,7 +32,7 @@ DATA(old) = VALUE tt_tadir(
     ( object = 'R3TR' obj_name = 'ZED_CD_DELETED' author = 'DELETED' )
 ).
 DATA(new) = VALUE tt_tadir(
-    ( object = 'R3TR' obj_name = 'ZED_CD_CHANGED1' author = 'CHANGED')
+    ( object = 'R3TR' obj_name = 'ZED_CD_CHANGED1' author = 'CHANGED' )
     ( object = 'R3TR' obj_name = 'ZED_CD_CHANGED2' author = 'NOT_CHANGED' )
 ).
 
