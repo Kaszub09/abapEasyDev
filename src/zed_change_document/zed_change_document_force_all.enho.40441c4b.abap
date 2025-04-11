@@ -1,0 +1,4 @@
+"Name: \PR:SAPLSCD0\FO:ASSIGN_STRUCTURE\SE:END\EI
+ENHANCEMENT 0 ZED_CHANGE_DOCUMENT_FORCE_ALL.
+  zcl_ed_change_doc=>force_cd_if_needed( CHANGING tabinfo = tabinfo ).
+ENDENHANCEMENT.
