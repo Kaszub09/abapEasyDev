@@ -9,7 +9,9 @@ CLASS zcl_ed_coding DEFINITION PUBLIC FINAL CREATE PUBLIC.
       "! Unicode UTF-8
       c_utf8          TYPE cpcodepage VALUE '4110',
       "! Microsoft 1252, Superset of ISO 8859-1
-      c_microsoft1252 TYPE cpcodepage VALUE '1160'.
+      c_microsoft1252 TYPE cpcodepage VALUE '1160',
+      "! Microsoft Windows 1250 for Central Europe
+      c_microsoft1250 TYPE abap_encoding  VALUE '1404'.
 
     CLASS-METHODS:
       class_constructor,
