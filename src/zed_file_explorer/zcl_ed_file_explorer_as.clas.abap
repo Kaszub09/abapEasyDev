@@ -250,7 +250,7 @@ CLASS zcl_ed_file_explorer_as IMPLEMENTATION.
 
   METHOD zif_ed_file_explorer~dir_get_all_files.
     DATA(directory_c) = CONV pfeflnamel( path ).
-    DATA file_tbl TYPE STANDARD TABLE OF salfldir.
+    DATA file_tbl TYPE STANDARD TABLE OF salfldir WITH EMPTY KEY.
 
     CALL FUNCTION 'RZL_READ_DIR_LOCAL'
       EXPORTING
