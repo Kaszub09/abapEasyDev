@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized">File explorer factory</p>
+"! <br/>TAGS: file; directory; file explorer; factory
 CLASS zcl_ed_file_explorer_factory DEFINITION PUBLIC FINAL CREATE PRIVATE
 GLOBAL FRIENDS zcl_ed_file_explorer_factory_i.
 

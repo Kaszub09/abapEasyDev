@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized">File dialogue interface</p>
+"! <br/>TAGS: file; directory; file explorer; dialogue
 INTERFACE zif_ed_file_dialogue PUBLIC.
   TYPES:
     tt_file_types TYPE STANDARD TABLE OF i WITH EMPTY KEY,

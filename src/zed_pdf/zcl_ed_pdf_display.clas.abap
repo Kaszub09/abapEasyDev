@@ -1,8 +1,9 @@
+"! <p class="shorttext synchronized">PDF display</p>
+"! "! <br/>TAGS: display; scree0n; PDF</p>
 CLASS zcl_ed_pdf_display DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES:
-      "! asdas
       zif_ed_screens_handler.
 
     METHODS:

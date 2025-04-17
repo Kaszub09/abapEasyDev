@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized" lang="en">Change document factory</p>
+"! <br/>TAGS: change document; factory
 CLASS zcl_ed_change_doc_factory DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIENDS zcl_ed_change_doc_factory_inj.
 
   PUBLIC SECTION.
