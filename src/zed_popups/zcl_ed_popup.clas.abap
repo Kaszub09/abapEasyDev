@@ -47,7 +47,7 @@ CLASS zcl_ed_popup IMPLEMENTATION.
       RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |POPUP_TO_CONFIRM rc={ sy-subrc }|.
     ENDIF.
 
-    confirmed = COND #( WHEN answer = '1' THEN abap_true ELSE abap_false ).
+    confirmed = xsdbool( answer = '1' ).
   ENDMETHOD.
 
   METHOD yes_no_cancel.
