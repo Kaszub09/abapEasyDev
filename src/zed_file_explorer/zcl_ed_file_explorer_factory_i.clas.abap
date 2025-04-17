@@ -14,7 +14,9 @@ ENDCLASS.
 CLASS zcl_ed_file_explorer_factory_i IMPLEMENTATION.
   METHOD clear_all.
     CLEAR:
-        zcl_ed_file_explorer_factory=>as_fe, zcl_ed_file_explorer_factory=>gui_fe.
+        zcl_ed_file_explorer_factory=>as_fe,
+        zcl_ed_file_explorer_factory=>gui_fe,
+        zcl_ed_file_explorer_factory=>fd.
   ENDMETHOD.
 
   METHOD clear_as.
