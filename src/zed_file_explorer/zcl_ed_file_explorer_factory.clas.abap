@@ -5,37 +5,37 @@ GLOBAL FRIENDS zcl_ed_file_explorer_factory_i.
 
   PUBLIC SECTION.
     CLASS-METHODS:
-      create_gui RETURNING VALUE(fe) TYPE REF TO zif_ed_file_explorer,
-      create_as RETURNING VALUE(fe) TYPE REF TO zif_ed_file_explorer,
+      create_gui RETURNING VALUE(file_explorer) TYPE REF TO zif_ed_file_explorer,
+      create_as RETURNING VALUE(file_explorer) TYPE REF TO zif_ed_file_explorer,
       create_file_dialogue RETURNING VALUE(file_dialogue) TYPE REF TO zif_ed_file_dialogue.
 
   PRIVATE SECTION.
     CLASS-DATA:
-      gui_fe TYPE REF TO zif_ed_file_explorer,
-      as_fe  TYPE REF TO zif_ed_file_explorer,
-      fd     TYPE REF TO zif_ed_file_dialogue.
+      file_explorer_gui_obj TYPE REF TO zif_ed_file_explorer,
+      file_explorer_as_obj  TYPE REF TO zif_ed_file_explorer,
+      file_dialogue_obj     TYPE REF TO zif_ed_file_dialogue.
 ENDCLASS.
 
 CLASS zcl_ed_file_explorer_factory IMPLEMENTATION.
   METHOD create_as.
-    IF NOT as_fe IS BOUND.
-      as_fe = NEW zcl_ed_file_explorer_as( ).
+    IF NOT file_explorer_as_obj IS BOUND.
+      file_explorer_as_obj = NEW zcl_ed_file_explorer_as( ).
     ENDIF.
-    fe = as_fe.
+    file_explorer = file_explorer_as_obj.
   ENDMETHOD.
 
   METHOD create_gui.
-    IF NOT gui_fe IS BOUND.
-      gui_fe = NEW zcl_ed_file_explorer_gui( ).
+    IF NOT file_explorer_gui_obj IS BOUND.
+      file_explorer_gui_obj = NEW zcl_ed_file_explorer_gui( ).
     ENDIF.
-    fe = gui_fe.
+    file_explorer = file_explorer_gui_obj.
   ENDMETHOD.
 
   METHOD create_file_dialogue.
-    IF NOT fd IS BOUND.
-      fd = NEW zcl_ed_file_explorer_dialogue( ).
+    IF NOT file_dialogue_obj IS BOUND.
+      file_dialogue_obj = NEW zcl_ed_file_explorer_dialogue( ).
     ENDIF.
-    file_dialogue = fd.
+    file_dialogue = file_dialogue_obj.
   ENDMETHOD.
 
 ENDCLASS.
