@@ -39,7 +39,7 @@
       "severity": "Error"
     },
     "avoid_use": {
-      "exclude": [],
+      "exclude": ["src/zed_program_runner/zif_ed_program_runner.intf.abap"],
       "severity": "Error",
       "skipQuickFix": false,
       "define": false,
