@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_DATE</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Date functions</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CREATE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Overflow will be converted (e.g. 33.01 = 02.02).</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_CALENDAR_DAYS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>CCalls fm &lt;em&gt;DAY_ATTRIBUTES_GET&lt;/em&gt;</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>IS_VALID</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Uses fm &lt;em&gt;DATE_CHECK_PLAUSIBILITY&lt;/em&gt;</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>WEEK</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT> Based on ISO 8601 - 1st week  is one with 4th January.</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_VALID</CMPNAME>
+     <SCONAME>ERRORS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Filled if date is not valid.</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

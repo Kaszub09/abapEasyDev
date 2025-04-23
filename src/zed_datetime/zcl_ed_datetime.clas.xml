@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_DATETIME</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Date time</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>FORMAT_DATE_TIME</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Formats date and time using given mask,</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>PARSE_STRING</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Tries to parse given string to date/time object, if no match</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>FORMAT_DATE_TIME</CMPNAME>
+     <SCONAME>MASK</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Accepts standards denotement - d|dd=day M|MM=month y|yyyy=ye</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>PARSE_STRING</CMPNAME>
+     <SCONAME>REGEX_INFO</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Should be generated via &lt;em&gt;prepare_regex&lt;/em&gt;. Can be cache</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>PARSE_STRING</CMPNAME>
+     <SCONAME>STRING</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>String with text to parse</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>
