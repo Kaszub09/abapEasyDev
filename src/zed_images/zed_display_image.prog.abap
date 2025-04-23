@@ -5,8 +5,9 @@
 *&---------------------------------------------------------------------*
 REPORT zed_display_image.
 
+
 PARAMETERS:
-  p_img_id TYPE zed_images-image_id.
+  p_img_id TYPE zed_images-image_id MATCHCODE OBJECT zed_image_id_search.
 
 
 START-OF-SELECTION.
