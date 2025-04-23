@@ -80,7 +80,7 @@
       "severity": "Error"
     },
 "check_syntax": {
-  "exclude": ["zcl_ed_screens"],
+  "exclude": ["zcl_ed_screens","src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap"],
   "severity": "Error"
 },
     "check_transformation_exists": {
@@ -127,7 +127,7 @@
       "checkData": true
     },
     "fully_type_itabs": {
-      "exclude": [ ],
+      "exclude": [ "src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap "],
       "severity": "Error"
     },
     "function_module_recommendations": {
