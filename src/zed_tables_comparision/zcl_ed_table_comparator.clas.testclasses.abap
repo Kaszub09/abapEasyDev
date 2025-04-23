@@ -73,24 +73,18 @@ CLASS ltcl_ed_table_comparator IMPLEMENTATION.
         ( key1 = 'DUPL' key2 = '22' )
     ).
     "=================================================================
-    zcl_ed_table_comparator=>compare_tables(
+    DATA(result) = zcl_ed_table_comparator=>get_comparision_data( zcl_ed_table_comparator=>compare_tables(
       EXPORTING
         initial_data    = REF #( before )
         modified_data   = REF #( after )
         rtts_keys       = zcl_ed_rtts_keys=>create_from_table( table = REF #( before )  key_fields = VALUE #( ( 'KEY1' ) ( 'KEY2' ) ( 'KEY3' ) ) )
-      IMPORTING
-        duplicates      = DATA(duplicates_ref)
-        inserted        = DATA(inserted_ref)
-        deleted         = DATA(deleted_ref)
-        before_modified = DATA(before_modified_ref)
-        modified        = DATA(modified_ref)
-    ).
+     ) ).
 
-    ASSIGN duplicates_ref->* TO FIELD-SYMBOL(<duplicates>).
-    ASSIGN inserted_ref->* TO FIELD-SYMBOL(<inserted>).
-    ASSIGN deleted_ref->* TO FIELD-SYMBOL(<deleted>).
-    ASSIGN before_modified_ref->* TO FIELD-SYMBOL(<before_modified>).
-    ASSIGN modified_ref->* TO FIELD-SYMBOL(<modified>).
+    ASSIGN result-duplicates->* TO FIELD-SYMBOL(<duplicates>).
+    ASSIGN result-inserted->* TO FIELD-SYMBOL(<inserted>).
+    ASSIGN result-deleted->* TO FIELD-SYMBOL(<deleted>).
+    ASSIGN result-before_modified->* TO FIELD-SYMBOL(<before_modified>).
+    ASSIGN result-modified->* TO FIELD-SYMBOL(<modified>).
     "=================================================================
     cl_abap_unit_assert=>assert_equals( act = <duplicates> exp = duplicates msg = |Wrong duplicates table| ).
     cl_abap_unit_assert=>assert_equals( act = <inserted> exp = inserted msg = |Wrong inserted table| ).
@@ -153,24 +147,18 @@ CLASS ltcl_ed_table_comparator IMPLEMENTATION.
         ( key1 = 'INS2' )
     ).
     "=================================================================
-    zcl_ed_table_comparator=>compare_tables(
+    DATA(result) = zcl_ed_table_comparator=>get_comparision_data( zcl_ed_table_comparator=>compare_tables(
       EXPORTING
         initial_data    = REF #( before )
         modified_data   = REF #( after )
         rtts_keys       = zcl_ed_rtts_keys=>create_from_table( table = REF #( before )  key_fields = VALUE #( ( 'KEY1' ) ( 'KEY2' ) ( 'KEY3' ) ) )
-      IMPORTING
-        duplicates      = DATA(duplicates_ref)
-        inserted        = DATA(inserted_ref)
-        deleted         = DATA(deleted_ref)
-        before_modified = DATA(before_modified_ref)
-        modified        = DATA(modified_ref)
-    ).
+     ) ).
 
-    ASSIGN duplicates_ref->* TO FIELD-SYMBOL(<duplicates>).
-    ASSIGN inserted_ref->* TO FIELD-SYMBOL(<inserted>).
-    ASSIGN deleted_ref->* TO FIELD-SYMBOL(<deleted>).
-    ASSIGN before_modified_ref->* TO FIELD-SYMBOL(<before_modified>).
-    ASSIGN modified_ref->* TO FIELD-SYMBOL(<modified>).
+    ASSIGN result-duplicates->* TO FIELD-SYMBOL(<duplicates>).
+    ASSIGN result-inserted->* TO FIELD-SYMBOL(<inserted>).
+    ASSIGN result-deleted->* TO FIELD-SYMBOL(<deleted>).
+    ASSIGN result-before_modified->* TO FIELD-SYMBOL(<before_modified>).
+    ASSIGN result-modified->* TO FIELD-SYMBOL(<modified>).
     "=================================================================
     cl_abap_unit_assert=>assert_equals( act = <duplicates> exp = duplicates msg = |Wrong duplicates table| ).
     cl_abap_unit_assert=>assert_equals( act = <inserted> exp = inserted msg = |Wrong inserted table| ).
@@ -206,24 +194,18 @@ CLASS ltcl_ed_table_comparator IMPLEMENTATION.
     DATA(duplicates) = VALUE tt_table(
     ).
     "=================================================================
-    zcl_ed_table_comparator=>compare_tables(
+    DATA(result) = zcl_ed_table_comparator=>get_comparision_data( zcl_ed_table_comparator=>compare_tables(
       EXPORTING
         initial_data    = REF #( before )
         modified_data   = REF #( after )
         rtts_keys       = zcl_ed_rtts_keys=>create_from_table( table = REF #( before )  key_fields = VALUE #( ( 'KEY1' ) ( 'KEY2' ) ( 'KEY3' ) ) )
-      IMPORTING
-        duplicates      = DATA(duplicates_ref)
-        inserted        = DATA(inserted_ref)
-        deleted         = DATA(deleted_ref)
-        before_modified = DATA(before_modified_ref)
-        modified        = DATA(modified_ref)
-    ).
+     ) ).
 
-    ASSIGN duplicates_ref->* TO FIELD-SYMBOL(<duplicates>).
-    ASSIGN inserted_ref->* TO FIELD-SYMBOL(<inserted>).
-    ASSIGN deleted_ref->* TO FIELD-SYMBOL(<deleted>).
-    ASSIGN before_modified_ref->* TO FIELD-SYMBOL(<before_modified>).
-    ASSIGN modified_ref->* TO FIELD-SYMBOL(<modified>).
+    ASSIGN result-duplicates->* TO FIELD-SYMBOL(<duplicates>).
+    ASSIGN result-inserted->* TO FIELD-SYMBOL(<inserted>).
+    ASSIGN result-deleted->* TO FIELD-SYMBOL(<deleted>).
+    ASSIGN result-before_modified->* TO FIELD-SYMBOL(<before_modified>).
+    ASSIGN result-modified->* TO FIELD-SYMBOL(<modified>).
     "=================================================================
     cl_abap_unit_assert=>assert_equals( act = <duplicates> exp = duplicates msg = |Wrong duplicates table| ).
     cl_abap_unit_assert=>assert_equals( act = <inserted> exp = inserted msg = |Wrong inserted table| ).

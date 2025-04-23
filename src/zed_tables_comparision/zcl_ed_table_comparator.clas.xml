@@ -27,9 +27,9 @@
    <DESCRIPTIONS_SUB>
     <SEOSUBCOTX>
      <CMPNAME>COMPARE_TABLES</CMPNAME>
-     <SCONAME>DUPLICATES</SCONAME>
+     <SCONAME>RESULT_INDEXES</SCONAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Record is added per detected duplicate with previous. [numbe</DESCRIPT>
+     <DESCRIPT>Duplicate record is added per detected duplicate with previo</DESCRIPT>
     </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>
