@@ -36,7 +36,7 @@ CLASS zcl_ed_screens DEFINITION PUBLIC FINAL CREATE PUBLIC.
                                start_line TYPE i DEFAULT 0 end_line TYPE i DEFAULT 24,
         "! <p class="shorttext synchronized" lang="en">Use inside PBO when calling screen in popup,
         "!  since if you want to use container in popup window, it must be created inside PBO. Otherwise not needed.</p>
-        get_screen_container IMPORTING dynnr TYPE dynnr recreate TYPE abap_bool DEFAULT abap_true RETURNING VALUE(container) TYPE REF TO cl_gui_container.
+        get_screen_container IMPORTING dynnr TYPE dynnr DEFAULT sy-dynnr recreate TYPE abap_bool DEFAULT abap_true RETURNING VALUE(container) TYPE REF TO cl_gui_container.
 
     CLASS-DATA:
         screens_with_toolbar TYPE abap_bool VALUE abap_true.
