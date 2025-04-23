@@ -66,7 +66,7 @@ CLASS ltcl_formatting IMPLEMENTATION.
   METHOD test.
     DATA(test_data) = VALUE tt_test_data(
         ( mask = '   yyyy-MM-ddThh:mm:ss XX' date = '20250101' time = '145959' exp_format = '   2025-01-01T14:59:59 XX' )
-        ( mask = 'y-M-dTh:m:s' date = '20250101' time = '140959' exp_format = '2025-1-1T14:9:59')
+        ( mask = 'y-M-dTh:m:s' date = '20250101' time = '140959' exp_format = '2025-1-1T14:9:59' )
     ).
 
     LOOP AT test_data REFERENCE INTO DATA(test).

@@ -32,7 +32,7 @@ CLASS zcl_ed_table_conversion_csv DEFINITION PUBLIC CREATE PUBLIC.
         type           TYPE abap_typecategory,
         type_reference TYPE REF TO cl_abap_datadescr,
       END OF t_field,
-      tt_field TYPE STANDARD TABLE OF t_field WITH DEFAULT KEY.
+      tt_field TYPE STANDARD TABLE OF t_field WITH EMPTY KEY.
 
     DATA:
       column_delimiter     TYPE string,
