@@ -9,7 +9,7 @@ CLASS zcl_ed_table_conversion_excel DEFINITION PUBLIC FINAL CREATE PUBLIC.
         name           TYPE string,
         internal_table TYPE REF TO data,
       END OF t_wks_data,
-      tt_wks_data TYPE STANDARD TABLE OF t_wks_data WITH DEFAULT KEY.
+      tt_wks_data TYPE STANDARD TABLE OF t_wks_data WITH EMPTY KEY.
 
     CLASS-METHODS:
       "! <p class="shorttext synchronized"> Each sheet is converted to table, where each line is structure with components A, B, C etc. (column names in Excel).

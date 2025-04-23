@@ -5,8 +5,8 @@ CLASS ltcl_conversion DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
         col1 TYPE i,
         col2 TYPE i,
       END OF t_simple_table,
-      tt_simple_table TYPE STANDARD TABLE OF t_simple_table WITH DEFAULT KEY,
-      tt_string       TYPE TABLE OF string WITH DEFAULT KEY,
+      tt_simple_table TYPE STANDARD TABLE OF t_simple_table WITH EMPTY KEY,
+      tt_string       TYPE STANDARD TABLE OF string WITH EMPTY KEY,
       "-----------------------------------------------------------------
       BEGIN OF t_advanced_test_table,
         col_int        TYPE i,

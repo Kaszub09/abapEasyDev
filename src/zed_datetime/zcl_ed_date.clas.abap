@@ -127,13 +127,13 @@ CLASS zcl_ed_date IMPLEMENTATION.
     result_date = date.
 
     CASE to_upper( interval ).
-      WHEN 'Y'. " YEAR
+      WHEN 'Y'.
         result_date(4) = CONV i( date(4) ) + value.
         IF result_date+4(4) = '0229'. " Check for leap year
           result_date+6(2) = COND #( WHEN result_date+2(2) MOD 4 = 0 THEN 29 ELSE 28 ).
         ENDIF.
 
-      WHEN 'M'. " MONTH
+      WHEN 'M'.
         " Instead of adding months to given date (problematic when e.g. add 1 month to December,
         " because it rolls over to next year), consider adding corrected number of months to January
         DATA(months_to_add) = value + CONV i( result_date+4(2) ) - 1.
@@ -153,10 +153,10 @@ CLASS zcl_ed_date IMPLEMENTATION.
         IF day( result_date ) >= day( last_day_in_month( result_date ) ).
           result_date = last_day_in_month( result_date ).
         ENDIF.
-      WHEN 'W'. " WEEK
+      WHEN 'W'.
         result_date = result_date + 7 * value.
 
-      WHEN 'D'. " DAY
+      WHEN 'D'.
         result_date = result_date + value.
 
       WHEN OTHERS.
@@ -166,14 +166,14 @@ CLASS zcl_ed_date IMPLEMENTATION.
 
   METHOD difference.
     CASE to_upper( interval ).
-      WHEN 'Y'. " YEAR
+      WHEN 'Y'.
         difference = year( date_to ) - year( date_from ).
 
-      WHEN 'M'. " MONTH
+      WHEN 'M'.
         difference = 12 * ( year( date_to ) - year( date_from ) ) + month( date_to ) - month( date_from ).
 
-      WHEN 'W'. " WEEK
-        difference = trunc(  ( CONV f( date_to  - date_from ) ) / 7 ). " Apparently 12 / 7 = 2, because SAP rounds it ¯\_(ツ)_/¯
+      WHEN 'W'.
+        difference = trunc(  ( CONV f( date_to  - date_from ) ) / 7 ). " Apparently 12 / 7 = 2, because SAP rounds it...
         DATA(weekday_diff) = ( abs( date_to - date_from ) ) MOD 7.
         IF date_from <= date_to AND weekday_diff >= weekday( date_to ).
           difference = difference + 1.
@@ -181,7 +181,7 @@ CLASS zcl_ed_date IMPLEMENTATION.
           difference = difference - 1.
         ENDIF.
 
-      WHEN 'D'. " DAY
+      WHEN 'D'.
         difference = date_to - date_from.
 
       WHEN OTHERS.
