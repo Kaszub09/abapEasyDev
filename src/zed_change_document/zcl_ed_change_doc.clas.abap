@@ -20,7 +20,7 @@ CLASS zcl_ed_change_doc DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIENDS zc
       END OF t_save_info.
 
     METHODS:
-      get_save_info IMPORTING save_fields_on_deletion  TYPE i save_fields_on_insertion TYPE i RETURNING VALUE(info) TYPE t_save_info.
+      get_save_info IMPORTING save_fields_on_deletion TYPE i save_fields_on_insertion TYPE i RETURNING VALUE(info) TYPE t_save_info.
 
     DATA:
       force_cd            TYPE REF TO lcl_force_cd_marker,

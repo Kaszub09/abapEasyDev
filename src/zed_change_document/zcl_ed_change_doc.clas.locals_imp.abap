@@ -8,6 +8,7 @@ CLASS lcl_force_cd_marker IMPLEMENTATION.
 
     DATA table_name TYPE tabname.
     IMPORT table_name = table_name FROM MEMORY ID c_memory_id.
+    " TODO: variable is assigned but never used (ABAP cleaner)
     DATA(where_clause) = |tabname = '{ table_name }' AND logflag = 'F' AND keyflag = 'X'|.
     LOOP AT tabinfo ASSIGNING FIELD-SYMBOL(<row>) WHERE ('tabname = table_name AND logflag = abap_false AND keyflag = abap_false').
       ASSIGN COMPONENT 'LOGFLAG' OF STRUCTURE <row> TO FIELD-SYMBOL(<logflag>).
@@ -92,26 +93,26 @@ CLASS lcl_table_descr_manager IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
   METHOD get_table_handle.
     handle = VALUE #( tables_info[ name = table_name ]-handle OPTIONAL ).
-    IF NOT handle IS BOUND.
-      "Get components
-      DATA(struct_descr) = CAST cl_abap_structdescr( cl_abap_structdescr=>describe_by_name( table_name ) ).
-      DATA(components) = struct_descr->get_components( ).
-      APPEND VALUE #( name = c_cd_field type = CAST #( cl_abap_structdescr=>describe_by_name( 'CDCHNGINDH' ) ) ) TO components.
-
-      "Get keys
-      DATA(keys) = VALUE abap_keydescr_tab( ).
-      LOOP AT struct_descr->get_ddic_field_list( ) REFERENCE INTO DATA(field) WHERE keyflag = abap_true.
-        APPEND VALUE #( name = field->fieldname ) TO keys.
-      ENDLOOP.
-
-      "Build handle back
-      handle = cl_abap_tabledescr=>get( p_line_type =  cl_abap_structdescr=>get(  components )
-        p_key_kind = cl_abap_tabledescr=>keydefkind_user p_key = keys ).
-      INSERT VALUE #( name = table_name handle = handle ) INTO TABLE tables_info.
+    IF handle IS BOUND.
+      RETURN.
     ENDIF.
-  ENDMETHOD.
 
+    "Get components
+    DATA(struct_descr) = CAST cl_abap_structdescr( cl_abap_structdescr=>describe_by_name( table_name ) ).
+    DATA(components) = struct_descr->get_components( ).
+    APPEND VALUE #( name = c_cd_field type = CAST #( cl_abap_structdescr=>describe_by_name( 'CDCHNGINDH' ) ) ) TO components.
+
+    "Get keys
+    DATA(keys) = VALUE abap_keydescr_tab( ).
+    LOOP AT struct_descr->get_ddic_field_list( ) REFERENCE INTO DATA(field) WHERE keyflag = abap_true.
+      APPEND VALUE #( name = field->fieldname ) TO keys.
+    ENDLOOP.
+
+    "Build handle back
+    handle = cl_abap_tabledescr=>get( p_line_type =  cl_abap_structdescr=>get(  components )
+      p_key_kind = cl_abap_tabledescr=>keydefkind_user p_key = keys ).
+    INSERT VALUE #( name = table_name handle = handle ) INTO TABLE tables_info.
+  ENDMETHOD.
 ENDCLASS.
