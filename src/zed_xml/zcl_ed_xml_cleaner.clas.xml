@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_XML_CLEANER</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>XML cleaner</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Cleans xml of empty tags and/or attributes.</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <SCONAME>ATTRIBUTES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove empty (attribute=&quot;&quot;) attributes</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <SCONAME>DATE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove empty date (0000-00-00)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <SCONAME>DATE_TIME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove empty date time (0000-00-00T00:00:00)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <SCONAME>NODES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove empty (&lt;node&gt;&lt;/node&gt; or &lt;node/&gt;) nodes or not</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REMOVE_EMPTY</CMPNAME>
+     <SCONAME>TIME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Remove empty time (00:00:00)</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>
