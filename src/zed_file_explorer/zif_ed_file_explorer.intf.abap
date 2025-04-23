@@ -38,9 +38,9 @@ INTERFACE zif_ed_file_explorer PUBLIC.
                                 appending TYPE abap_bool DEFAULT abap_true write_lf_after_last_line TYPE abap_bool DEFAULT abap_true
                       CHANGING lines TYPE tt_string_table
                       RAISING zcx_ed_exception,
-     file_read_as_bin IMPORTING path TYPE string RETURNING VALUE(content) TYPE xstring RAISING zcx_ed_exception,
+    file_read_as_bin IMPORTING path TYPE string RETURNING VALUE(content) TYPE xstring RAISING zcx_ed_exception,
     "! @parameter appending | <p class="shorttext synchronized">Append to file if exists instead of overwriting</p>
-     file_save_as_bin IMPORTING path TYPE string content TYPE xstring appending TYPE abap_bool DEFAULT abap_true RAISING zcx_ed_exception.
+    file_save_as_bin IMPORTING path TYPE string content TYPE xstring appending TYPE abap_bool DEFAULT abap_true RAISING zcx_ed_exception.
 
   METHODS: "Directory manipulations
     dir_convert_path IMPORTING path TYPE string RETURNING VALUE(dir_path) TYPE string,

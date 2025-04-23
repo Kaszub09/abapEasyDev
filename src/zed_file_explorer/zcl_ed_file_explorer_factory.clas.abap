@@ -7,7 +7,7 @@ GLOBAL FRIENDS zcl_ed_file_explorer_factory_i.
     CLASS-METHODS:
       create_gui RETURNING VALUE(file_explorer) TYPE REF TO zif_ed_file_explorer,
       create_as RETURNING VALUE(file_explorer) TYPE REF TO zif_ed_file_explorer,
-      create_file_dialogue RETURNING VALUE(file_dialogue) TYPE REF TO zif_ed_file_dialogue.
+      create_dialogue RETURNING VALUE(file_dialogue) TYPE REF TO zif_ed_file_dialogue.
 
   PRIVATE SECTION.
     CLASS-DATA:
@@ -31,7 +31,7 @@ CLASS zcl_ed_file_explorer_factory IMPLEMENTATION.
     file_explorer = file_explorer_gui_obj.
   ENDMETHOD.
 
-  METHOD create_file_dialogue.
+  METHOD create_dialogue.
     IF NOT file_dialogue_obj IS BOUND.
       file_dialogue_obj = NEW zcl_ed_file_explorer_dialogue( ).
     ENDIF.
