@@ -71,7 +71,7 @@ CLASS lcl_handler IMPLEMENTATION.
 
     "Usually there is no need to recreate container in PBO more than once.
     DATA(table) = VALUE tt_table( ( description = |I'm screen { dynnr }| ) ( description = |Random: { get_random_int( ) }| ) ).
-    DATA(container) = zcl_ed_screens=>get_screen_container( dynnr ).
+    DATA(container) = zcl_ed_screens=>get_screen_container( dynnr = dynnr ).
     cl_salv_table=>factory( EXPORTING r_container = container IMPORTING r_salv_table = DATA(salv_table) CHANGING t_table = table ).
     salv_table->display( ).
     first_time_pbo = abap_false.

@@ -37,7 +37,7 @@ CLASS zcl_ed_pdf_display IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_ed_screens_handler~pbo.
-    prepare_html_viewer( pdf = pdf container = zcl_ed_screens=>get_screen_container( sy-dynnr ) ).
+    prepare_html_viewer( pdf = pdf container = zcl_ed_screens=>get_screen_container( dynnr = sy-dynnr ) ).
   ENDMETHOD.
 
   METHOD zif_ed_screens_handler~pai.

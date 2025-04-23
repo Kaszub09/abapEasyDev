@@ -25,7 +25,7 @@ CLASS zcl_ed_xml_cleaner DEFINITION PUBLIC FINAL CREATE PUBLIC.
         chara   TYPE c LENGTH 1,
         escaped TYPE string,
       END OF t_escape_chara,
-      tt_escape_chara TYPE STANDARD TABLE OF t_escape_chara.
+      tt_escape_chara TYPE STANDARD TABLE OF t_escape_chara WITH EMPTY KEY.
 
     CLASS-DATA:
       text_escape_characters      TYPE tt_escape_chara,

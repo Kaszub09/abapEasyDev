@@ -73,7 +73,7 @@ CLASS zcl_ed_image IMPLEMENTATION.
     ENDIF.
 
     first_time_pbo = abap_false.
-    DATA(picture_container) = NEW cl_gui_picture( zcl_ed_screens=>get_screen_container( dynnr ) ).
+    DATA(picture_container) = NEW cl_gui_picture( zcl_ed_screens=>get_screen_container( dynnr = dynnr ) ).
     picture_container->set_display_mode( display_mode ).
     picture_container->load_picture_from_url_async( image_url ).
   ENDMETHOD.
