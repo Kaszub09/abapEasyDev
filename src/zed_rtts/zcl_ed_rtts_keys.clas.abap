@@ -12,7 +12,7 @@ CLASS zcl_ed_rtts_keys DEFINITION PUBLIC FINAL CREATE PRIVATE.
       create_from_table IMPORTING table TYPE REF TO data key_fields TYPE tt_key_fields
                         RETURNING VALUE(rtts_key) TYPE REF TO zcl_ed_rtts_keys,
       create_from_struct IMPORTING struct TYPE REF TO data key_fields TYPE tt_key_fields
-                        RETURNING VALUE(rtts_key) TYPE REF TO zcl_ed_rtts_keys.
+                         RETURNING VALUE(rtts_key) TYPE REF TO zcl_ed_rtts_keys.
 
     METHODS:
       get_descr IMPORTING additional_fields TYPE cl_abap_structdescr=>component_table OPTIONAL
@@ -89,7 +89,7 @@ CLASS zcl_ed_rtts_keys IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_components.
-    DATA(start_index) = COND i( WHEN has_mandt = abap_true OR include_mandt = abap_false THEN 2 ELSE 1 ).
+    DATA(start_index) = COND i( WHEN has_mandt = abap_true AND include_mandt = abap_false THEN 2 ELSE 1 ).
     LOOP AT fields REFERENCE INTO DATA(field) FROM start_index.
       IF keys_only = abap_true AND field->is_key = abap_false.
         CONTINUE.
