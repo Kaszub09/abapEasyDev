@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized">Program runner interface</p>
+"! <br/>TAGS: program runner; list; export; memory
 INTERFACE zif_ed_program_runner PUBLIC.
   TYPES:
     tt_selection_table TYPE STANDARD TABLE OF rsparamsl_255 WITH EMPTY KEY,
