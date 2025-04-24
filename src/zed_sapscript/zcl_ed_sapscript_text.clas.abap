@@ -42,7 +42,7 @@ CLASS zcl_ed_sapscript_text DEFINITION PUBLIC FINAL CREATE PUBLIC.
         clustr TYPE sybin2,
         clustd TYPE stxldummy2,
       END OF t_stxl_raw,
-      tt_stxl_raw TYPE TABLE OF t_stxl_raw WITH EMPTY KEY,
+      tt_stxl_raw TYPE STANDARD TABLE OF t_stxl_raw WITH EMPTY KEY,
       BEGIN OF t_text_binary,
         object      TYPE tdobject,
         name        TYPE tdobname,
@@ -52,11 +52,11 @@ CLASS zcl_ed_sapscript_text DEFINITION PUBLIC FINAL CREATE PUBLIC.
         size        TYPE sybin2,
         text_binary TYPE stxldummy2,
       END OF t_text_binary,
-      tt_text_binary TYPE TABLE OF t_text_binary WITH EMPTY KEY,
+      tt_text_binary TYPE STANDARD TABLE OF t_text_binary WITH EMPTY KEY,
       BEGIN OF t_name,
         name TYPE tdobname,
       END OF t_name,
-      tt_name TYPE TABLE OF t_name WITH EMPTY KEY.
+      tt_name TYPE STANDARD TABLE OF t_name WITH EMPTY KEY.
 
     METHODS:
       append_data IMPORTING existing_only TYPE abap_bool DEFAULT abap_false CHANGING texts_binary TYPE tt_text_binary texts TYPE tt_text,
@@ -65,6 +65,10 @@ ENDCLASS.
 
 CLASS zcl_ed_sapscript_text IMPLEMENTATION.
   METHOD fill_texts.
+    IF lines( texts ) = 0.
+      RETURN.
+    ENDIF.
+
     DATA texts_binary TYPE tt_text_binary.
 
     SELECT tdobject AS object, tdname AS name, tdid AS id, tdspras AS lang, srtf2 AS counter, clustr AS size, clustd AS text_binary FROM stxl
