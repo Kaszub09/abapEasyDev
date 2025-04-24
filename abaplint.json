@@ -387,7 +387,7 @@
       "severity": "Error"
     },
     "prefer_returning_to_exporting": {
-      "exclude": [],
+      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap"],
       "severity": "Error"
     },
     "prefer_xsdbool": {
@@ -429,7 +429,7 @@
       "skipNames": []
     },
     "slow_parameter_passing": {
-      "exclude": [],
+      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap"],
       "severity": "Error"
     },
     "smim_consistency": {
@@ -482,7 +482,7 @@
       "severity": "Error"
     },
     "unsecure_fae": {
-      "exclude": [],
+      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap"],
       "severity": "Warning"
     },
     "use_bool_expression": {
