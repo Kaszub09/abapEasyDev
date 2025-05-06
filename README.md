@@ -5,6 +5,8 @@ Easy ABAP development
 via https://github.com/abapGit/abapGit
 
 # modules
+Most modules are independent. Some may depend on each other or on https://github.com/Kaszub09/abapEasyALV.
+
 | Module | Description | 
 | - | - |
 | Change document | Create change document entry directly from code, without SCD0 |
