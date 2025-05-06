@@ -10,12 +10,14 @@ CLASS zcl_ed_stopwatch DEFINITION PUBLIC FINAL CREATE PUBLIC.
       get_elapsed_seconds RETURNING VALUE(seconds) TYPE decfloat34,
       restart,
       pause,
-      continue.
-  PROTECTED SECTION.
+      continue,
+      write_elapsed IMPORTING with_msg TYPE string OPTIONAL.
+
   PRIVATE SECTION.
     CONSTANTS:
       microseconds_in_second     TYPE i VALUE 1000000,
       microseconds_in_milisecond TYPE i VALUE 1000.
+
     DATA:
       "! in microseconds
       started_at   TYPE i,
@@ -23,15 +25,13 @@ CLASS zcl_ed_stopwatch DEFINITION PUBLIC FINAL CREATE PUBLIC.
       is_running   TYPE abap_bool.
 ENDCLASS.
 
-
-
 CLASS zcl_ed_stopwatch IMPLEMENTATION.
   METHOD get_elapsed_miliseconds.
-    seconds = get_elapsed_microseconds(  ) / microseconds_in_milisecond.
+    seconds = get_elapsed_microseconds( ) / microseconds_in_milisecond.
   ENDMETHOD.
 
   METHOD get_elapsed_seconds.
-    seconds = get_elapsed_microseconds(  ) / microseconds_in_second.
+    seconds = get_elapsed_microseconds( ) / microseconds_in_second.
   ENDMETHOD.
 
   METHOD pause.
@@ -65,4 +65,7 @@ CLASS zcl_ed_stopwatch IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD write_elapsed.
+    WRITE:/ |{ with_msg } { get_elapsed_seconds( ) }s|.
+  ENDMETHOD.
 ENDCLASS.
