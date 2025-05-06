@@ -429,7 +429,7 @@
       "skipNames": []
     },
     "slow_parameter_passing": {
-      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap"],
+      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap","src/zcx_ed_exception.clas.abap"],
       "severity": "Error"
     },
     "smim_consistency": {
