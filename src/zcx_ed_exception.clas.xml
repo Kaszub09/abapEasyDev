@@ -16,7 +16,12 @@
     <SEOCOMPOTX>
      <CMPNAME>CONSTRUCTOR</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>CONSTRUCTOR</DESCRIPT>
+     <DESCRIPT>Preferred to &lt;em&gt;constructor&lt;/em&gt; since sy-subrc is stored i</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>THROW</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Alternative to &lt;em&gt;constructor&lt;/em&gt; since sy-subrc is stored</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
