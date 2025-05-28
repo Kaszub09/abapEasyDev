@@ -43,7 +43,31 @@ CLASS zcl_ed_docu DEFINITION PUBLIC FINAL CREATE PUBLIC.
                      mes_line_number               TYPE int4 OPTIONAL
                      mes_exception                 TYPE seoclsname DEFAULT space
                      fallback_language             TYPE doku_langu DEFAULT 'E'
-           RAISING   zcx_ed_exception.
+           RAISING   zcx_ed_exception,
+      "! <p class="shorttext synchronized" lang="en">Alternative FM in case first one doesn't work, e.g for classes 'CL'</p>
+      show_alt IMPORTING cmod_entrance     TYPE any DEFAULT space
+                         displ             TYPE any DEFAULT 'X'
+                         displ_mode        TYPE any DEFAULT '2'
+                         dynpro_for_thlpf  TYPE dynpronrc DEFAULT space
+                         fdname_for_thlpf  TYPE fdname61 DEFAULT space
+                         id                TYPE doku_id
+                         langu             TYPE doku_langu DEFAULT sy-langu
+                         object            TYPE doku_obj
+                         program_for_thlpf TYPE progn DEFAULT space
+                         shorttext         TYPE any DEFAULT space
+                         typ               TYPE doku_typ DEFAULT 'E'
+                         suppress_edit     TYPE any DEFAULT space
+                         use_sec_langu     TYPE any DEFAULT 'X'
+                         force_editor      TYPE c DEFAULT space
+                         extension_mode    TYPE any DEFAULT space
+                         template_id       TYPE doku_id DEFAULT space
+                         template_object   TYPE doku_obj DEFAULT space
+                         template_typ      TYPE doku_typ DEFAULT space
+                         use_note_template TYPE char1 DEFAULT space
+                         display_shorttext TYPE char1 DEFAULT space
+               EXPORTING VALUE(savetext)   TYPE tdfunction
+                         VALUE(exit_code)  TYPE char4
+               RAISING   zcx_ed_exception.
 ENDCLASS.
 
 CLASS zcl_ed_docu IMPLEMENTATION.
@@ -118,4 +142,39 @@ CLASS zcl_ed_docu IMPLEMENTATION.
       RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |HELP_OBJECT_SHOW rc={ sy-subrc }|.
     ENDIF.
   ENDMETHOD.
+
+  METHOD show_alt.
+    CALL FUNCTION 'DOCU_CALL'
+      EXPORTING
+        cmod_entrance     = cmod_entrance      " Access via transaction CMOD
+        displ             = displ              " Display/maintenance mode
+        displ_mode        = displ_mode         " Display mode (1=Editor,2=Formatted)
+        dynpro_for_thlpf  = dynpro_for_thlpf
+        fdname_for_thlpf  = fdname_for_thlpf
+        id                = id                     " Module class
+        langu             = langu                " Language
+        object            = object                     " Documentation module name
+        program_for_thlpf = program_for_thlpf
+        shorttext         = shorttext
+        typ               = typ                " Documentation type
+        suppress_edit     = suppress_edit
+        use_sec_langu     = use_sec_langu
+        force_editor      = force_editor
+        extension_mode    = extension_mode     " Enhancement mode
+        template_id       = template_id
+        template_object   = template_object
+        template_typ      = template_typ
+        use_note_template = use_note_template
+        display_shorttext = display_shorttext
+      IMPORTING
+        savetext          = savetext
+        exit_code         = exit_code                 " Document editor exit type
+      EXCEPTIONS
+        wrong_name        = 1
+        OTHERS            = 2.
+    IF sy-subrc <> 0.
+      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |DOCU_CALL rc={ sy-subrc }|.
+    ENDIF.
+  ENDMETHOD.
+
 ENDCLASS.
