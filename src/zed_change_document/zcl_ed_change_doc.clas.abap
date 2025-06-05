@@ -72,9 +72,10 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
         open_missing            = 4                " No OPEN was performed
         position_insert_failed  = 5                " G/L account number
         OTHERS                  = 6.
+
     IF sy-subrc = 2 AND skip_no_pos_ins_error = abap_false.
       RAISE EXCEPTION TYPE zcx_ed_change_doc_no_pos_ins.
-    ELSEIF  sy-subrc <> 0.
+    ELSEIF sy-subrc <> 0 AND sy-subrc <> 2.
       RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_CLOSE subrc={ sy-subrc }|.
     ENDIF.
   ENDMETHOD.
