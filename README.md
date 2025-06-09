@@ -15,6 +15,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | File explorer | File manipulation on aplication server and on user machine via GUI; File dialogue |
 | Images | Easy upload/display of images |
 | Msg | Message generation from text and sap message structures |
+| Messages | Send emails / messages to user Business Workplace |
 | PDF | PDF display |
 | Popups | Various popups - ask user for confirmation, to fill fields etc. |
 | Program runner | Run program in background and get result to list |
