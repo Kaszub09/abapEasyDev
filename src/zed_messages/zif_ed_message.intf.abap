@@ -1,3 +1,5 @@
+"! <p class="shorttext synchronized" lang="en">Message</p>
+"! "! <br/>TAGS: message; mail; send
 INTERFACE zif_ed_message PUBLIC.
   METHODS:
     add_recipient_mail IMPORTING mail TYPE ad_smtpadr
@@ -12,16 +14,10 @@ INTERFACE zif_ed_message PUBLIC.
     add_recipients_from_dist_list IMPORTING distribution_list TYPE so_obj_nam is_private TYPE abap_bool
                                   RETURNING VALUE(self) TYPE REF TO zif_ed_message
                                   RAISING cx_address_bcs cx_send_req_bcs,
-    "! <p class="shorttext synchronized" lang="en">WARNING! <strong>set_content</strong> must be called first!</p>
     "! @parameter att_type | <p class="shorttext synchronized" lang="en">E.g. XLS for Excel.</p>
     add_attachment IMPORTING att_type TYPE so_obj_tp DEFAULT space name TYPE so_obj_des att TYPE xstring
                    RETURNING VALUE(self) TYPE REF TO zif_ed_message
                    RAISING cx_document_bcs,
-    "! <p class="shorttext synchronized" lang="en">Must be called before <strong>add_attachment</strong></p>
-    "! @parameter content_type | <p class="shorttext synchronized" lang="en">E.g. HTM for html or TXT/RAW for simple text.</p>
-    set_content IMPORTING content_type TYPE so_obj_tp DEFAULT space header TYPE so_obj_des body TYPE string
-                RETURNING VALUE(self) TYPE REF TO zif_ed_message
-                RAISING cx_document_bcs,
     set_note IMPORTING note TYPE string
              RETURNING VALUE(self) TYPE REF TO zif_ed_message
              RAISING cx_send_req_bcs,

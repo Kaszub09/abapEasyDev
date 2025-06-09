@@ -21,11 +21,6 @@
      <LANGU>E</LANGU>
      <DESCRIPT>You must call COMMIT WORK after for message to be sent.</DESCRIPT>
     </SEOCOMPOTX>
-    <SEOCOMPOTX>
-     <CMPNAME>SET_CONTENT</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Must be called before &lt;strong&gt;add_attachment&lt;/strong&gt;</DESCRIPT>
-    </SEOCOMPOTX>
    </DESCRIPTIONS>
    <DESCRIPTIONS_SUB>
     <SEOSUBCOTX>
@@ -33,12 +28,6 @@
      <SCONAME>ATT_TYPE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>E.g. XLS for Excel.</DESCRIPT>
-    </SEOSUBCOTX>
-    <SEOSUBCOTX>
-     <CMPNAME>SET_CONTENT</CMPNAME>
-     <SCONAME>CONTENT_TYPE</SCONAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>E.g. HTM for html or TXT/RAW for simple text.</DESCRIPT>
     </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>

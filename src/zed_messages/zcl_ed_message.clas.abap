@@ -5,7 +5,8 @@ CLASS zcl_ed_message DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_ed_mess
       zif_ed_message.
 
     METHODS:
-      constructor.
+      constructor IMPORTING content_type TYPE so_obj_tp DEFAULT space header TYPE so_obj_des body TYPE string
+                  RAISING cx_document_bcs cx_send_req_bcs.
 
   PRIVATE SECTION.
     DATA:
@@ -16,6 +17,8 @@ ENDCLASS.
 CLASS zcl_ed_message IMPLEMENTATION.
   METHOD constructor.
     message = cl_bcs=>create_persistent( ).
+    document = cl_document_bcs=>create_document( i_type = content_type i_subject = header
+        i_length = CONV #( strlen( body ) ) i_text = cl_bcs_convert=>string_to_soli( body ) ).
   ENDMETHOD.
 
   METHOD zif_ed_message~add_recipient_mail.
@@ -44,12 +47,6 @@ CLASS zcl_ed_message IMPLEMENTATION.
     self = me.
   ENDMETHOD.
 
-  METHOD zif_ed_message~set_content.
-    document = cl_document_bcs=>create_document( i_type = content_type i_subject = header
-        i_length = CONV #( strlen( body ) ) i_text = cl_bcs_convert=>string_to_soli( body ) ).
-    self = me.
-  ENDMETHOD.
-
   METHOD zif_ed_message~set_note.
     message->set_note( cl_bcs_convert=>string_to_soli( note ) ).
     self = me.
@@ -59,5 +56,4 @@ CLASS zcl_ed_message IMPLEMENTATION.
     message->set_document( document ).
     send_to_all = message->send( ).
   ENDMETHOD.
-
 ENDCLASS.
