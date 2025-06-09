@@ -60,4 +60,50 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
       ENDLOOP.
     ENDIF.
   ENDMETHOD.
+
+  METHOD zif_ed_program_runner~run_with_data_ref.
+    cl_salv_bs_runtime_info=>set( display = abap_false metadata = abap_true data = abap_true  ).
+
+    SUBMIT (program_name)
+    USING SELECTION-SET variant_name
+    WITH SELECTION-TABLE selection_table
+    EXPORTING LIST TO MEMORY AND RETURN.
+
+    result-metadata = cl_salv_bs_runtime_info=>get_metadata( ).
+    cl_salv_bs_runtime_info=>get_data_ref( IMPORTING r_data = result-table_ref ).
+    cl_salv_bs_runtime_info=>clear_all( ).
+  ENDMETHOD.
+
+  METHOD zif_ed_program_runner~convert_data_ref.
+    "create SALV
+    converted-table_ref = data_ref_result-table_ref.
+    ASSIGN converted-table_ref->* TO FIELD-SYMBOL(<table>).
+    cl_salv_table=>factory( IMPORTING r_salv_table = converted-salv CHANGING t_table = <table> ).
+
+    "columns
+    LOOP AT data_ref_result-metadata-t_fcat REFERENCE INTO DATA(col).
+      converted-salv->get_columns( )->get_column( col->fieldname )->set_technical( col->tech ).
+      converted-salv->get_columns( )->get_column( col->fieldname )->set_visible( xsdbool( col->no_out = abap_false ) ).
+      IF col->no_sum = abap_false.
+        converted-salv->get_aggregations( )->add_aggregation( columnname = col->fieldname aggregation = if_salv_c_aggregation=>total ).
+      ENDIF.
+    ENDLOOP.
+
+    "filters
+    LOOP AT data_ref_result-metadata-t_filter REFERENCE INTO DATA(filter).
+      converted-salv->get_filters( )->add_filter( columnname = filter->fieldname sign = filter->sign option = filter->option
+        low = filter->low high = filter->high ).
+    ENDLOOP.
+
+    "sorts
+    DATA(sort_copy) = data_ref_result-metadata-t_sort.
+    SORT sort_copy BY spos.
+    LOOP AT sort_copy REFERENCE INTO DATA(sort).
+      converted-salv->get_sorts( )->add_sort( columnname = sort->fieldname position = CONV #( sort->spos )
+        subtotal = sort->subtot obligatory = sort->obligatory
+        sequence = COND #( WHEN sort->up = abap_true THEN if_salv_c_sort=>sort_up
+                           WHEN sort->down = abap_true THEN if_salv_c_sort=>sort_down
+                           ELSE if_salv_c_sort=>sort_none ) ).
+    ENDLOOP.
+  ENDMETHOD.
 ENDCLASS.
