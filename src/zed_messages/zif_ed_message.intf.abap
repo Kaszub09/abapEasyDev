@@ -9,6 +9,9 @@ INTERFACE zif_ed_message PUBLIC.
     add_recipient_mail_from_user IMPORTING user TYPE uname
                                  RETURNING VALUE(self) TYPE REF TO zif_ed_message
                                  RAISING cx_address_bcs cx_send_req_bcs,
+    add_recipients_from_dist_list IMPORTING distribution_list TYPE so_obj_nam is_private TYPE abap_bool
+                                  RETURNING VALUE(self) TYPE REF TO zif_ed_message
+                                  RAISING cx_address_bcs cx_send_req_bcs,
     "! <p class="shorttext synchronized" lang="en">WARNING! <strong>set_content</strong> must be called first!</p>
     "! @parameter att_type | <p class="shorttext synchronized" lang="en">E.g. XLS for Excel.</p>
     add_attachment IMPORTING att_type TYPE so_obj_tp DEFAULT space name TYPE so_obj_des att TYPE xstring

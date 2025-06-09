@@ -33,6 +33,11 @@ CLASS zcl_ed_message IMPLEMENTATION.
     self = me.
   ENDMETHOD.
 
+  METHOD zif_ed_message~add_recipients_from_dist_list.
+    message->add_recipient( cl_distributionlist_bcs=>getu_persistent( i_dliname = distribution_list i_private = is_private ) ).
+    self = me.
+  ENDMETHOD.
+
   METHOD zif_ed_message~add_attachment.
     document->add_attachment( i_attachment_type = att_type i_attachment_subject = name
         i_attachment_size = CONV #( xstrlen( att ) ) i_att_content_hex = cl_bcs_convert=>xstring_to_solix( att ) ).
@@ -54,4 +59,5 @@ CLASS zcl_ed_message IMPLEMENTATION.
     message->set_document( document ).
     send_to_all = message->send( ).
   ENDMETHOD.
+
 ENDCLASS.
