@@ -431,8 +431,7 @@ CLASS zcl_ed_file_explorer_gui IMPLEMENTATION.
 
   METHOD zif_ed_file_explorer~dir_get_all_files.
     DATA count TYPE i.
-
-    cl_gui_frontend_services=>directory_list_files_ext(
+    cl_gui_frontend_services=>directory_list_files(
       EXPORTING
         directory                   = path                 " Directory To Search
         filter                      = filter            " File filter
@@ -449,7 +448,7 @@ CLASS zcl_ed_file_explorer_gui IMPLEMENTATION.
         not_supported_by_gui        = 5                " GUI does not support this
         OTHERS                      = 6 ).
     IF sy-subrc <> 0.
-      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CL_GUI_FRONTEND_SERVICES=>DIRECTORY_LIST_FILES_EXT rc={ sy-subrc }|.
+      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CL_GUI_FRONTEND_SERVICES=>DIRECTORY_LIST_FILES rc={ sy-subrc }|.
     ENDIF.
   ENDMETHOD.
 ENDCLASS.
