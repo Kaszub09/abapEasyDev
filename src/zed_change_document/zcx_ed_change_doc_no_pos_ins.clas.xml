@@ -4,7 +4,7 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCX_ED_CHANGE_DOC_NO_POS_INS</CLSNAME>
-    <LANGU>L</LANGU>
+    <LANGU>E</LANGU>
     <DESCRIPT>Change document - no position inserted</DESCRIPT>
     <CATEGORY>40</CATEGORY>
     <STATE>1</STATE>
@@ -12,6 +12,12 @@
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <DESCRIPTIONS_CLASS>
+    <SEOCLASSTX>
+     <LANGU>L</LANGU>
+     <DESCRIPT>Change document - no position inserted</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

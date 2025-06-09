@@ -13,6 +13,10 @@
     <S_WEBGUI>1</S_WEBGUI>
     <S_PLATIN>X</S_PLATIN>
    </TSTCC>
+   <TSTCT>
+    <SPRSL>E</SPRSL>
+    <TCODE>ZED_DISPLAY_IMAGE</TCODE>
+   </TSTCT>
   </asx:values>
  </asx:abap>
 </abapGit>

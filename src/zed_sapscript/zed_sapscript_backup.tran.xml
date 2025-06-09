@@ -11,6 +11,10 @@
    <TSTCC>
     <TCODE>ZED_SAPSCRIPT_BACKUP</TCODE>
    </TSTCC>
+   <TSTCT>
+    <SPRSL>E</SPRSL>
+    <TCODE>ZED_SAPSCRIPT_BACKUP</TCODE>
+   </TSTCT>
   </asx:values>
  </asx:abap>
 </abapGit>
