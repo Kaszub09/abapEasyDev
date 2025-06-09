@@ -8,7 +8,8 @@ CLASS zcl_ed_msg DEFINITION PUBLIC FINAL CREATE PUBLIC.
       throw IMPORTING text TYPE csequence v1 TYPE any OPTIONAL v2 TYPE any OPTIONAL v3 TYPE any OPTIONAL v4 TYPE any OPTIONAL RAISING zcx_ed_exception,
       get_from_bapiret2 IMPORTING bapiret2 TYPE bapiret2 RETURNING VALUE(msg) TYPE string,
       get_from_bapi_coru_return IMPORTING bapi_coru_return TYPE bapi_coru_return RETURNING VALUE(msg) TYPE string,
-      get_from_bdcmsgcoll IMPORTING bdcmsgcoll TYPE bdcmsgcoll RETURNING VALUE(msg) TYPE string.
+      get_from_bdcmsgcoll IMPORTING bdcmsgcoll TYPE bdcmsgcoll RETURNING VALUE(msg) TYPE string,
+      get_from_sy RETURNING VALUE(msg) TYPE string.
 ENDCLASS.
 
 CLASS zcl_ed_msg IMPLEMENTATION.
@@ -44,5 +45,9 @@ CLASS zcl_ed_msg IMPLEMENTATION.
   METHOD get_from_bdcmsgcoll.
     MESSAGE ID bdcmsgcoll-msgid TYPE bdcmsgcoll-msgtyp NUMBER bdcmsgcoll-msgnr
       WITH bdcmsgcoll-msgv1 bdcmsgcoll-msgv2 bdcmsgcoll-msgv3 bdcmsgcoll-msgv4 INTO msg.
+  ENDMETHOD.
+
+  METHOD get_from_sy.
+    MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4 INTO msg.
   ENDMETHOD.
 ENDCLASS.
