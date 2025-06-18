@@ -75,7 +75,7 @@ CLASS zcl_ed_table_conversion_salv IMPLEMENTATION.
     DATA(sort_tab) = VALUE abap_sortorder_tab( ).
 
     LOOP AT salv->get_sorts( )->get( ) REFERENCE INTO DATA(sort).
-      DATA(is_descending) = COND #( WHEN sort->r_sort->get_sequence( ) = if_salv_c_sort=>sort_down THEN abap_true ELSE abap_false ).
+      DATA(is_descending) = xsdbool( sort->r_sort->get_sequence( ) = if_salv_c_sort=>sort_down ).
       APPEND VALUE #( name = sort->columnname descending = is_descending ) TO sort_tab.
     ENDLOOP.
 
