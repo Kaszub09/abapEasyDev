@@ -24,7 +24,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Screens | Reusable screens to use directly from code (with PBO/PAI event handler interface ) without creating them every time |
 | Strings | String manipulation functions |
 | Tables comparision | Compare records from tables after/before change - detects which rows were deleted/inserted/modified/duplicated. Works with index tables |
-| Tables conversion | Convert between internal table and Excel/CSV file |
+| Tables conversion | Convert between internal table and Excel file / CSV file / SALV table display |
 | Textbox | Display textbox |
 | Types | Various commonly used types |
 | XML | Nodes classes for generating XML directly from code |
