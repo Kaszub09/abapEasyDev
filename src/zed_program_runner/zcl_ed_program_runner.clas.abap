@@ -84,8 +84,13 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
     LOOP AT data_ref_result-metadata-t_fcat REFERENCE INTO DATA(col).
       converted-salv->get_columns( )->get_column( col->fieldname )->set_technical( col->tech ).
       converted-salv->get_columns( )->get_column( col->fieldname )->set_visible( xsdbool( col->no_out = abap_false ) ).
-      IF col->no_sum = abap_false.
-        converted-salv->get_aggregations( )->add_aggregation( columnname = col->fieldname aggregation = if_salv_c_aggregation=>total ).
+      IF col->do_sum IS NOT INITIAL.
+        converted-salv->get_aggregations( )->add_aggregation( columnname = col->fieldname
+           "Check CL_GUI_ALV_GRID, search &AVERAGE for those letter. Like SAP couldn't just fucking include them in DO_SUM description.
+           aggregation = COND #( WHEN col->do_sum = 'X' THEN if_salv_c_aggregation=>total
+                                 WHEN col->do_sum = 'C' THEN if_salv_c_aggregation=>average
+                                 WHEN col->do_sum = 'B' THEN if_salv_c_aggregation=>minimum
+                                 WHEN col->do_sum = 'A' THEN if_salv_c_aggregation=>maximum ) ).
       ENDIF.
     ENDLOOP.
 
@@ -100,7 +105,8 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
     SORT sort_copy BY spos.
     LOOP AT sort_copy REFERENCE INTO DATA(sort).
       converted-salv->get_sorts( )->add_sort( columnname = sort->fieldname position = CONV #( sort->spos )
-        subtotal = sort->subtot obligatory = sort->obligatory
+        subtotal = sort->subtot
+        obligatory = sort->obligatory
         sequence = COND #( WHEN sort->up = abap_true THEN if_salv_c_sort=>sort_up
                            WHEN sort->down = abap_true THEN if_salv_c_sort=>sort_down
                            ELSE if_salv_c_sort=>sort_none ) ).
