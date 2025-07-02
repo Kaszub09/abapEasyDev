@@ -12,15 +12,15 @@
    </PROGDIR>
    <TPOOL>
     <item>
-     <ID>R</ID>
-     <ENTRY>Logs display</ENTRY>
-     <LENGTH>12</LENGTH>
-    </item>
-    <item>
      <ID>I</ID>
      <KEY>S01</KEY>
      <ENTRY>Selection criteria</ENTRY>
-     <LENGTH>28</LENGTH>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>R</ID>
+     <ENTRY>Logs display</ENTRY>
+     <LENGTH>12</LENGTH>
     </item>
     <item>
      <ID>S</ID>

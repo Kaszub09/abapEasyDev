@@ -16,19 +16,19 @@
      <ID>I</ID>
      <KEY>001</KEY>
      <ENTRY>&amp;1 logs were removed</ENTRY>
-     <LENGTH>40</LENGTH>
+     <LENGTH>20</LENGTH>
     </item>
     <item>
      <ID>I</ID>
      <KEY>S01</KEY>
      <ENTRY>Selection criteria</ENTRY>
-     <LENGTH>58</LENGTH>
+     <LENGTH>18</LENGTH>
     </item>
     <item>
      <ID>I</ID>
      <KEY>S02</KEY>
      <ENTRY>Statistics</ENTRY>
-     <LENGTH>20</LENGTH>
+     <LENGTH>10</LENGTH>
     </item>
     <item>
      <ID>R</ID>
@@ -107,7 +107,7 @@
      <ID>S</ID>
      <KEY>S_IS_BAT</KEY>
      <ENTRY>.</ENTRY>
-     <LENGTH>23</LENGTH>
+     <LENGTH>9</LENGTH>
      <SPLIT>D</SPLIT>
     </item>
     <item>

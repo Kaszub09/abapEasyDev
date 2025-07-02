@@ -3,17 +3,17 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DD04V>
-    <ROLLNAME>ZTED_LOG_SAP_MSG_DETAILS_ICON</ROLLNAME>
+    <ROLLNAME>ZTED_LOG_DETAILS_ICON</ROLLNAME>
     <DDLANGUAGE>E</DDLANGUAGE>
     <HEADLEN>55</HEADLEN>
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Log message details icon</DDTEXT>
-    <REPTEXT>Log SAP msg details</REPTEXT>
+    <DDTEXT>Log details icon</DDTEXT>
+    <REPTEXT>Log details</REPTEXT>
     <SCRTEXT_S>Log detail</SCRTEXT_S>
-    <SCRTEXT_M>Log SAP msg details</SCRTEXT_M>
-    <SCRTEXT_L>Log SAP msg details</SCRTEXT_L>
+    <SCRTEXT_M>Log details</SCRTEXT_M>
+    <SCRTEXT_L>Log details</SCRTEXT_L>
     <DTELMASTER>E</DTELMASTER>
     <DATATYPE>CHAR</DATATYPE>
     <LENG>000004</LENG>

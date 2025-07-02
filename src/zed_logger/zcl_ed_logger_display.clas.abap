@@ -10,7 +10,7 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
         level           TYPE zted_log_detail_level,
         msg_type_icon   TYPE c LENGTH 1,
         msg_type        TYPE msgty,
-        sap_detail_icon TYPE zted_log_sap_msg_details_icon,
+        details_icon TYPE ZTED_LOG_DETAILS_ICON,
         created_at_date TYPE zted_log_created_at_date,
         created_at_time TYPE zted_log_created_at_time,
         msg             TYPE zted_log_msg,
@@ -184,7 +184,7 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
     messages_alv->set_data( messages_ext ).
 
     messages_alv->columns->set_as_exception( 'MSG_TYPE_ICON' ).
-    messages_alv->columns->set_as_hotspot( 'SAP_DETAIL_ICON' ).
+    messages_alv->columns->set_as_hotspot( 'DETAILS_ICON' ).
     messages_alv->columns->set_as_color( 'COLOR' ).
 
     messages_alv->alv_table->get_filters( )->clear( ).
@@ -223,7 +223,7 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
           msg_ext-msg_type_icon = '3'.
       ENDCASE.
 
-      msg_ext-sap_detail_icon = COND #( WHEN msg_int->is_sap_msg = abap_true THEN '@35@' ELSE '@16@' ).
+      msg_ext-details_icon = COND #( WHEN msg_int->is_sap_msg = abap_true THEN '@35@' ELSE '@16@' ).
 
       <row_ext> = CORRESPONDING #( msg_ext ).
       IF logger->context->exists( ).
@@ -272,7 +272,7 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
     DATA(selected) = REF #( messages_int[ row ] ).
 
     CASE column.
-      WHEN 'SAP_DETAIL_ICON'.
+      WHEN 'DETAILS_ICON'.
         IF selected->is_sap_msg = abap_true.
           zcl_ed_docu=>show( dokclass = 'NA' dokname = |{ selected->sap_msg-msgid }{ selected->sap_msg-msgno }|
               msg_var_1 = selected->sap_msg-msgv1 msg_var_2 = selected->sap_msg-msgv2

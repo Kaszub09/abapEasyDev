@@ -51,6 +51,8 @@ CLASS zcl_ed_logger IMPLEMENTATION.
     IF settings->autosave = abap_true.
       save( ).
     ENDIF.
+
+    logger = me.
   ENDMETHOD.
 
   METHOD zif_ed_logger~i.
