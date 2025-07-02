@@ -10,7 +10,7 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
         level           TYPE zted_log_detail_level,
         msg_type_icon   TYPE c LENGTH 1,
         msg_type        TYPE msgty,
-        details_icon TYPE ZTED_LOG_DETAILS_ICON,
+        details_icon    TYPE zted_log_details_icon,
         created_at_date TYPE zted_log_created_at_date,
         created_at_time TYPE zted_log_created_at_time,
         msg             TYPE zted_log_msg,
