@@ -17,6 +17,11 @@
       "url": "https://github.com/abaplint/deps",
       "folder": "/deps",
       "files": "/src/**/*.*"
+    },
+        {
+      "url": "https://github.com/Kaszub09/abapEasyALV",
+      "folder": "/src",
+      "files": "/src/**/*.*"
     }
   ],
   "syntax": {
@@ -467,7 +472,7 @@
     "types_naming": {
       "exclude": [],
       "severity": "Error",
-      "pattern": "^T[T]{0,1}_.+$"
+      "pattern": "^(TTR|(T[T]{0,1})_.+$"
     },
     "unknown_types": {
       "exclude": [],
