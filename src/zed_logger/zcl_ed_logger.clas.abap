@@ -79,7 +79,7 @@ CLASS zcl_ed_logger IMPLEMENTATION.
       MODIFY zed_logs CONNECTION (settings->second_con-name) FROM @log_db.
       MODIFY zed_logs_msg CONNECTION (settings->second_con-name) FROM @log_msg_db.
       IF settings->second_con-commit = abap_true.
-        COMMIT CONNECTION settings->second_con-name.
+        COMMIT CONNECTION (settings->second_con-name).
       ENDIF.
 
     ELSE.
