@@ -472,7 +472,7 @@
     "types_naming": {
       "exclude": [],
       "severity": "Error",
-      "pattern": "^T[T]{0,1}_.+$"
+      "pattern": "^T[T]{0,1}[R]{0,1}_.+$"
     },
     "unknown_types": {
       "exclude": [],
