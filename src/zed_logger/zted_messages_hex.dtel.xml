@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZTED_MESSAGES_HEX</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <HEADLEN>12</HEADLEN>
+    <SCRLEN1>07</SCRLEN1>
+    <SCRLEN2>12</SCRLEN2>
+    <SCRLEN3>12</SCRLEN3>
+    <DDTEXT>Log messages</DDTEXT>
+    <REPTEXT>Log messages</REPTEXT>
+    <SCRTEXT_S>Log msg</SCRTEXT_S>
+    <SCRTEXT_M>Log messages</SCRTEXT_M>
+    <SCRTEXT_L>Log messages</SCRTEXT_L>
+    <DTELMASTER>E</DTELMASTER>
+    <DATATYPE>RSTR</DATATYPE>
+   </DD04V>
+  </asx:values>
+ </asx:abap>
+</abapGit>

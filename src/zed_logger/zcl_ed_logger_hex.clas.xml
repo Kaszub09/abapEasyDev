@@ -3,10 +3,9 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCX_ED_CHANGE_DOC_NO_POS_INS</CLSNAME>
+    <CLSNAME>ZCL_ED_LOGGER_HEX</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Change document - no position inserted</DESCRIPT>
-    <CATEGORY>40</CATEGORY>
+    <DESCRIPT>Hex converter for messages</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

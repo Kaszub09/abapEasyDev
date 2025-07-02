@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZCL_ED_LOGGER_CONTEXT</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Context manager for logger</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CONVERT_DATA_TO_STRING</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Can&apos;t be called if context doesn&apos;t exists</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CONVERT_STRING_TO_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Can&apos;t be called if context doesn&apos;t exists</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_CONTEXT_COL_INFO</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Can be always safely called</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_STRUCT_COMPONENTS</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Can be always safely called</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_STRUCT_INFO</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Can&apos;t be called if context doesn&apos;t exists</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>
