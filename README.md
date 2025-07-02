@@ -14,6 +14,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Datetime | Date and time functions for calculations and parsing/formatting from/to string |
 | File explorer | File manipulation on aplication server and on user machine via GUI; File dialogue |
 | Images | Easy upload/display of images |
+| Logger | Easy logging |
 | Msg | Message generation from text and sap message structures |
 | Messages | Send emails / messages to user Business Workplace |
 | PDF | PDF display |
