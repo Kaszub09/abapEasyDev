@@ -17,3 +17,4 @@ cd->change_single( before_modified = REF #( old ) modified = REF #( new ) force_
 cd->close( ).
 
 "Later on can be viewed via transaction RSSCD100
+CALL TRANSACTION 'RSSCD100' WITH AUTHORITY-CHECK.
