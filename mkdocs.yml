@@ -1,6 +1,6 @@
 site_name: ABAP Easy Dev
 theme:
-  name: mkdocs
+  name: readthedocs
   highlightjs: true
   hljs_languages:
     - abap
