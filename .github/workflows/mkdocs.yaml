@@ -1,10 +1,10 @@
 name: Build GitHub Pages
 on:
-#  push:
-#    branches:
-#      - main
-#    paths:
-#      - '**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
   workflow_dispatch:
 permissions:
   contents: write
