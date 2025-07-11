@@ -9,7 +9,7 @@ Most modules are independent. Some may depend on each other or on https://github
 
 | Module | Description | Info |
 | - | - | - |
-| Change document | Create change document entry directly from code, without SCD0 and cumbersome funciton modules | [Examples](src/zed_change_document/zed_change_document_ex/zed_change_doc_simple.prog.abap)
+| Change document | Create change document entry directly from code, without SCD0 and cumbersome funciton modules. Force tracking changes for data elements not marked as such. | [Examples](src/zed_change_document/zed_change_document_ex/zed_change_doc_simple.prog.abap)
 | Coding | Encoding/decoding between different codepages; base64; |  
 | Datetime | Date and time functions for calculations and parsing/formatting from/to string | |
 | File explorer | File manipulation on aplication server and on user machine via GUI; File dialogue | |
