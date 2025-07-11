@@ -1,2 +1,0 @@
-# COding
-codepage etc.
