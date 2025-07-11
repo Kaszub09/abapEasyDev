@@ -1,3 +1,9 @@
-site_name: test mkdocs
+site_name: ABAP Easy Dev
 theme:
   name: mkdocs
+  highlightjs: true
+  hljs_languages:
+    - abap
+  color_mode: auto
+  user_color_mode_toggle: true
+  navigation_depth: 3
