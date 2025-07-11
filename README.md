@@ -1,10 +1,10 @@
 # abapEasyDev
-Easy ABAP development
+Easy ABAP Development
 
-# installation
+## Installation
 via https://github.com/abapGit/abapGit
 
-# modules
+## Modules
 Most modules are independent. Some may depend on each other or on https://github.com/Kaszub09/abapEasyALV.
 
 | Module | Description | Info |
