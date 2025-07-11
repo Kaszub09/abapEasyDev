@@ -15,3 +15,5 @@ cd->open( ).
 "Force cd logging since 'author' field isn't normally tracked for changes
 cd->change_single( before_modified = REF #( old ) modified = REF #( new ) force_cd_on_all_fields = abap_true ).
 cd->close( ).
+
+"Later on can be viewed via transaction RSSCD100
