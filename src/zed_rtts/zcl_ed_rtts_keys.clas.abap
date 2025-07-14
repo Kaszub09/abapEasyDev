@@ -1,5 +1,5 @@
 "! <p class="shorttext synchronized" lang="en">RTTS with key differentiation</p>
-"! <br/>TAGS: rtts; keys; struct; table
+"! <br/>TAGS: rtts; keys; struct; table; descr
 CLASS zcl_ed_rtts_keys DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
   PUBLIC SECTION.
