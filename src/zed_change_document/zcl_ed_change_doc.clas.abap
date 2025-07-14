@@ -220,8 +220,8 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
               change_indicator       = 'D'
               tablename              = tablename
               workarea_old           = <deleted>
-              docu_insert            = save_info-docu_insert
-              docu_insert_if         = save_info-docu_insert_if
+              docu_delete            = save_info-docu_delete
+              docu_delete_if         = save_info-docu_delete_if
             EXCEPTIONS
               nametab_error          = 1                " Error when calling NAMETAB_GET
               open_missing           = 2                " No OPEN was performed
@@ -278,9 +278,9 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
 
   METHOD get_save_info.
     info-docu_delete = xsdbool( save_fields_on_deletion <> zif_ed_change_doc~c_save_mode-none ).
-    info-docu_delete_if = xsdbool( save_fields_on_deletion <> zif_ed_change_doc~c_save_mode-all ).
+    info-docu_delete_if = xsdbool( save_fields_on_deletion = zif_ed_change_doc~c_save_mode-all ).
     info-docu_insert = xsdbool( save_fields_on_insertion <> zif_ed_change_doc~c_save_mode-none ).
-    info-docu_insert_if = xsdbool( save_fields_on_insertion <> zif_ed_change_doc~c_save_mode-all ).
+    info-docu_insert_if = xsdbool( save_fields_on_insertion = zif_ed_change_doc~c_save_mode-all ).
   ENDMETHOD.
 
   METHOD force_cd_if_needed.
