@@ -23,6 +23,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | RTTS | RTTS services helpers for struct/table description generation | |
 | Sapscript | Class for mass reading of sapscirpt texts from STXL; Programs/shortcuts for Sapscripts backup/transport/copy | |
 | Screens | Reusable screens to use directly from code (with PBO/PAI event handler interface ) without creating them every time | |
+| Selection | Wrapper for free selections for easy use | |
 | Strings | String manipulation functions | |
 | Tables comparision | Compare records from tables after/before change - detects which rows were deleted/inserted/modified/duplicated. Works with index tables | |
 | Tables conversion | Convert between internal table and Excel file / CSV file / SALV table display | |
