@@ -16,7 +16,7 @@ CLASS zcl_ed_free_selection IMPLEMENTATION.
     CALL FUNCTION 'FREE_SELECTIONS_DIALOG'
       EXPORTING
         selection_id    = sel_id
-        as_window       = COND abap_bool( WHEN start_column <> 0 AND start_line <> 0 THEN abap_true ELSE abap_false )            " X: Selection screen as dialog box
+        as_window       = xsdbool( start_column <> 0 AND start_line <> 0 )            " X: Selection screen as dialog box
         start_row       = start_line                " Dialog box: Initial row
         start_col       = start_column                " Dialog box: Initial column
       IMPORTING
