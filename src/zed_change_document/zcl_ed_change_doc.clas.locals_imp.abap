@@ -8,8 +8,6 @@ CLASS lcl_force_cd_marker IMPLEMENTATION.
 
     DATA table_name TYPE tabname.
     IMPORT table_name = table_name FROM MEMORY ID c_memory_id.
-    " TODO: variable is assigned but never used (ABAP cleaner)
-    DATA(where_clause) = |tabname = '{ table_name }' AND logflag = 'F' AND keyflag = 'X'|.
     LOOP AT tabinfo ASSIGNING FIELD-SYMBOL(<row>) WHERE ('tabname = table_name AND logflag = abap_false AND keyflag = abap_false').
       ASSIGN COMPONENT 'LOGFLAG' OF STRUCTURE <row> TO FIELD-SYMBOL(<logflag>).
       <logflag> = 'F'.
