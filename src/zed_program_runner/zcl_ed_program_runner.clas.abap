@@ -112,4 +112,14 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
                            ELSE if_salv_c_sort=>sort_none ) ).
     ENDLOOP.
   ENDMETHOD.
+
+  METHOD zif_ed_program_runner~export_data_ref.
+    DATA(result_tab) = cl_salv_ex_util=>factory_result_data_table( r_data = data_ref_result-table_ref
+        t_fieldcatalog = data_ref_result-metadata-t_fcat t_sort = data_ref_result-metadata-t_sort
+        t_filter = data_ref_result-metadata-t_filter ).
+
+    cl_salv_bs_lex=>export_from_result_data_table( EXPORTING is_format = file_format ir_result_data_table = result_tab
+          IMPORTING er_result_file = exported ).
+  ENDMETHOD.
+
 ENDCLASS.

@@ -37,7 +37,12 @@ INTERFACE zif_ed_program_runner PUBLIC.
     run_with_data_ref IMPORTING program_name TYPE programm variant_name TYPE variant OPTIONAL selection_table TYPE tt_selection_table OPTIONAL
                       RETURNING VALUE(result) TYPE t_run_with_data_ref
                       RAISING cx_salv_bs_sc_runtime_info,
+    "! <p class="shorttext synchronized" lang="en">For simple export to xstring method <em>export_data_ref</em> is preferred,
+    "! since it uses SAP internal classes. Use this method, if cl_salv_table is needed.</p>
     convert_data_ref IMPORTING data_ref_result TYPE t_run_with_data_ref
-                     RETURNING VALUE(converted) TYPE t_converted_data_ref.
-
+                     RETURNING VALUE(converted) TYPE t_converted_data_ref,
+    "! <p class="shorttext synchronized" lang="en">Preferred method for export to xstring</p>
+    export_data_ref IMPORTING data_ref_result TYPE t_run_with_data_ref
+                              file_format TYPE if_salv_bs_lex_format=>ys_format DEFAULT if_salv_bs_lex_format=>mc_format_xlsx
+                     RETURNING VALUE(exported) TYPE xstring.
 ENDINTERFACE.

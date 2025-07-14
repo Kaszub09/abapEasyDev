@@ -16,6 +16,16 @@
      <LANGU>E</LANGU>
      <DESCRIPT>Standard report result (with SALV/ALV) is:</DESCRIPT>
     </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>CONVERT_DATA_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>For simple export to xstring method &lt;em&gt;export_data_ref&lt;/em&gt;</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>EXPORT_DATA_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Preferred method for export to xstring</DESCRIPT>
+    </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
