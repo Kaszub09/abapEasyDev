@@ -233,7 +233,7 @@
 
      "Check result
      SELECT * FROM cdpos WHERE changenr = @change_nr AND objectclas = @c_objectclass AND objectid = 'SAVE_KEY_ONLY'
-         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'D' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'I' ) ) AND fname = 'KEY'
+         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'D' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'I' ) )
        INTO TABLE @DATA(cdpos).
 
      cl_abap_unit_assert=>assert_true( xsdbool( line_exists( cdpos[ chngind = 'I' fname = 'KEY' ] ) ) ).
@@ -253,7 +253,7 @@
      "Check result
      SELECT * FROM cdpos
        WHERE changenr = @change_nr AND objectclas = @c_objectclass AND objectid = 'SAVE_NON_INITIAL'
-         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'E' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'J' ) ) AND fname = 'NON_KEY_NO_TRACK'
+         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'E' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'J' ) )
        INTO TABLE @DATA(cdpos).
 
      cl_abap_unit_assert=>assert_true( xsdbool( line_exists( cdpos[ chngind = 'J' fname = 'NON_KEY_NO_TRACK' ] ) ) ).
@@ -273,7 +273,7 @@
      "Check result
      SELECT * FROM cdpos
        WHERE changenr = @change_nr AND objectclas = @c_objectclass AND objectid = 'SAVE_ALL_FIELDS'
-         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'E' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'J' ) ) AND fname IN ( 'NON_KEY_TRACK', 'NON_KEY_NO_TRACK' )
+         AND ( ( tabkey LIKE '%DKNT%' AND chngind = 'E' ) OR ( tabkey LIKE '%IKNT%' AND chngind = 'J' ) )
        INTO TABLE @DATA(cdpos).
 
      cl_abap_unit_assert=>assert_true( xsdbool( line_exists( cdpos[ chngind = 'J' fname = 'NON_KEY_TRACK' ] ) ) ).
