@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_ED_SELECTION</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Selection</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>DISPLAY</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Display in popup or fullscreen.</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_AS_WHERE_CLAUSE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get all selections as single where clause with aliases if su</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>DISPLAY</CMPNAME>
+     <SCONAME>USER_CONFIRMED</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>User clicked confirmed, otherwise cancelled selection</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

@@ -1,0 +1,7 @@
+PROCESS BEFORE OUTPUT.
+  CALL SUBSCREEN sel_subscreen_1001 INCLUDING sy-repid '1001'.
+  MODULE status_0001.
+
+PROCESS AFTER INPUT.
+  CALL SUBSCREEN sel_subscreen_1001.
+  MODULE user_command_0001.
