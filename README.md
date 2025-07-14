@@ -22,7 +22,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Popups | Various popups - ask user for confirmation, to fill fields etc. | |
 | Program runner | Run program in background and get result to list | |
 | RTTS | RTTS services helpers for struct/table description generation | |
-| Sapscript | Class for mass reading of sapscirpt texts from STXL; Programs/shortcuts for Sapscripts backup/transport/copy | |
+| Sapscript | Class for mass reading of sapscript texts from STXL; Programs/shortcuts for Sapscripts backup/transport/copy | |
 | Screens | Reusable screens to use directly from code (with PBO/PAI event handler interface ) without creating them every time | [Examples](src/zed_screens/zed_screens_examples/zed_screens_ex_simple_display.prog.abap)|
 | Selection | Wrapper for free selections for easy use | [Examples](src/zed_selection/zed_selection_ex/zed_selection_ex_simple_table.prog.abap) |
 | Strings | String manipulation functions | |
