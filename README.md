@@ -15,7 +15,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Documentation | Display documentation window for various objects. | |
 | File explorer | File manipulation on aplication server and on user machine via GUI. File dialogue for file/directory picking. | |
 | Images | Easy upload/display of images | |
-| Logger | Logging independent of SAP Application Log – (BC-SRV-BAL) | [Examples](src/zed_logger/zed_logger_examples/zed_logs_ex_simple_use.prog.abap) |
+| Logger | Logging independent of SAP Application Log – (BC-SRV-BAL) | [Examples](src/zed_logger/zed_logger_examples/zed_logs_ex_simple_use.prog.abap) [Screens](docs/logger.md) |
 | Msg | Message generation from text and sap message structures | |
 | Messages | Send emails / messages to user Business Workplace | |
 | PDF | PDF display | |
