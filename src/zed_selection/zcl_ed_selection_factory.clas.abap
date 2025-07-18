@@ -72,7 +72,7 @@ CLASS zcl_ed_selection_factory IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      APPEND VALUE #( table = table->* ) TO sel_obj->selection REFERENCE INTO DATA(selection_table).
+      APPEND VALUE #( table = table->* ) TO free_sel->zif_ed_selection~selection REFERENCE INTO DATA(selection_table).
       LOOP AT fields REFERENCE INTO DATA(field).
         APPEND VALUE #( field = field->fieldname ) TO selection_table->fields.
       ENDLOOP.
@@ -88,7 +88,7 @@ CLASS zcl_ed_selection_factory IMPLEMENTATION.
 
     DATA(free_sel) = NEW zcl_ed_free_selection( ).
     sel_obj = free_sel.
-    sel_obj->selection = selection.
+    free_sel->zif_ed_selection~selection = selection.
 
     LOOP AT selection REFERENCE INTO DATA(tab_selection).
       LOOP AT tab_selection->fields REFERENCE INTO DATA(field).

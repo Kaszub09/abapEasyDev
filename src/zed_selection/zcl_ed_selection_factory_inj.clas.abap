@@ -19,8 +19,8 @@ CLASS zcl_ed_selection_factory_inj IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create_from_tables.
-    sel_obj = NEW zcl_ed_selection( ).
-
+    DATA(obj) = NEW zcl_ed_selection( ).
+    sel_obj = obj.
     LOOP AT tables REFERENCE INTO DATA(table).
       SELECT fieldname, position FROM dd03l
       WHERE tabname = @table->* AND ( NOT fieldname LIKE '.%' ) AND as4local = 'A'
@@ -30,7 +30,7 @@ CLASS zcl_ed_selection_factory_inj IMPLEMENTATION.
         CONTINUE.
       ENDIF.
 
-      APPEND VALUE #( table = table->* ) TO sel_obj->selection REFERENCE INTO DATA(selection_table).
+      APPEND VALUE #( table = table->* ) TO obj->zif_ed_selection~selection REFERENCE INTO DATA(selection_table).
       LOOP AT fields REFERENCE INTO DATA(field).
         APPEND VALUE #( field = field->fieldname ) TO selection_table->fields.
       ENDLOOP.
@@ -38,7 +38,8 @@ CLASS zcl_ed_selection_factory_inj IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create_from_selection.
-    sel_obj = NEW zcl_ed_selection( ).
-    sel_obj->selection = selection.
+    DATA(obj) = NEW zcl_ed_selection( ).
+    sel_obj = obj.
+    obj->zif_ed_selection~selection = selection.
   ENDMETHOD.
 ENDCLASS.
