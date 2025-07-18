@@ -1,6 +1,6 @@
 "! <p class="shorttext synchronized">Coding. Also check <em>cl_abap_codepage</em></p>
 "! <br/>TAGS: coding; encoding; decoding
-CLASS zcl_ed_coding DEFINITION PUBLIC FINAL CREATE PUBLIC.
+CLASS zcl_ed_encoding DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
     CONSTANTS:
@@ -24,7 +24,7 @@ CLASS zcl_ed_coding DEFINITION PUBLIC FINAL CREATE PUBLIC.
       gui_codepage TYPE cpcodepage READ-ONLY.
 ENDCLASS.
 
-CLASS zcl_ed_coding IMPLEMENTATION.
+CLASS zcl_ed_encoding IMPLEMENTATION.
   METHOD class_constructor.
     CALL FUNCTION 'SCP_GET_CODEPAGE_NUMBER'
       EXPORTING
