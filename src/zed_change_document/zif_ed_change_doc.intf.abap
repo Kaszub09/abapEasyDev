@@ -16,39 +16,37 @@ INTERFACE zif_ed_change_doc PUBLIC.
     open IMPORTING objectclass TYPE cdobjectcl DEFAULT space
                    objectid    TYPE cdobjectv DEFAULT space
          RAISING   zcx_ed_exception,
-    "! <p class="shorttext synchronized">CD must be opened first</p>
+    "! <p class="shorttext synchronized">CD must be opened first.
+    "! <br/>For deletions fill only parameter <em>before</em>.
+    "! <br/>For insertions fill only parameter <em>after</em>.
+    "! <br/>For modifications fill both parameters (should have same key fields).</p>
     "! @parameter table_name | <p class="shorttext synchronized">Must be valid DDIC table. Taken from constructor parameter if not supplied</p>
     "! @parameter force_cd_on_all_fields | <p class="shorttext synchronized">Create CD even on Data Elements without CD logflag</p>
-    "! @parameter inserted | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
-    "! @parameter deleted | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
-    "! @parameter before_modified | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
-    "! @parameter modified | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
+    "! @parameter before | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
+    "! @parameter after | <p class="shorttext synchronized">Must be ref to structure of type <em>table_name</em></p>
     "! @parameter save_fields_on_deletion | <p class="shorttext synchronized">Check <em>c_save_mode</em></p>
     "! @parameter save_fields_on_insertion | <p class="shorttext synchronized">Check <em>c_save_mode</em></p>
     change_single IMPORTING table_name               TYPE tabname OPTIONAL
                             force_cd_on_all_fields   TYPE abap_bool DEFAULT abap_false
-                            inserted                 TYPE REF TO data OPTIONAL
-                            deleted                  TYPE REF TO data OPTIONAL
-                            before_modified          TYPE REF TO data OPTIONAL
-                            modified                 TYPE REF TO data OPTIONAL
+                            before                   TYPE REF TO data OPTIONAL
+                            after                    TYPE REF TO data OPTIONAL
                             save_fields_on_deletion  TYPE i DEFAULT c_save_mode-all
                             save_fields_on_insertion TYPE i DEFAULT c_save_mode-all
                   RAISING   zcx_ed_exception,
-    "! <p class="shorttext synchronized">CD must be opened first. All tables must be sorted.</p>
+    "! <p class="shorttext synchronized">CD must be opened first. All tables must be sorted.
+    "! <br/>For deletions fill only parameter <em>before</em>.
+    "! <br/>For insertions fill only parameter <em>after</em>.
+    "! <br/>For modifications fill both parameters.</p>
     "! @parameter table_name | <p class="shorttext synchronized">Must be valid DDIC table. Taken from constructor parameter if not supplied</p>
     "! @parameter force_cd_on_all_fields | <p class="shorttext synchronized">Create CD even on Data Elements without CD logflag</p>
-    "! @parameter inserted | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
-    "! @parameter deleted | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
-    "! @parameter before_modified | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
-    "! @parameter modified | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
+    "! @parameter before | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
+    "! @parameter after | <p class="shorttext synchronized">Must be ref to table <em>table_name</em> with <em>c</em> field</p>
     "! @parameter save_fields_on_deletion | <p class="shorttext synchronized">Check <em>c_save_mode</em></p>
     "! @parameter save_fields_on_insertion | <p class="shorttext synchronized">Check <em>c_save_mode</em></p>
     change_multi IMPORTING table_name               TYPE tabname OPTIONAL
                            force_cd_on_all_fields   TYPE abap_bool DEFAULT abap_false
-                           inserted                 TYPE REF TO data OPTIONAL
-                           deleted                  TYPE REF TO data OPTIONAL
-                           before_modified          TYPE REF TO data OPTIONAL
-                           modified                 TYPE REF TO data OPTIONAL
+                           before                   TYPE REF TO data OPTIONAL
+                           after                    TYPE REF TO data OPTIONAL
                            save_fields_on_deletion  TYPE i DEFAULT c_save_mode-all
                            save_fields_on_insertion TYPE i DEFAULT c_save_mode-all
                  RAISING   zcx_ed_exception,

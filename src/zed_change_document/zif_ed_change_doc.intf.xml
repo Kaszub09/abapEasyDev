@@ -14,12 +14,12 @@
     <SEOCOMPOTX>
      <CMPNAME>CHANGE_MULTI</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>CD must be opened first. All tables must be sorted.</DESCRIPT>
+     <DESCRIPT>CD must be opened first. All tables must be sorted. &lt;br/&gt;For</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CHANGE_SINGLE</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>CD must be opened first</DESCRIPT>
+     <DESCRIPT>CD must be opened first. &lt;br/&gt;For deletions fill only parame</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CLOSE</CMPNAME>
@@ -40,13 +40,13 @@
    <DESCRIPTIONS_SUB>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_MULTI</CMPNAME>
-     <SCONAME>BEFORE_MODIFIED</SCONAME>
+     <SCONAME>AFTER</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Must be ref to table &lt;em&gt;table_name&lt;/em&gt; with &lt;em&gt;c&lt;/em&gt; fie</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_MULTI</CMPNAME>
-     <SCONAME>DELETED</SCONAME>
+     <SCONAME>BEFORE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Must be ref to table &lt;em&gt;table_name&lt;/em&gt; with &lt;em&gt;c&lt;/em&gt; fie</DESCRIPT>
     </SEOSUBCOTX>
@@ -55,18 +55,6 @@
      <SCONAME>FORCE_CD_ON_ALL_FIELDS</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Create CD even on Data Elements without CD logflag</DESCRIPT>
-    </SEOSUBCOTX>
-    <SEOSUBCOTX>
-     <CMPNAME>CHANGE_MULTI</CMPNAME>
-     <SCONAME>INSERTED</SCONAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Must be ref to table &lt;em&gt;table_name&lt;/em&gt; with &lt;em&gt;c&lt;/em&gt; fie</DESCRIPT>
-    </SEOSUBCOTX>
-    <SEOSUBCOTX>
-     <CMPNAME>CHANGE_MULTI</CMPNAME>
-     <SCONAME>MODIFIED</SCONAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Must be ref to table &lt;em&gt;table_name&lt;/em&gt; with &lt;em&gt;c&lt;/em&gt; fie</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_MULTI</CMPNAME>
@@ -88,13 +76,13 @@
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_SINGLE</CMPNAME>
-     <SCONAME>BEFORE_MODIFIED</SCONAME>
+     <SCONAME>AFTER</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Must be ref to structure of type &lt;em&gt;table_name&lt;/em&gt;</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_SINGLE</CMPNAME>
-     <SCONAME>DELETED</SCONAME>
+     <SCONAME>BEFORE</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Must be ref to structure of type &lt;em&gt;table_name&lt;/em&gt;</DESCRIPT>
     </SEOSUBCOTX>
@@ -103,18 +91,6 @@
      <SCONAME>FORCE_CD_ON_ALL_FIELDS</SCONAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Create CD even on Data Elements without CD logflag</DESCRIPT>
-    </SEOSUBCOTX>
-    <SEOSUBCOTX>
-     <CMPNAME>CHANGE_SINGLE</CMPNAME>
-     <SCONAME>INSERTED</SCONAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Must be ref to structure of type &lt;em&gt;table_name&lt;/em&gt;</DESCRIPT>
-    </SEOSUBCOTX>
-    <SEOSUBCOTX>
-     <CMPNAME>CHANGE_SINGLE</CMPNAME>
-     <SCONAME>MODIFIED</SCONAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Must be ref to structure of type &lt;em&gt;table_name&lt;/em&gt;</DESCRIPT>
     </SEOSUBCOTX>
     <SEOSUBCOTX>
      <CMPNAME>CHANGE_SINGLE</CMPNAME>

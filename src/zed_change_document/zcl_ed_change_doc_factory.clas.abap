@@ -1,6 +1,6 @@
 "! <p class="shorttext synchronized" lang="en">Change document factory</p>
 "! <br/>TAGS: change document; factory
-CLASS zcl_ed_change_doc_factory DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIENDS zcl_ed_change_doc_factory_inj.
+CLASS zcl_ed_change_doc_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_ed_change_doc_factory_inj.
 
   PUBLIC SECTION.
     CLASS-METHODS:
@@ -16,15 +16,16 @@ CLASS zcl_ed_change_doc_factory DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FR
 
   PRIVATE SECTION.
     CLASS-DATA:
-        cd_obj TYPE REF TO zif_ed_change_doc.
+        cd_mock TYPE REF TO zif_ed_change_doc.
 ENDCLASS.
 
 CLASS zcl_ed_change_doc_factory IMPLEMENTATION.
   METHOD create.
-    IF cd_obj IS BOUND.
-      cd = cd_obj.
-    ELSE.
-      cd = NEW zcl_ed_change_doc( objectclass = objectclass objectid = objectid table_name = table_name ).
+    IF cd_mock IS BOUND.
+      cd = cd_mock.
+      RETURN.
     ENDIF.
+
+    cd = NEW zcl_ed_change_doc( objectclass = objectclass objectid = objectid table_name = table_name ).
   ENDMETHOD.
 ENDCLASS.

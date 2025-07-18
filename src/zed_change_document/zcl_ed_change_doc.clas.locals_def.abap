@@ -1,3 +1,5 @@
+"=================================================================
+"-----------------------------------------------------------------
 CLASS lcl_force_cd_marker DEFINITION CREATE PUBLIC.
   PUBLIC SECTION.
     CONSTANTS:
@@ -13,10 +15,11 @@ ENDCLASS.
 
 "=================================================================
 "-----------------------------------------------------------------
-"=================================================================
-
 CLASS lcl_table_descr_manager DEFINITION CREATE PUBLIC.
   PUBLIC SECTION.
+    CONSTANTS:
+      c_cd_field TYPE fieldname VALUE 'ZED_CHANGE_INDICATOR_FIELD'.
+
     METHODS:
       create_table_with_indicator IMPORTING table_name TYPE tabname original_table TYPE REF TO data
                                             indicator TYPE c DEFAULT space sort TYPE abap_bool DEFAULT abap_false
@@ -30,9 +33,6 @@ CLASS lcl_table_descr_manager DEFINITION CREATE PUBLIC.
         handle TYPE REF TO cl_abap_tabledescr,
       END OF t_table_info,
       tt_table_info TYPE  HASHED TABLE OF t_table_info WITH UNIQUE KEY name.
-
-    CONSTANTS:
-        c_cd_field TYPE fieldname VALUE 'ZED_CHANGE_INDICATOR_FIELD'.
 
     METHODS:
       get_table_handle IMPORTING table_name TYPE tabname RETURNING VALUE(handle) TYPE REF TO cl_abap_tabledescr.

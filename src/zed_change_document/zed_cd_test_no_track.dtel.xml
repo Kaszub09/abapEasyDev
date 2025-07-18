@@ -9,7 +9,7 @@
     <SCRLEN1>10</SCRLEN1>
     <SCRLEN2>20</SCRLEN2>
     <SCRLEN3>40</SCRLEN3>
-    <DDTEXT>Data element with change tracking</DDTEXT>
+    <DDTEXT>Data element without change tracking</DDTEXT>
     <REPTEXT>Data element without change tracking</REPTEXT>
     <SCRTEXT_S>Data eleme</SCRTEXT_S>
     <SCRTEXT_M>Data element without</SCRTEXT_M>

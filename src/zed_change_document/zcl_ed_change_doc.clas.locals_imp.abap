@@ -1,3 +1,5 @@
+"=================================================================
+"-----------------------------------------------------------------
 CLASS lcl_force_cd_marker IMPLEMENTATION.
   METHOD force_cd_if_needed.
     DATA(force_logging) = abap_false.
@@ -21,8 +23,7 @@ CLASS lcl_force_cd_marker IMPLEMENTATION.
 
     FIELD-SYMBOLS: <tabinfo> TYPE table.
     ASSIGN ('(SAPLSCD0)TABINFO') TO <tabinfo>.
-
-    IF <tabinfo> IS ASSIGNED.
+    IF sy-subrc = 0.
       LOOP AT <tabinfo> ASSIGNING FIELD-SYMBOL(<tabinfo_row>) WHERE ('tabname = table_name AND logflag = ''F''').
         ASSIGN COMPONENT 'LOGFLAG' OF STRUCTURE <tabinfo_row> TO FIELD-SYMBOL(<logflag>).
         CLEAR: <logflag>.
@@ -39,8 +40,7 @@ CLASS lcl_force_cd_marker IMPLEMENTATION.
 
     FIELD-SYMBOLS: <tabinfo> TYPE table.
     ASSIGN ('(SAPLSCD0)TABINFO') TO <tabinfo>.
-
-    IF <tabinfo> IS ASSIGNED.
+    IF sy-subrc = 0.
       LOOP AT <tabinfo> ASSIGNING FIELD-SYMBOL(<tabinfo_row>) WHERE ('tabname = table_name AND logflag = abap_false').
         ASSIGN COMPONENT 'LOGFLAG' OF STRUCTURE <tabinfo_row> TO FIELD-SYMBOL(<logflag>).
         <logflag> = 'F'.
@@ -53,7 +53,6 @@ ENDCLASS.
 
 "=================================================================
 "-----------------------------------------------------------------
-"=================================================================
 CLASS lcl_table_descr_manager IMPLEMENTATION.
   METHOD create_empty_table.
     CREATE DATA empty_table TYPE TABLE OF (table_name).
@@ -109,7 +108,7 @@ CLASS lcl_table_descr_manager IMPLEMENTATION.
     ENDLOOP.
 
     "Build handle back
-    handle = cl_abap_tabledescr=>get( p_line_type =  cl_abap_structdescr=>get(  components )
+    handle = cl_abap_tabledescr=>get( p_line_type =  cl_abap_structdescr=>get( components )
       p_key_kind = cl_abap_tabledescr=>keydefkind_user p_key = keys ).
     INSERT VALUE #( name = table_name handle = handle ) INTO TABLE tables_info.
   ENDMETHOD.

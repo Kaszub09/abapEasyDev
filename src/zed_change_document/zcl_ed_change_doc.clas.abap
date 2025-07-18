@@ -53,6 +53,104 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
+  METHOD zif_ed_change_doc~change_single.
+    DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
+    DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
+
+    ASSIGN before->* TO FIELD-SYMBOL(<before>).
+    ASSIGN after->* TO FIELD-SYMBOL(<after>).
+
+    IF before IS NOT BOUND.
+      ASSIGN space TO <before>.
+    ENDIF.
+    IF after IS NOT BOUND.
+      ASSIGN space TO <after>.
+    ENDIF.
+
+    TRY.
+        force_cd->set_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
+        CALL FUNCTION 'CHANGEDOCUMENT_SINGLE_CASE'
+          EXPORTING
+            change_indicator       = 'U'
+            tablename              = tablename
+            workarea_old           = <before>
+            workarea_new           = <after>
+            docu_delete            = save_info-docu_delete
+            docu_delete_if         = save_info-docu_delete_if
+            docu_insert            = save_info-docu_insert
+            docu_insert_if         = save_info-docu_insert_if
+          EXCEPTIONS
+            nametab_error          = 1                " Error when calling NAMETAB_GET
+            open_missing           = 2                " No OPEN was performed
+            position_insert_failed = 3                " SQL error occurred during insert item
+            OTHERS                 = 4.
+
+        IF sy-subrc <> 0.
+          RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_SINGLE_CASE subrc={ sy-subrc } - Modified|.
+        ENDIF.
+
+        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
+
+      CATCH cx_root INTO DATA(cx_root).
+        "^At least try to restore CD function-group if messed with earlier
+        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
+        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_longtext( ).
+
+    ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD zif_ed_change_doc~change_multi.
+    DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
+    DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
+
+    "Have empty prepared since you always must pass both tables
+    DATA(empty_table) = table_descr_manager->create_table_with_indicator( table_name = tablename
+        original_table = table_descr_manager->create_empty_table( tablename ) ).
+
+    ASSIGN before->* TO FIELD-SYMBOL(<before>).
+    ASSIGN after->* TO FIELD-SYMBOL(<after>).
+
+    IF before IS NOT BOUND.
+      ASSIGN empty_table->* TO <before>.
+    ENDIF.
+    IF after IS NOT BOUND.
+      ASSIGN empty_table->* TO <after>.
+    ENDIF.
+
+    TRY.
+        force_cd->set_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
+
+        CALL FUNCTION 'CHANGEDOCUMENT_MULTIPLE_CASE2'
+          EXPORTING
+            change_indicator       = 'U'
+            tablename              = tablename
+            table_old              = <before>
+            table_new              = <after>
+            docu_delete            = save_info-docu_delete
+            docu_delete_if         = save_info-docu_delete_if
+            docu_insert            = save_info-docu_insert
+            docu_insert_if         = save_info-docu_insert_if
+          EXCEPTIONS
+            nametab_error          = 1
+            open_missing           = 2
+            position_insert_failed = 3
+            OTHERS                 = 4.
+
+        IF sy-subrc <> 0.
+          RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_MULTIPLE_CASE2 subrc={ sy-subrc } - Modified|.
+        ENDIF.
+
+        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename  ).
+
+      CATCH cx_root INTO DATA(cx_root).
+        "^Try to at least restore CD function-group if messed with earlier
+        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename  ).
+        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_longtext( ).
+
+    ENDTRY.
+  ENDMETHOD.
+
   METHOD zif_ed_change_doc~close.
     CALL FUNCTION 'CHANGEDOCUMENT_CLOSE'
       EXPORTING
@@ -80,196 +178,6 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-  METHOD zif_ed_change_doc~change_multi.
-    FIELD-SYMBOLS:
-      <inserted>        TYPE table,
-      <deleted>         TYPE table,
-      <before_modified> TYPE table,
-      <modified>        TYPE table,
-      <empty>           TYPE table.
-
-    TRY.
-        DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
-        force_cd->set_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
-        DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
-
-        "Empty since you always must pass both tables
-        DATA(empty_table) = table_descr_manager->create_table_with_indicator( table_name = tablename
-            original_table = table_descr_manager->create_empty_table( tablename ) ).
-        ASSIGN empty_table->* TO <empty>.
-
-        "NEW ENTRY
-        IF inserted IS BOUND.
-          ASSIGN inserted->* TO <inserted>.
-          IF lines( <inserted> ) > 0.
-            CALL FUNCTION 'CHANGEDOCUMENT_MULTIPLE_CASE2'
-              EXPORTING
-                change_indicator       = 'I'
-                tablename              = tablename
-                table_old              = <empty>
-                table_new              = <inserted>
-                docu_insert            = save_info-docu_insert
-                docu_insert_if         = save_info-docu_insert_if
-              EXCEPTIONS
-                nametab_error          = 1
-                open_missing           = 2
-                position_insert_failed = 3
-                OTHERS                 = 4.
-
-            IF sy-subrc <> 0.
-              RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_MULTIPLE_CASE2 subrc={ sy-subrc } - Insert|.
-            ENDIF.
-          ENDIF.
-        ENDIF.
-
-        "DELETED ENTRY
-        IF deleted IS BOUND.
-          ASSIGN deleted->* TO <deleted>.
-          IF lines( <deleted> ) > 0.
-            CALL FUNCTION 'CHANGEDOCUMENT_MULTIPLE_CASE2'
-              EXPORTING
-                change_indicator       = 'D'
-                tablename              = tablename
-                table_old              = <deleted>
-                table_new              = <empty>
-                docu_delete            = save_info-docu_delete
-                docu_delete_if         = save_info-docu_delete_if
-              EXCEPTIONS
-                nametab_error          = 1
-                open_missing           = 2
-                position_insert_failed = 3
-                OTHERS                 = 4.
-
-            IF sy-subrc <> 0.
-              RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_MULTIPLE_CASE2 subrc={ sy-subrc } - Delete|.
-            ENDIF.
-          ENDIF.
-        ENDIF.
-
-        "MODIFIED ENTRY
-        IF modified IS BOUND AND before_modified IS BOUND.
-          ASSIGN modified->* TO <modified>.
-          ASSIGN before_modified->* TO <before_modified>.
-          IF lines( <modified> ) > 0.
-            CALL FUNCTION 'CHANGEDOCUMENT_MULTIPLE_CASE2'
-              EXPORTING
-                change_indicator       = 'U'
-                tablename              = tablename
-                table_old              = <before_modified>
-                table_new              = <modified>
-                docu_delete            = save_info-docu_delete
-                docu_delete_if         = save_info-docu_delete_if
-                docu_insert            = save_info-docu_insert
-                docu_insert_if         = save_info-docu_insert_if
-              EXCEPTIONS
-                nametab_error          = 1
-                open_missing           = 2
-                position_insert_failed = 3
-                OTHERS                 = 4.
-
-            IF sy-subrc <> 0.
-              RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_MULTIPLE_CASE2 subrc={ sy-subrc } - Modified|.
-            ENDIF.
-          ENDIF.
-        ENDIF.
-        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename  ).
-
-      CATCH cx_root INTO DATA(cx_root).
-        "^Try to at least restore CD function-group if messed with earlier
-        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename  ).
-        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_longtext( ).
-
-    ENDTRY.
-  ENDMETHOD.
-
-  METHOD zif_ed_change_doc~change_single.
-    TRY.
-        DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
-        force_cd->set_force_cd( force_marker = force_cd_on_all_fields table_name = tablename  ).
-        DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
-
-        "NEW ENTRY
-        IF inserted IS BOUND.
-          ASSIGN inserted->* TO FIELD-SYMBOL(<inserted>).
-
-          CALL FUNCTION 'CHANGEDOCUMENT_SINGLE_CASE'
-            EXPORTING
-              change_indicator       = 'I'
-              tablename              = tablename
-              workarea_new           = <inserted>
-              docu_insert            = save_info-docu_insert
-              docu_insert_if         = save_info-docu_insert_if
-            EXCEPTIONS
-              nametab_error          = 1                " Error when calling NAMETAB_GET
-              open_missing           = 2                " No OPEN was performed
-              position_insert_failed = 3                " SQL error occurred during insert item
-              OTHERS                 = 4.
-
-          IF sy-subrc <> 0.
-            RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_SINGLE_CASE subrc={ sy-subrc } - Insert|.
-          ENDIF.
-
-        ENDIF.
-
-        "DELETED ENTRY
-        IF deleted IS BOUND.
-          ASSIGN deleted->* TO FIELD-SYMBOL(<deleted>).
-
-          CALL FUNCTION 'CHANGEDOCUMENT_SINGLE_CASE'
-            EXPORTING
-              change_indicator       = 'D'
-              tablename              = tablename
-              workarea_old           = <deleted>
-              docu_delete            = save_info-docu_delete
-              docu_delete_if         = save_info-docu_delete_if
-            EXCEPTIONS
-              nametab_error          = 1                " Error when calling NAMETAB_GET
-              open_missing           = 2                " No OPEN was performed
-              position_insert_failed = 3                " SQL error occurred during insert item
-              OTHERS                 = 4.
-
-          IF sy-subrc <> 0.
-            RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_SINGLE_CASE subrc={ sy-subrc } - Delete|.
-          ENDIF.
-
-        ENDIF.
-
-        "MODIFIED ENTRY
-        IF modified IS BOUND AND before_modified IS BOUND.
-          ASSIGN modified->* TO FIELD-SYMBOL(<modified>).
-          ASSIGN before_modified->* TO FIELD-SYMBOL(<before_modified>).
-
-          CALL FUNCTION 'CHANGEDOCUMENT_SINGLE_CASE'
-            EXPORTING
-              change_indicator       = 'U'
-              tablename              = tablename
-              workarea_old           = <before_modified>
-              workarea_new           = <modified>
-              docu_delete            = save_info-docu_delete
-              docu_delete_if         = save_info-docu_delete_if
-              docu_insert            = save_info-docu_insert
-              docu_insert_if         = save_info-docu_insert_if
-            EXCEPTIONS
-              nametab_error          = 1                " Error when calling NAMETAB_GET
-              open_missing           = 2                " No OPEN was performed
-              position_insert_failed = 3                " SQL error occurred during insert item
-              OTHERS                 = 4.
-
-          IF sy-subrc <> 0.
-            RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |CHANGEDOCUMENT_SINGLE_CASE subrc={ sy-subrc } - Modified|.
-          ENDIF.
-        ENDIF.
-
-        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
-
-      CATCH cx_root INTO DATA(cx_root).
-        "^Try to at least restore CD function-group if messed with earlier
-        force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
-        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_longtext( ).
-
-    ENDTRY.
-  ENDMETHOD.
-
   METHOD zif_ed_change_doc~create_table_with_indicator.
     DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
     table_with_indicator = table_descr_manager->create_table_with_indicator( table_name = tablename
@@ -287,5 +195,3 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
     lcl_force_cd_marker=>force_cd_if_needed( CHANGING tabinfo = tabinfo ).
   ENDMETHOD.
 ENDCLASS.
-
-
