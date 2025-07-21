@@ -34,5 +34,5 @@ INTERFACE zif_ed_logger_display PUBLIC.
                            end_column   TYPE i DEFAULT 208
                            start_line   TYPE i DEFAULT 0
                            end_line     TYPE i DEFAULT 32,
-    modeless_window_exists RETURNING VALUE(exists) TYPE abap_bool.
+    is_modeless_window_open RETURNING VALUE(is_open) TYPE abap_bool.
 ENDINTERFACE.
