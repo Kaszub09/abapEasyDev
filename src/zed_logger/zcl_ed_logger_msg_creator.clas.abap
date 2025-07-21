@@ -1,4 +1,4 @@
-CLASS zcl_ed_logger_msg_creator DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_ed_logger_factory.
+CLASS zcl_ed_logger_msg_creator DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.
     METHODS:
@@ -12,8 +12,10 @@ CLASS zcl_ed_logger_msg_creator DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS 
 
   PRIVATE SECTION.
     METHODS:
+      is_cx_root_ref IMPORTING obj TYPE any RETURNING VALUE(is) TYPE abap_bool,
       get_msgs_from_exception IMPORTING exception   TYPE REF TO cx_root
-                              RETURNING VALUE(msgs) TYPE zif_ed_logger=>tt_log_message,
+                              RETURNING VALUE(msgs) TYPE zif_ed_logger=>tt_log_message
+                              RAISING   zcx_ed_exception,
       get_msgs_from_element IMPORTING obj         TYPE any
                             RETURNING VALUE(msgs) TYPE zif_ed_logger=>tt_log_message,
       get_msgs_from_struct IMPORTING obj          TYPE any
@@ -33,26 +35,52 @@ CLASS zcl_ed_logger_msg_creator IMPLEMENTATION.
     me->settings = settings.
 
     DATA(descr) = cl_abap_structdescr=>describe_by_data( obj ).
-    IF descr IS INSTANCE OF cl_abap_classdescr AND obj IS INSTANCE OF cx_root.
-      msgs = get_msgs_from_exception( CAST #( obj ) ).
+    IF descr IS INSTANCE OF cl_abap_refdescr.
+      IF is_cx_root_ref( obj ).
+        msgs = get_msgs_from_exception( CAST #( obj ) ).
+
+      ELSE.
+        "Try to dereference and call again - otherwise unsupported type, so throw error
+        TRY.
+            DATA data_ref TYPE REF TO data.
+            data_ref ?= obj.
+            ASSIGN data_ref->* TO FIELD-SYMBOL(<obj>).
+            msgs = get_msgs( settings = settings obj = <obj> msg_type = msg_type ).
+
+          CATCH cx_root.
+            zcl_ed_msg=>throw( text = TEXT-e01 v1 = descr->absolute_name ).
+
+        ENDTRY.
+      ENDIF.
+
+    ELSEIF descr IS INSTANCE OF cl_abap_elemdescr.
+      msgs = get_msgs_from_element( obj ).
+
+    ELSEIF descr IS INSTANCE OF cl_abap_structdescr.
+      msgs = get_msgs_from_struct( obj = obj struct_descr = CAST #( descr ) ).
+
+    ELSEIF descr IS INSTANCE OF cl_abap_tabledescr.
+      msgs = get_msgs_from_table( obj = obj table_descr = CAST #( descr ) ).
 
     ELSE.
-      IF descr IS INSTANCE OF cl_abap_elemdescr.
-        msgs = get_msgs_from_element( obj ).
-      ELSEIF descr IS INSTANCE OF cl_abap_structdescr.
-        msgs = get_msgs_from_struct( obj = obj struct_descr = CAST #( descr ) ).
-      ELSEIF descr IS INSTANCE OF cl_abap_tabledescr.
-        msgs = get_msgs_from_table( obj = obj table_descr = CAST #( descr ) ).
-      ELSE.
-        zcl_ed_msg=>throw( text = TEXT-c01 v1 = descr->get_relative_name( ) ).
-      ENDIF.
+      zcl_ed_msg=>throw( text = TEXT-e01 v1 = descr->absolute_name ).
+
     ENDIF.
 
     IF msg_type <> space.
-      LOOP AT msgs REFERENCE INTO DATA(msg).
+      LOOP AT msgs REFERENCE INTO DATA(msg) WHERE msg_type = space.
         msg->msg_type = msg_type.
       ENDLOOP.
     ENDIF.
+  ENDMETHOD.
+
+  METHOD is_cx_root_ref.
+    TRY.
+        DATA obj_ref TYPE REF TO cx_root.
+        obj_ref ?= obj.
+        is = abap_true.
+      CATCH cx_root.
+    ENDTRY.
   ENDMETHOD.
 
   METHOD get_msgs_from_element.
@@ -67,6 +95,7 @@ CLASS zcl_ed_logger_msg_creator IMPLEMENTATION.
     WHILE ex->previous IS BOUND AND drilldown_level <= settings->exception_drilldown_level.
       ex = ex->previous.
       APPEND VALUE #( msg = ex->get_text( ) ) TO msgs.
+      drilldown_level = drilldown_level + 1.
     ENDWHILE.
   ENDMETHOD.
 
@@ -101,7 +130,7 @@ CLASS zcl_ed_logger_msg_creator IMPLEMENTATION.
 
     IF msg-is_sap_msg = abap_true AND msg-sap_msg-msgid IS NOT INITIAL.
       MESSAGE ID msg-sap_msg-msgid TYPE msg-sap_msg-msgty NUMBER msg-sap_msg-msgno
-          WITH msg-sap_msg-msgv1 msg-sap_msg-msgv1 msg-sap_msg-msgv1 msg-sap_msg-msgv1 INTO msg-msg.
+          WITH msg-sap_msg-msgv1 msg-sap_msg-msgv2 msg-sap_msg-msgv3 msg-sap_msg-msgv4 INTO msg-msg.
       msg-msg_type = msg-sap_msg-msgty.
     ENDIF.
 
@@ -125,4 +154,6 @@ CLASS zcl_ed_logger_msg_creator IMPLEMENTATION.
         APPEND VALUE #( is_json = abap_true is_sap_msg = abap_false msg = /ui2/cl_json=>serialize( data = obj compress = settings->compress_json ) ) TO msgs.
     ENDCASE.
   ENDMETHOD.
+
+
 ENDCLASS.

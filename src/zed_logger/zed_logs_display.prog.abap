@@ -27,7 +27,7 @@ SELECTION-SCREEN END OF BLOCK b01.
 
 START-OF-SELECTION.
   DATA(display) = zcl_ed_logger_factory=>create_display( ).
-  display->display_logs( zcl_ed_logger_factory=>create_selection(
+  display->display_logs( VALUE #(
     uuid = s_uuid[]
     category = s_cat[]
     external_identifier = s_ext_id[]

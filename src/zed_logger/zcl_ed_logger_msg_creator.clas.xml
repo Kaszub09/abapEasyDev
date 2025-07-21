@@ -10,11 +10,16 @@
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
    <TPOOL>
     <item>
      <ID>I</ID>
      <KEY>C01</KEY>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E01</KEY>
      <ENTRY>Unsupported object type = &apos;&amp;1&apos;</ENTRY>
      <LENGTH>30</LENGTH>
     </item>

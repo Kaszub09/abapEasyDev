@@ -62,7 +62,7 @@ INTERFACE zif_ed_logger PUBLIC.
     BEGIN OF c_log_level,
       minimal  TYPE zted_log_detail_level VALUE 1,
       standard TYPE zted_log_detail_level VALUE 3,
-      detail   TYPE zted_log_detail_level VALUE 5,
+      detailed   TYPE zted_log_detail_level VALUE 5,
     END OF c_log_level,
     c_2nd_con_name TYPE string VALUE 'R/3*ZABAP_EASY_DEV_LOGGER',
     "! For easy separation of log lines

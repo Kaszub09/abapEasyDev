@@ -3,9 +3,10 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_ED_LOGGER_SELECTION</CLSNAME>
+    <CLSNAME>ZCX_ED_LOGGER_NO_CONTEXT</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Selection values</DESCRIPT>
+    <DESCRIPT>Context does not exists</DESCRIPT>
+    <CATEGORY>40</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

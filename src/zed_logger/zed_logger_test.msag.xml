@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZED_LOGGER_TEST</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Message class for tests</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZED_LOGGER_TEST</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Test message with p1 = &amp;1; p2 = &amp;2; p3 = &amp;3; p4 = &amp;4;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZED_LOGGER_TEST</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Second test message</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

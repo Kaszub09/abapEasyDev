@@ -25,7 +25,7 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
       tt_header TYPE STANDARD TABLE OF t_header WITH EMPTY KEY.
 
     METHODS:
-      read_headers IMPORTING sel TYPE REF TO zcl_ed_logger_selection,
+      read_headers IMPORTING sel TYPE zif_ed_logger_display~t_selection,
       init_headers_alv IMPORTING container TYPE REF TO cl_gui_container,
       init_messages_alv IMPORTING container TYPE REF TO cl_gui_container,
       cleanup,
@@ -127,12 +127,12 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
 
   METHOD read_headers.
     SELECT * FROM zed_logs
-     WHERE uuid IN @sel->uuid AND category IN @sel->category AND external_identifier IN @sel->external_identifier
-         AND created_by IN @sel->created_by AND created_at_date IN @sel->created_at_date
-         AND created_at_time IN @sel->created_at_time AND tcode IN @sel->transaction AND expiry_date IN @sel->expiry_date
-         AND is_batch IN @sel->is_batch AND last_change_by IN @sel->last_change_by
-         AND last_change_date IN @sel->last_change_date AND last_change_time IN @sel->last_change_time
-         AND messsages_count IN @sel->messsages_count AND has_warnings IN @sel->has_warnings AND has_errors IN @sel->has_errors
+     WHERE uuid IN @sel-uuid AND category IN @sel-category AND external_identifier IN @sel-external_identifier
+         AND created_by IN @sel-created_by AND created_at_date IN @sel-created_at_date
+         AND created_at_time IN @sel-created_at_time AND tcode IN @sel-transaction AND expiry_date IN @sel-expiry_date
+         AND is_batch IN @sel-is_batch AND last_change_by IN @sel-last_change_by
+         AND last_change_date IN @sel-last_change_date AND last_change_time IN @sel-last_change_time
+         AND messsages_count IN @sel-messsages_count AND has_warnings IN @sel-has_warnings AND has_errors IN @sel-has_errors
     INTO CORRESPONDING FIELDS OF TABLE @headers.
   ENDMETHOD.
 
@@ -195,7 +195,9 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
 
   METHOD create_messages_ext_data.
     DATA(components) = CAST cl_abap_structdescr( cl_abap_structdescr=>describe_by_data( VALUE t_messages_ext( ) ) )->get_components( ).
-    APPEND LINES OF logger->context->get_struct_components( ) TO components.
+    IF logger->context->exists( ).
+      APPEND LINES OF logger->context->get_struct_components( ) TO components.
+    ENDIF.
 
     DATA(table_descr) = cl_abap_tabledescr=>get( cl_abap_structdescr=>get( components ) ).
     CREATE DATA messages_ext TYPE HANDLE table_descr.

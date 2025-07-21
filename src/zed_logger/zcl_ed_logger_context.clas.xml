@@ -10,27 +10,48 @@
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>E01</KEY>
+     <ENTRY>Expected name at type delimited by &amp;1 in text &apos;&amp;2&apos;</ENTRY>
+     <LENGTH>50</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E02</KEY>
+     <ENTRY>Couldn&apos;t create type &apos;&amp;1&apos;</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E03</KEY>
+     <ENTRY>Expected flat structure</ENTRY>
+     <LENGTH>23</LENGTH>
+    </item>
+   </TPOOL>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
      <CMPNAME>CONVERT_DATA_TO_STRING</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Can&apos;t be called if context doesn&apos;t exists</DESCRIPT>
+     <DESCRIPT>Data is delimited by &lt;em&gt;c_value_delimiter&lt;/em&gt;. &lt;br/&gt;Struct</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>CONVERT_STRING_TO_DATA</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Can&apos;t be called if context doesn&apos;t exists</DESCRIPT>
+     <DESCRIPT>Input data should be delimited by &lt;em&gt;c_value_delimiter&lt;/em&gt;</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>GET_CONTEXT_COL_INFO</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Can be always safely called</DESCRIPT>
+     <DESCRIPT>Fields are delimited by &lt;em&gt;c_col_info_delimiter-component&lt;/</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>GET_STRUCT_COMPONENTS</CMPNAME>
      <LANGU>E</LANGU>
-     <DESCRIPT>Can be always safely called</DESCRIPT>
+     <DESCRIPT>Can be always safely called.</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
      <CMPNAME>GET_STRUCT_INFO</CMPNAME>

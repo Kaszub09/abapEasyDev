@@ -19,13 +19,6 @@
      <LENGTH>24</LENGTH>
     </item>
    </TPOOL>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CMPNAME>CREATE_CONTEXT_FROM_COL_INFO</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>Empty if not used</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>
