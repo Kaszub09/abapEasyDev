@@ -94,6 +94,7 @@ CLASS ltcl_correct_struct_created IMPLEMENTATION.
     FIELD-SYMBOLS <key_table> TYPE INDEX TABLE.
     ASSIGN key_table->* TO <key_table>.
 
+    "This line would fail if <key_table> had more fields than test_table
     APPEND LINES OF test_table TO <key_table>.
   ENDMETHOD.
 
@@ -121,6 +122,7 @@ CLASS ltcl_correct_struct_created IMPLEMENTATION.
     FIELD-SYMBOLS <add_fields_table> TYPE INDEX TABLE.
     ASSIGN add_fields_table->* TO <add_fields_table>.
 
+    "This line would fail if <add_fields_table> had less fields than test_table
     APPEND LINES OF test_table TO <add_fields_table>.
   ENDMETHOD.
 ENDCLASS.

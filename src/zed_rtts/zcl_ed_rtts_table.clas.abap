@@ -3,7 +3,20 @@
 CLASS zcl_ed_rtts_table DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
+    TYPES:
+      BEGIN OF t_field_de,
+        name         TYPE fieldname,
+        data_element TYPE rollname,
+      END OF t_field_de,
+      tt_field_de TYPE STANDARD TABLE OF t_field_de WITH EMPTY KEY,
+      BEGIN OF t_field_descr,
+        name TYPE fieldname,
+        type TYPE REF TO cl_abap_datadescr,
+      END OF t_field_descr,
+      tt_field_descr TYPE STANDARD TABLE OF t_field_descr WITH EMPTY KEY.
+
     CLASS-METHODS:
+      create_from_field IMPORTING field TYPE t_field_de RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table,
       "! <p class="shorttext synchronized" lang="en">Primary key is taken from table if exists.</p>
       create_from_table IMPORTING table TYPE any RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table,
       create_from_row IMPORTING row TYPE any RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table.
@@ -13,8 +26,10 @@ CLASS zcl_ed_rtts_table DEFINITION PUBLIC FINAL CREATE PUBLIC.
                                key           TYPE abap_keydescr_tab OPTIONAL
                                key_kind      TYPE abap_keydefkind DEFAULT cl_abap_tabledescr=>keydefkind_default
                                key_is_unique TYPE abap_bool DEFAULT abap_false,
-      add_field IMPORTING name TYPE fieldname data_element TYPE rollname,
-      add_field_by_type IMPORTING name TYPE fieldname type TYPE REF TO cl_abap_datadescr,
+      add_field IMPORTING field TYPE t_field_de,
+      add_fields IMPORTING fields TYPE tt_field_de,
+      add_field_by_type IMPORTING field TYPE t_field_descr,
+      add_fields_by_type IMPORTING fields TYPE tt_field_descr,
       remove_field IMPORTING name TYPE fieldname,
       create_table IMPORTING base TYPE any OPTIONAL RETURNING VALUE(table_ref) TYPE REF TO data,
       create_line IMPORTING base TYPE any OPTIONAL RETURNING VALUE(line_ref) TYPE REF TO data.
@@ -33,6 +48,13 @@ CLASS zcl_ed_rtts_table DEFINITION PUBLIC FINAL CREATE PUBLIC.
 ENDCLASS.
 
 CLASS zcl_ed_rtts_table IMPLEMENTATION.
+  METHOD create_from_field.
+    rtts_table = NEW #( ).
+    rtts_table->line_descr = CAST #( cl_abap_structdescr=>get( VALUE #(
+        ( name = field-name type = CAST #( cl_abap_datadescr=>describe_by_name( field-data_element ) ) ) ) ) ).
+    rtts_table->table_descr = cl_abap_tabledescr=>get( rtts_table->line_descr ).
+  ENDMETHOD.
+
   METHOD create_from_table.
     rtts_table = NEW #( ).
     rtts_table->table_descr = CAST #( cl_abap_tabledescr=>describe_by_data( table ) ).
@@ -56,17 +78,34 @@ CLASS zcl_ed_rtts_table IMPLEMENTATION.
     me->key_kind = key_kind.
     me->key = key.
     me->key_is_unique = key_is_unique.
+    refresh_from_components( line_descr->get_components( ) ).
   ENDMETHOD.
 
   METHOD add_field.
     DATA(components) = line_descr->get_components( ).
-    APPEND VALUE #( name = name type = CAST #( cl_abap_datadescr=>describe_by_name( data_element ) ) ) TO components.
+    APPEND VALUE #( name = field-name type = CAST #( cl_abap_datadescr=>describe_by_name( field-data_element ) ) ) TO components.
+    refresh_from_components( components ).
+  ENDMETHOD.
+
+  METHOD add_fields.
+    DATA(components) = line_descr->get_components( ).
+    LOOP AT fields REFERENCE INTO DATA(field).
+      APPEND VALUE #( name = field->name type = CAST #( cl_abap_datadescr=>describe_by_name( field->data_element ) ) ) TO components.
+    ENDLOOP.
     refresh_from_components( components ).
   ENDMETHOD.
 
   METHOD add_field_by_type.
     DATA(components) = line_descr->get_components( ).
-    APPEND VALUE #( name = name type = type ) TO components.
+    APPEND VALUE #( name = field-name type = field-type ) TO components.
+    refresh_from_components( components ).
+  ENDMETHOD.
+
+  METHOD add_fields_by_type.
+    DATA(components) = line_descr->get_components( ).
+    LOOP AT fields REFERENCE INTO DATA(field).
+      APPEND VALUE #( name = field->name type = field->type ) TO components.
+    ENDLOOP.
     refresh_from_components( components ).
   ENDMETHOD.
 
@@ -74,16 +113,6 @@ CLASS zcl_ed_rtts_table IMPLEMENTATION.
     DATA(components) = line_descr->get_components( ).
     DELETE components WHERE name = name.
     refresh_from_components( components ).
-  ENDMETHOD.
-
-  METHOD refresh_from_components.
-    line_descr = cl_abap_structdescr=>get( components ).
-    IF lines( key ) = 0.
-      table_descr = cl_abap_tabledescr=>get( p_line_type = line_descr ).
-    ELSE.
-      table_descr = cl_abap_tabledescr=>get( p_line_type = line_descr
-        p_table_kind = table_kind p_unique = key_is_unique p_key = key p_key_kind = key_kind ).
-    ENDIF.
   ENDMETHOD.
 
   METHOD create_table.
@@ -99,6 +128,16 @@ CLASS zcl_ed_rtts_table IMPLEMENTATION.
     IF base IS NOT INITIAL.
       ASSIGN line_ref->* TO FIELD-SYMBOL(<line>).
       <line> = CORRESPONDING #( base ).
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD refresh_from_components.
+    line_descr = cl_abap_structdescr=>get( components ).
+    IF lines( key ) = 0.
+      table_descr = cl_abap_tabledescr=>get( p_line_type = line_descr ).
+    ELSE.
+      table_descr = cl_abap_tabledescr=>get( p_line_type = line_descr
+        p_table_kind = table_kind p_unique = key_is_unique p_key = key p_key_kind = key_kind ).
     ENDIF.
   ENDMETHOD.
 ENDCLASS.
