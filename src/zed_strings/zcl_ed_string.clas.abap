@@ -1,4 +1,4 @@
-"! <p class="shorttext synchronized">String manipulation</p>
+"! <p class="shorttext synchronized">String manipulation with length/offset checks</p>
 "! <br/>TAGS: strings
 CLASS zcl_ed_string DEFINITION PUBLIC FINAL CREATE PRIVATE.
   PUBLIC SECTION.
@@ -26,6 +26,14 @@ CLASS zcl_ed_string IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD sub.
-    sub = substring( val = val off = off len = COND #( WHEN off + len <= strlen( val ) THEN len ELSE strlen( val ) - off ) ).
+    IF off >= strlen( val ).
+      RETURN.
+    ENDIF.
+
+    DATA(length) = len.
+    IF strlen( val ) < off + len.
+      length = strlen( val ) - off.
+    ENDIF.
+    sub = substring( val = val off = off len = length ).
   ENDMETHOD.
 ENDCLASS.

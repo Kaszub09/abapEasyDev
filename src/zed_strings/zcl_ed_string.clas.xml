@@ -5,11 +5,12 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_ED_STRING</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>String manipulation</DESCRIPT>
+    <DESCRIPT>String manipulation with length/offset checks</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
+    <WITH_UNIT_TESTS>X</WITH_UNIT_TESTS>
    </VSEOCLASS>
   </asx:values>
  </asx:abap>
