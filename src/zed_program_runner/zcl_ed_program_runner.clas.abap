@@ -56,7 +56,9 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
 
     IF remove_first_last_char = abap_true.
       LOOP AT list REFERENCE INTO DATA(line).
-        line->* = substring( val = line->* off = 1 len = strlen( line->* ) - 2 ).
+        IF strlen( line->* ) >= 2.
+          line->* = substring( val = line->* off = 1 len = strlen( line->* ) - 2 ).
+        ENDIF.
       ENDLOOP.
     ENDIF.
   ENDMETHOD.
