@@ -105,10 +105,9 @@ CLASS tcl_unsupported IMPLEMENTATION.
 
   METHOD raise_err_on_class.
     TRY.
-        " TODO: variable is assigned but never used (ABAP cleaner)
-        DATA(msgs) = cut->get_msgs( settings = settings obj = cut msg_type = msg_type ).
+        cut->get_msgs( settings = settings obj = cut msg_type = msg_type ).
         cl_abap_unit_assert=>fail( ).
-      CATCH zcx_ed_exception INTO DATA(zcx). " TODO: variable is assigned but never used (ABAP cleaner)
+      CATCH zcx_ed_exception.
     ENDTRY.
   ENDMETHOD.
 ENDCLASS.
@@ -309,7 +308,7 @@ CLASS tcl_sap_msg IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD log_bdcmsgcoll.
-    DATA(msgs) = cut->get_msgs( settings = settings obj = VALUE bdcmsgcoll( msgtyp = c_msgty msgid = c_msgid msgnr = '001'
+    DATA(msgs) = cut->get_msgs( settings = settings obj = VALUE bdcmsgcoll( msgtyp = c_msgty msgid = c_msgid msgnr = c_msgid
       msgv1 = c_p1 msgv2 = c_p2 msgv3 = c_p3 msgv4 = c_p4 ) msg_type = space ).
 
     cl_abap_unit_assert=>assert_true( xsdbool( lines( msgs ) = 1 ) ).
