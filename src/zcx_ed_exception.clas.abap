@@ -37,6 +37,5 @@ CLASS zcx_ed_exception IMPLEMENTATION.
 
   METHOD get_text.
     result = me->custom_message.
-DATA(subrc) = CONV sy-subrc( sy-subrc ).
   ENDMETHOD.
 ENDCLASS.
