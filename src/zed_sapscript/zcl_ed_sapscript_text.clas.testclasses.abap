@@ -52,6 +52,8 @@ CLASS tcl_read_texts IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD verify_texts.
+    cl_abap_unit_assert=>assert_equals( act = lines( texts ) exp = 2 ).
+
     cl_abap_unit_assert=>assert_equals( act = texts[ name = 'ZED_TEST_1' ]-text exp = |Text1{ cl_abap_char_utilities=>newline }Line1| ).
     cl_abap_unit_assert=>assert_equals( act = texts[ name = 'ZED_TEST_1' ]-text_lines[ 1 ]-tdline exp = |Text1| ).
     cl_abap_unit_assert=>assert_equals( act = texts[ name = 'ZED_TEST_1' ]-text_lines[ 2 ]-tdline exp = |Line1| ).
