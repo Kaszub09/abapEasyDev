@@ -148,8 +148,11 @@ CLASS zcl_ed_sapscript_text IMPLEMENTATION.
 
       "Combine lines to string, ignore formatting
       LOOP AT text_entry->text_lines REFERENCE INTO DATA(text_line).
-        text_entry->text = |{ text_entry->text }{ text_line->tdline }|.
+        text_entry->text = |{ text_entry->text }{ cl_abap_char_utilities=>newline }{ text_line->tdline }|.
       ENDLOOP.
+      IF strlen( text_entry->text ) > 0.
+        text_entry->text = substring( val = text_entry->text off = 1 len = strlen( text_entry->text ) - 1 ).
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 ENDCLASS.
