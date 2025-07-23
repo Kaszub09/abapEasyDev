@@ -11,12 +11,15 @@ CLASS zcl_ed_message_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl
 
   PRIVATE SECTION.
     CLASS-DATA:
-        message_obj TYPE REF TO zif_ed_message.
+        message_mock TYPE REF TO zif_ed_message.
 ENDCLASS.
 
 CLASS zcl_ed_message_factory IMPLEMENTATION.
   METHOD create.
-    message = COND #( WHEN message_obj IS BOUND THEN message_obj
-        ELSE NEW zcl_ed_message( content_type = content_type header = header body = body ) ).
+    IF message_mock IS BOUND.
+      message = message_mock.
+      RETURN.
+    ENDIF.
+    message = NEW zcl_ed_message( content_type = content_type header = header body = body ).
   ENDMETHOD.
 ENDCLASS.
