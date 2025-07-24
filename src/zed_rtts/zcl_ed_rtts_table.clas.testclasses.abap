@@ -178,7 +178,7 @@ CLASS tcl_correct_keys IMPLEMENTATION.
 
     "Expect error when trying to insert
     INSERT base_row1 INTO TABLE <act_tab>.
-    cl_abap_unit_assert=>assert_equals( act = CONV sy-subrc( sy-subrc ) exp = 4 ). "Trick to make copy of sy-subrc
+    cl_abap_unit_assert=>assert_equals( act = CONV syst_subrc( sy-subrc ) exp = 4 ). "Trick to make copy of sy-subrc
   ENDMETHOD.
 
   METHOD set_hashed_key_1_field.
