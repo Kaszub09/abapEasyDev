@@ -8,6 +8,7 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
   PRIVATE SECTION.
     TYPES:
       BEGIN OF t_message_display,
+        msg_index       TYPE zted_messages_index,
         level           TYPE zted_log_detail_level,
         msg_type_icon   TYPE c LENGTH 1,
         msg_type        TYPE msgty,
@@ -221,8 +222,10 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
     ASSIGN display_tab->* TO <display_tab>.
 
     LOOP AT tab REFERENCE INTO DATA(msg).
+      DATA(index) = sy-tabix.
       APPEND INITIAL LINE TO <display_tab> ASSIGNING FIELD-SYMBOL(<display_row>).
       DATA(msg_display) = CORRESPONDING t_message_display( msg->* ).
+      msg_display-msg_index = index.
       CASE msg_display-msg_type.
         WHEN 'I'.
           msg_display-msg_type_icon = '0'.
@@ -293,20 +296,24 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
     IF row = 0.
       RETURN.
     ENDIF.
-    DATA(selected) = REF #( messages-tab[ row ] ).
+    "After sorting, messages-display_tab can be in different order than messages-tab, so get tab index from display_tab
+    FIELD-SYMBOLS: <table> TYPE STANDARD TABLE.
+    ASSIGN messages-display_tab->* TO <table>.
+    ASSIGN COMPONENT 'MSG_INDEX' OF STRUCTURE <table>[ row ] TO FIELD-SYMBOL(<tab_index>).
+    DATA(selected) = REF #( messages-tab[ <tab_index> ] ).
 
     CASE column.
       WHEN 'DETAILS_ICON'.
         IF selected->is_sap_msg = abap_true.
           zcl_ed_docu=>show( dokclass = 'NA' dokname = |{ selected->sap_msg-msgid }{ selected->sap_msg-msgno }|
               msg_var_1 = selected->sap_msg-msgv1 msg_var_2 = selected->sap_msg-msgv2
-              msg_var_3 = selected->sap_msg-msgv3  msg_var_4 = selected->sap_msg-msgv4 ).
+              msg_var_3 = selected->sap_msg-msgv3 msg_var_4 = selected->sap_msg-msgv4 ).
 
         ELSEIF selected->is_json = abap_true.
-          cl_demo_output=>display_json( messages-tab[ row ]-msg  ).
+          cl_demo_output=>display_json( selected->msg ).
 
         ELSE.
-          cl_demo_output=>display( messages-tab[ row ]-msg  ).
+          cl_demo_output=>display( selected->msg ).
         ENDIF.
     ENDCASE.
 
