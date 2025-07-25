@@ -40,13 +40,13 @@ INTERFACE zif_ed_logger PUBLIC.
 
     BEGIN OF t_settings,
       "! Save after adding every log
-      autosave                    TYPE abap_bool,
+      autosave                  TYPE abap_bool,
       "! Don't add logs below specified level - can be used to run logs normally or with detail if needed
-      logging_level               TYPE zted_log_detail_level,
+      logging_level             TYPE zted_log_detail_level,
       "! When exception is added, add also previous exceptions up to this level
-      exception_drilldown_level   TYPE i,
+      exception_drilldown_level TYPE i,
       "! Skip initial fields if structure/table is stored as JSON to save space
-      compress_json TYPE abap_bool,
+      compress_json             TYPE abap_bool,
       BEGIN OF second_con,
         "! Name of 2nd connection (look for term 'service connection'), should start with 'R/3*[name]'
         name   TYPE string,
@@ -62,7 +62,7 @@ INTERFACE zif_ed_logger PUBLIC.
     BEGIN OF c_log_level,
       minimal  TYPE zted_log_detail_level VALUE 1,
       standard TYPE zted_log_detail_level VALUE 3,
-      detailed   TYPE zted_log_detail_level VALUE 5,
+      detailed TYPE zted_log_detail_level VALUE 5,
     END OF c_log_level,
     c_2nd_con_name TYPE string VALUE 'R/3*ZABAP_EASY_DEV_LOGGER',
     "! For easy separation of log lines

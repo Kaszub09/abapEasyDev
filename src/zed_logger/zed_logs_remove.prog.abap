@@ -23,14 +23,17 @@ SELECT-OPTIONS:
 SELECTION-SCREEN END OF BLOCK b01.
 
 INITIALIZATION.
-  DATA(container) = NEW cl_gui_docking_container( repid = sy-repid dynnr = '1000' ratio = 20 side = cl_gui_docking_container=>dock_at_top   ).
+  DATA(container) = NEW cl_gui_docking_container( repid = sy-repid dynnr = '1000' ratio = 25 side = cl_gui_docking_container=>dock_at_top   ).
   SELECT COUNT( * ) AS count FROM zed_logs INTO @DATA(log_count).
-  SELECT SUM( log_size ) FROM zed_logs_msg INTO @DATA(log_size_b).
-  DATA(log_size_kb) = round( val = log_size_b / 1024 dec = 3 ).
+
+  "Add about 492 from header row entry + about 28 from msg row info for better estimate
+  SELECT SUM( log_size + 520 ) FROM zed_logs_msg INTO @DATA(log_size_b).
+  DATA(log_size_kb) = round( val = CONV decfloat34( log_size_b ) / 1024 dec = 3 ).
+  DATA(avg_log_size_kb) = COND decfloat34( WHEN log_count = 0 THEN 0 ELSE round( val = log_size_kb / log_count dec = 3 ) ).
 
 AT SELECTION-SCREEN OUTPUT.
   cl_abap_browser=>show_html( container = container html_string = |<body><h4>Log count: { log_count
-    }</h4><h4>Estimated log size (KB): { log_size_kb }</h4></body>|  ).
+    }</h4><h4 style="margin:0px";>Estimated log size (KB): { log_size_kb } </h4><h5>Average ( KB ): { avg_log_size_kb }</h5></body>|  ).
 
 START-OF-SELECTION.
   SELECT uuid FROM zed_logs
