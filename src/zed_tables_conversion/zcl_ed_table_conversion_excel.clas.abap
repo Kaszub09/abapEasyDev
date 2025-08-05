@@ -16,7 +16,7 @@ CLASS zcl_ed_table_conversion_excel DEFINITION PUBLIC FINAL CREATE PUBLIC.
       "! <br/> Dates are formatted as YYYY-MM-DD.
       "! <br/> Numbers are without spaces, and decimal point is dot.
       "! @parameter filename | <p class="shorttext synchronized">Can be xlsx or xlsm.</p>
-      import_from_excel IMPORTING filename TYPE string RETURNING VALUE(tables) TYPE tt_wks_data,
+      import_from_excel IMPORTING filename TYPE string RETURNING VALUE(tables) TYPE tt_wks_data RAISING zcx_ed_exception,
       "! <p class="shorttext synchronized" lang="en">Uses standard salv container for export. Formats date etc. Flattens substructures. Recommended.
       "! @parameter filename | <p class="shorttext synchronized" lang="en">Must have 'XLSX' extension.</p>
       "! @parameter data_table | <p class="shorttext synchronized" lang="en">Accepts table lines with substructures. Subtables are skipped.</p>
@@ -29,9 +29,17 @@ CLASS zcl_ed_table_conversion_excel IMPLEMENTATION.
     "Upload and parse excel file
     DATA it_bin_data TYPE w3mimetabtype.
 
-    cl_gui_frontend_services=>gui_upload( EXPORTING filename = filename filetype = 'BIN' CHANGING data_tab = it_bin_data ).
+    cl_gui_frontend_services=>gui_upload( EXPORTING filename = filename filetype = 'BIN' CHANGING data_tab = it_bin_data EXCEPTIONS OTHERS = 1 ).
+    IF sy-subrc <> 0.
+      zcx_ed_exception=>throw( |Couldn't open file '{ filename }'| ).
+    ENDIF.
+
     DATA(file_as_xstring) = cl_bcs_convert=>solix_to_xstring( it_bin_data ).
-    DATA(excel) = NEW cl_fdt_xl_spreadsheet( document_name = filename  xdocument = file_as_xstring ).
+    TRY.
+        DATA(excel) = NEW cl_fdt_xl_spreadsheet( document_name = filename xdocument = file_as_xstring ).
+      CATCH cx_fdt_excel_core INTO DATA(cx).
+        zcx_ed_exception=>throw( |Error when parsing excel file: { cx->get_text( ) } | ).
+    ENDTRY.
 
     "Read worksheets
     excel->if_fdt_doc_spreadsheet~get_worksheet_names( IMPORTING worksheet_names = DATA(worksheets) ).
