@@ -12,6 +12,7 @@ Add html and image via ZED_ICF_UPLOAD
 </html>
 ```
 <img width="225" height="225" alt="sap" src="https://github.com/user-attachments/assets/2a62bbbe-ed73-426f-963e-422d931cdf2d" />
+
 <img width="736" height="166" alt="obraz" src="https://github.com/user-attachments/assets/23567c68-78a3-4297-88c5-95ea32b782da" />
 <img width="729" height="148" alt="obraz" src="https://github.com/user-attachments/assets/06a2f265-73c0-4df8-9c5c-17c0cfdd62d4" />
 
