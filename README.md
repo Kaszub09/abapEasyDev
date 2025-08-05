@@ -14,6 +14,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Documentation | Display documentation window for various objects. | |
 | Encoding | Encoding/decoding between different codepages; base64; |  
 | File explorer | File manipulation on aplication server and on user machine via GUI. File dialogue for file/directory picking. | |
+| ICF files | Easy upload/serving of files via ICF | [Screens](docs/icf_files.md)|
 | Images | Easy upload/display of images | |
 | Logger | Custom logging - without relying on standard SAP Application Log (BC-SRV-BAL) (BALLOG) | [Examples](src/zed_logger/zed_logger_examples/zed_logs_ex_simple_use.prog.abap) [Screens](docs/logger.md) |
 | Msg | Message generation from text and sap message structures | |
