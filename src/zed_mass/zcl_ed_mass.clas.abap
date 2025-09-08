@@ -218,7 +218,8 @@ CLASS zcl_ed_mass IMPLEMENTATION.
 
       "Assume row order was not changed
       LOOP AT et_index_rows REFERENCE INTO selected_index.
-        <table>[ selected_index->index ] = <selected_rows>[ sy-tabix ].
+        DATA(tabix) = sy-tabix.
+        <table>[ selected_index->index ] = <selected_rows>[ tabix ].
       ENDLOOP.
     ENDIF.
 
