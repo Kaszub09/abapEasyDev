@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZIF_ED_MASS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Mass change &lt;br/&gt;</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CREATE_TABLE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Just use &lt;strong&gt;CREATE DATA TABLE_REF TYPE [your table type</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>FILL_TABLE_WITH_DB_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>You can cast ref to your table type</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>MODIFY_ALV</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Modify ALV before display, e.g. hide some columns etc.</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>MODIFY_DTTI_TARGET</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>You can hide some fields et.c you don&apos;t want to be read from</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SAVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Do not change table order.</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE</CMPNAME>
+     <SCONAME>HIDDEN_COLUMNS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Columns hidden by user - can be interpreted as &apos;don&apos;t change</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE</CMPNAME>
+     <SCONAME>TABLE_REF</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>You should fill &lt;strong&gt;result&lt;/strong&gt; field with change re</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>
