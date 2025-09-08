@@ -22,6 +22,11 @@
       "url": "https://github.com/Kaszub09/abapEasyALV",
       "folder": "/src",
       "files": "/src/**/*.*"
+    },
+        {
+      "url": "https://github.com/Kaszub09/abapDataToTableImport",
+      "folder": "/src",
+      "files": "/src/**/*.*"
     }
   ],
   "syntax": {
