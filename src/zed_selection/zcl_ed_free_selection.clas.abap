@@ -13,10 +13,11 @@ CLASS zcl_ed_free_selection IMPLEMENTATION.
   METHOD zif_ed_selection~display.
 
     DATA:field_ranges TYPE rsds_trange.
+    DATA(as_window) = xsdbool( start_column <> 0 AND start_line <> 0 ).
     CALL FUNCTION 'FREE_SELECTIONS_DIALOG'
       EXPORTING
         selection_id    = sel_id
-        as_window       = xsdbool( start_column <> 0 AND start_line <> 0 )            " X: Selection screen as dialog box
+        as_window       = as_window            " X: Selection screen as dialog box
         start_row       = start_line                " Dialog box: Initial row
         start_col       = start_column                " Dialog box: Initial column
       IMPORTING
