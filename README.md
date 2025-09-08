@@ -9,6 +9,7 @@ Most modules are independent. Some may depend on each other or on https://github
 
 | Module | Description | Info |
 | - | - | - |
+| BDC | Wrapper for easy BDC table building and calling transaction | |
 | Change document | Create change document entry directly from code, without SCD0 and cumbersome function modules. Force tracking changes for data elements not marked as such. | [Examples](src/zed_change_document/zed_change_document_ex/zed_cd_ex_simple_record_change.prog.abap)
 | Datetime | Date and time functions for calculations and parsing/formatting from/to string. Stopwatch. | |
 | Documentation | Display documentation window for various objects. | |
@@ -17,6 +18,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | ICF files | Easy upload/serving of files via ICF | [Screens](docs/icf_files.md)|
 | Images | Easy upload/display of images | |
 | Logger | Custom logging - without relying on standard SAP Application Log (BC-SRV-BAL) (BALLOG) | [Examples](src/zed_logger/zed_logger_examples/zed_logs_ex_simple_use.prog.abap) [Screens](docs/logger.md) |
+| MASS | Generic framework for mass change. Requires https://github.com/Kaszub09/abapDataToTableImport |[Examples](src/zed_mass/zcl_ed_mass_example.clas.abap)|
 | Msg | Message generation from text and sap message structures | |
 | Messages | Send emails / messages to user Business Workplace | |
 | PDF | PDF display | |
@@ -25,7 +27,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | RTTS | RTTS services helpers for struct/table description generation | |
 | Sapscript | Class for mass reading of sapscript texts from STXL; Programs/shortcuts for Sapscripts backup/transport/copy | |
 | Screens | Reusable screens to use directly from code (with PBO/PAI event handler interface ) without creating them every time | [Examples](src/zed_screens/zed_screens_examples/zed_screens_ex_simple_display.prog.abap)|
-| Selection | Wrapper for free selections for easy use | [Examples](src/zed_selection/zed_selection_ex/zed_selection_ex_simple_table.prog.abap) |
+| Selection | Wrapper for free selections for easy use | [Examples](src/zed_mass/zcl_ed_mass_example.clas.abap) |
 | Strings | String manipulation functions | |
 | Tables comparision | Compare records from tables after/before change - detects which rows were deleted/inserted/modified/duplicated. Works with index tables | |
 | Tables conversion | Convert between internal table and Excel file / CSV file / SALV table display | |
