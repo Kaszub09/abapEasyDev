@@ -19,6 +19,7 @@ CLASS zcl_ed_rtts_table DEFINITION PUBLIC FINAL CREATE PUBLIC.
       create_from_field IMPORTING field TYPE t_field_de RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table,
       "! <p class="shorttext synchronized" lang="en">Primary key is taken from table if exists.</p>
       create_from_table IMPORTING table TYPE any RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table,
+      create_from_table_ref IMPORTING table_ref TYPE REF TO data RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table,
       create_from_row IMPORTING row TYPE any RETURNING VALUE(rtts_table) TYPE REF TO zcl_ed_rtts_table.
 
     METHODS:
@@ -65,6 +66,11 @@ CLASS zcl_ed_rtts_table IMPLEMENTATION.
     ENDLOOP.
     rtts_table->table_kind = rtts_table->table_descr->table_kind.
     rtts_table->line_descr = CAST #( rtts_table->table_descr->get_table_line_type( ) ).
+  ENDMETHOD.
+
+  METHOD create_from_table_ref.
+    ASSIGN table_ref->* TO FIELD-SYMBOL(<table>).
+    rtts_table = create_from_table( <table> ).
   ENDMETHOD.
 
   METHOD create_from_row.
