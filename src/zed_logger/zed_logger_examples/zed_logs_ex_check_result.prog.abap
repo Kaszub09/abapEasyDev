@@ -13,7 +13,7 @@ TYPES:
 
 START-OF-SELECTION.
   "Since we don't intend to save log, we don't care about other settings, or category, expiry date etc.
-  DATA(logger) = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false )
+  DATA(logger) = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false )
       context = zcl_ed_logger_factory=>create_context_from_ref( NEW t_context(  ) ) ).
 
   DATA(index) = 1.

@@ -19,6 +19,13 @@
      <LENGTH>24</LENGTH>
     </item>
    </TPOOL>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>CREATE_TEMPORARY_LOGGER</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Shortcut for creating logger &lt;br/&gt; which is not meant to be</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

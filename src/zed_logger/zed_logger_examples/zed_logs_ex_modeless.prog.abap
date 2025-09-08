@@ -30,7 +30,7 @@ CLASS lcl_report IMPLEMENTATION.
     APPEND VALUE #( carrid = 'ABC' connid = '1234' ) TO flights. "Dummy entry in case sflight is empty
     APPEND VALUE #( carrid = 'DEF' connid = '0007' ) TO flights. "Dummy entry in case sflight is empty
 
-    logger = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+    logger = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
     display = zcl_ed_logger_factory=>create_display( ).
 
     set_data( REF #( flights ) ).

@@ -14,12 +14,19 @@ CLASS zcl_ed_logger_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
                               context       TYPE REF TO zcl_ed_logger_context OPTIONAL
                     RETURNING VALUE(logger) TYPE REF TO zif_ed_logger
                     RAISING   zcx_ed_exception,
+      "! <p class="shorttext synchronized" lang="en">Shortcut for creating logger
+      "! <br/> which is not meant to be stored in DB but just displayed in transaction.</p>
+      create_temporary_logger IMPORTING ext_id        TYPE zted_log_external_identifier OPTIONAL
+                                        context       TYPE REF TO zcl_ed_logger_context OPTIONAL
+                              RETURNING VALUE(logger) TYPE REF TO zif_ed_logger
+                              RAISING   zcx_ed_exception,
       "! @parameter settings | <p class="shorttext synchronized">Uses default from <em>create_settings</em> if not supplied</p>
       open_logger IMPORTING uuid          TYPE zted_log_uuid
                             settings      TYPE REF TO zif_ed_logger=>t_settings OPTIONAL
                   RETURNING VALUE(logger) TYPE REF TO zif_ed_logger
                   RAISING   zcx_ed_exception,
-      create_settings IMPORTING autosave                  TYPE abap_bool DEFAULT abap_true
+      create_settings IMPORTING autosave_use              TYPE abap_bool DEFAULT abap_true
+                                autosave_only_if_errors   TYPE abap_bool DEFAULT abap_false
                                 logging_level             TYPE zted_log_detail_level DEFAULT zif_ed_logger=>c_log_level-standard
                                 exception_drilldown_level TYPE i DEFAULT 5
                                 compress_json             TYPE abap_bool DEFAULT abap_true
@@ -33,6 +40,9 @@ CLASS zcl_ed_logger_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
       create_display RETURNING VALUE(display) TYPE REF TO zif_ed_logger_display.
 
   PRIVATE SECTION.
+    CLASS-METHODS:
+      fill_logger_extensions IMPORTING logger_base TYPE REF TO zcl_ed_logger.
+
     CLASS-DATA:
       logger_mock         TYPE REF TO zif_ed_logger,
       logger_display_mock TYPE REF TO zif_ed_logger_display.
@@ -60,7 +70,14 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
     logger_base->msg_creator = NEW #( ).
     logger_base->update_log_metainfo( ).
 
+    fill_logger_extensions( logger_base ).
+
     logger = logger_base.
+  ENDMETHOD.
+
+  METHOD create_temporary_logger.
+    logger = create_logger( ext_id = ext_id context = context
+        settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
   ENDMETHOD.
 
   METHOD open_logger.
@@ -89,8 +106,8 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD create_settings.
-    settings = NEW #( autosave = autosave exception_drilldown_level = exception_drilldown_level logging_level = logging_level
-        compress_json = compress_json
+    settings = NEW #( autosave = VALUE #( use = autosave_use only_if_errors = autosave_only_if_errors )
+        exception_drilldown_level = exception_drilldown_level logging_level = logging_level compress_json = compress_json
         second_con = VALUE #( name = second_conn_name use = second_conn_use commit = second_conn_commit  ) ).
   ENDMETHOD.
 
@@ -104,5 +121,12 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
       RETURN.
     ENDIF.
     display = NEW zcl_ed_logger_display( ).
+  ENDMETHOD.
+
+  METHOD fill_logger_extensions.
+    DATA(ext_msg) = NEW zcl_ed_logger_ext_msg( ).
+    ext_msg->logger = logger_base.
+
+    logger_base->zif_ed_logger~ext-msg = ext_msg.
   ENDMETHOD.
 ENDCLASS.

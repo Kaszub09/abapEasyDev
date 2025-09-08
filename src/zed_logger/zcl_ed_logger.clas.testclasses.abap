@@ -7,7 +7,8 @@ CLASS tcl_saving DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
       log_is_saved_rollback_2nd_conn FOR TESTING,
       no_commit_on_normal_conn FOR TESTING,
       autosave_called FOR TESTING,
-      messages_saved FOR TESTING.
+      messages_saved FOR TESTING,
+      autosave_errors_only FOR TESTING.
 
     DATA:
       subrc TYPE sy-subrc,
@@ -46,7 +47,7 @@ CLASS tcl_saving IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD autosave_called.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_true
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_true
         second_conn_name = zif_ed_logger=>c_2nd_con_name second_conn_commit = abap_true )
         expiry_date = sy-datum ).
 
@@ -74,6 +75,29 @@ CLASS tcl_saving IMPLEMENTATION.
     ROLLBACK WORK.
     cl_abap_unit_assert=>assert_equals( act = cut->hex->hex_to_messages( log_msg-messages_hex ) exp = cut->log-messages ).
   ENDMETHOD.
+
+  METHOD autosave_errors_only.
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_true
+        autosave_only_if_errors = abap_true
+        second_conn_name = zif_ed_logger=>c_2nd_con_name second_conn_commit = abap_true )
+        expiry_date = sy-datum ).
+
+    cut->add( 'MESSAGE' ).
+    ROLLBACK WORK.
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    SELECT SINGLE * FROM zed_logs WHERE uuid = @cut->log-uuid INTO @DATA(log).
+    subrc = sy-subrc.
+    cl_abap_unit_assert=>assert_equals( act = subrc exp = 4 ).
+
+    cut->e( 'MESSAGE' ).
+    ROLLBACK WORK.
+
+    " TODO: variable is assigned but never used (ABAP cleaner)
+    SELECT SINGLE * FROM zed_logs WHERE uuid = @cut->log-uuid INTO @DATA(log2).
+    subrc = sy-subrc.
+    cl_abap_unit_assert=>assert_equals( act = subrc exp = 0 ).
+  ENDMETHOD.
 ENDCLASS.
 
 "=================================================================
@@ -91,7 +115,7 @@ ENDCLASS.
 
 CLASS tcl_log_level IMPLEMENTATION.
   METHOD dont_log_greater_than_level.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false
         logging_level = 3 ) ).
     cut->add( obj = 'MESSAGE' level = 5 ).
 
@@ -99,7 +123,7 @@ CLASS tcl_log_level IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD long_eq_or_lt_than_level.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false
         logging_level = 3 ) ).
     cut->add( obj = 'MESSAGE' level = 2 ).
     cut->add( obj = 'MESSAGE' level = 3 ).
@@ -127,7 +151,7 @@ ENDCLASS.
 
 CLASS tcl_log_msg_type IMPLEMENTATION.
   METHOD setup.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
   ENDMETHOD.
 
   METHOD log_e.
@@ -155,6 +179,7 @@ CLASS tcl_log_msg_type IMPLEMENTATION.
     cl_abap_unit_assert=>assert_true( xsdbool( line_exists( cut->log-messages[ msg_type = space ] ) ) ).
   ENDMETHOD.
 ENDCLASS.
+
 "=================================================================
 "-----------------------------------------------------------------
 CLASS tcl_header_stats DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
@@ -171,7 +196,7 @@ ENDCLASS.
 
 CLASS tcl_header_stats IMPLEMENTATION.
   METHOD setup.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
   ENDMETHOD.
 
   METHOD check_msgs_stats.
@@ -180,8 +205,8 @@ CLASS tcl_header_stats IMPLEMENTATION.
     cut->i( 'MSG' )->i( 'MSG' ).
     cut->w( 'MSG' ).
 
-    cl_abap_unit_assert=>assert_equals( act = cut->log-has_errors exp = abap_true  ).
-    cl_abap_unit_assert=>assert_equals( act = cut->log-has_warnings exp = abap_true  ).
+    cl_abap_unit_assert=>assert_true( cut->log-has_errors ).
+    cl_abap_unit_assert=>assert_true( cut->log-has_warnings ).
     cl_abap_unit_assert=>assert_equals( act = cut->log-messsages_count exp = 8 ).
     cl_abap_unit_assert=>assert_equals( act = lines( cut->log-messages ) exp = 8 ).
 
@@ -193,7 +218,7 @@ CLASS tcl_header_stats IMPLEMENTATION.
 
   METHOD check_metainfo_after_creation.
     cut = zcl_ed_logger_factory=>create_logger( category = 'CATEGORY' ext_id = 'EXT_ID' expiry_date = '99991231'
-      settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+      settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
 
     cl_abap_unit_assert=>assert_not_initial( act = cut->log-uuid ).
     cl_abap_unit_assert=>assert_equals( act = cut->log-category exp = 'CATEGORY' ).
@@ -207,12 +232,12 @@ CLASS tcl_header_stats IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals( act = CONV f( cut->log-created_at_time ) exp = CONV f( sy-uzeit ) tol = '10' ).
   ENDMETHOD.
 ENDCLASS.
+
 "=================================================================
 "-----------------------------------------------------------------
 CLASS tcl_context_log DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
 
   PRIVATE SECTION.
-
     TYPES:
       BEGIN OF t_context_struct,
         object TYPE trobjtype,
@@ -229,11 +254,11 @@ ENDCLASS.
 
 CLASS tcl_context_log IMPLEMENTATION.
   METHOD setup.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
   ENDMETHOD.
 
   METHOD expect_empty_context.
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false ) ).
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
     cl_abap_unit_assert=>assert_false( cut->context->exists( ) ).
 
     TRY.
@@ -247,7 +272,7 @@ CLASS tcl_context_log IMPLEMENTATION.
   METHOD log_context.
     DATA(context_data) = VALUE t_context_struct( object = 'TEST' ).
 
-    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave = abap_false )
+    cut = zcl_ed_logger_factory=>create_logger( settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false )
         context = zcl_ed_logger_factory=>create_context_from_ref( REF #( context_data ) ) ).
     cl_abap_unit_assert=>assert_true( cut->context->exists( ) ).
 
@@ -255,13 +280,14 @@ CLASS tcl_context_log IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals( act = cut->log-messages[ 1 ]-context_values exp = 'TEST' ).
   ENDMETHOD.
 ENDCLASS.
+
 "=================================================================
 "-----------------------------------------------------------------
 CLASS tcl_read DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
 
   PRIVATE SECTION.
     METHODS:
-      save_then_read_log FOR TESTING .
+      save_then_read_log FOR TESTING.
 
     DATA:
       cut   TYPE REF TO zif_ed_logger.
@@ -280,5 +306,4 @@ CLASS tcl_read IMPLEMENTATION.
 
     cl_abap_unit_assert=>assert_equals( act = logger_from_db->log exp = cut->log ).
   ENDMETHOD.
-
 ENDCLASS.

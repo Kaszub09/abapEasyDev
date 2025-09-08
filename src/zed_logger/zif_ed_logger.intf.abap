@@ -39,8 +39,12 @@ INTERFACE zif_ed_logger PUBLIC.
     tt_log TYPE STANDARD TABLE OF t_log WITH EMPTY KEY,
 
     BEGIN OF t_settings,
-      "! Save after adding every log
-      autosave                  TYPE abap_bool,
+      BEGIN OF autosave,
+        "! Save after adding every log
+        use            TYPE abap_bool,
+        "! Autosave only when there are errors
+        only_if_errors TYPE abap_bool,
+      END OF autosave,
       "! Don't add logs below specified level - can be used to run logs normally or with detail if needed
       logging_level             TYPE zted_log_detail_level,
       "! When exception is added, add also previous exceptions up to this level
@@ -114,7 +118,11 @@ INTERFACE zif_ed_logger PUBLIC.
     settings TYPE REF TO t_settings,
     log      TYPE zif_ed_logger=>t_log READ-ONLY,
     "! Use for conversions between string and context data
-    context  TYPE REF TO zcl_ed_logger_context,
+    context  TYPE REF TO zcl_ed_logger_context READ-ONLY,
     "! Use for conversion between messages internal representation and hex in database representation
-    hex      TYPE REF TO zcl_ed_logger_hex.
+    hex      TYPE REF TO zcl_ed_logger_hex READ-ONLY,
+    "! Some additional functions for ease of use
+    BEGIN OF ext READ-ONLY,
+      msg TYPE REF TO zif_ed_logger_ext_msg,
+    END OF ext.
 ENDINTERFACE.

@@ -26,7 +26,7 @@ ENDCLASS.
 
 CLASS zcl_ed_logger IMPLEMENTATION.
   METHOD zif_ed_logger~add.
-    logger = me. 
+    logger = me.
 
     IF settings->logging_level < level.
       RETURN.
@@ -50,7 +50,8 @@ CLASS zcl_ed_logger IMPLEMENTATION.
     ENDLOOP.
 
     update_log_metainfo( ).
-    IF settings->autosave = abap_true.
+    IF settings->autosave-use = abap_true
+    AND ( log-has_errors = abap_true OR settings->autosave-only_if_errors = abap_false ).
       save( ).
     ENDIF.
   ENDMETHOD.
