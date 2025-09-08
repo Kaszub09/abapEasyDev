@@ -90,7 +90,7 @@
       "severity": "Error"
     },
 "check_syntax": {
-  "exclude": ["src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap","src/zed_icf_files/zcl_ed_icf_file_handler.clas.abap"],
+  "exclude": ["src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap","src/zed_icf_files/zcl_ed_icf_file_handler.clas.abap","src/zed_mass/zcl_ed_mass.clas.abap"],
   "severity": "Error"
 },
     "check_transformation_exists": {
