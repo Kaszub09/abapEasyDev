@@ -19,17 +19,26 @@ INTERFACE zif_ed_mass PUBLIC.
     END OF t_table_include,
 
     BEGIN OF t_config,
-      layout_key           TYPE salv_s_layout_key,
-      disable_read_from_db TYPE abap_bool,
+      layout_key                  TYPE salv_s_layout_key,
+      disable_read_from_db        TYPE abap_bool,
+      disable_read_from_clipboard TYPE abap_bool,
+      disable_read_from_file      TYPE abap_bool,
+      header_text                 TYPE string,
       BEGIN OF docu,
         id     TYPE doku_id,
         object TYPE doku_obj,
       END OF docu,
+      BEGIN OF save_button,
+        icon              TYPE iconname,
+        text              TYPE text40,
+        confirmation_text TYPE string,
+      END OF save_button,
     END OF t_config,
 
     tt_hidden_columns TYPE SORTED TABLE OF fieldname WITH UNIQUE KEY table_line.
 
   METHODS:
+    modify_config CHANGING config TYPE t_config,
     "! <p class="shorttext synchronized" lang="en">Just use <strong>CREATE DATA TABLE_REF TYPE [your table type].</strong></p>
     create_table RETURNING VALUE(table_ref) TYPE REF TO data,
     "! <p class="shorttext synchronized" lang="en">Modify ALV before display, e.g. hide some columns etc.</p>
@@ -43,7 +52,4 @@ INTERFACE zif_ed_mass PUBLIC.
     "! @parameter hidden_columns | <p class="shorttext synchronized" lang="en">Columns hidden by user
     "! - can be interpreted as 'don't change those fields'</p>
     save IMPORTING table_ref TYPE REF TO data hidden_columns TYPE tt_hidden_columns.
-
-  DATA:
-    config TYPE t_config READ-ONLY.
 ENDINTERFACE.

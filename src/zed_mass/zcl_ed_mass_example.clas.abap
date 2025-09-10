@@ -5,9 +5,6 @@ CLASS zcl_ed_mass_example DEFINITION PUBLIC FINAL CREATE PUBLIC.
     INTERFACES:
       zif_ed_mass.
 
-    METHODS:
-      constructor.
-
   PRIVATE SECTION.
     TYPES:
       "! It's best to declare  table type upfront.
@@ -23,9 +20,10 @@ CLASS zcl_ed_mass_example DEFINITION PUBLIC FINAL CREATE PUBLIC.
 ENDCLASS.
 
 CLASS zcl_ed_mass_example IMPLEMENTATION.
-  METHOD constructor.
+  METHOD zif_ed_mass~modify_config.
     "Documentation could be directly in class or e.g. in WORD from SO72
-    zif_ed_mass~config = VALUE #( layout_key = VALUE #( report = sy-repid ) docu = VALUE #( id = 'CL' object = 'ZCL_ED_MASS_EXAMPLE' ) ).
+    config-layout_key = VALUE #( report = sy-repid ).
+    config-docu = VALUE #( id = 'CL' object = 'ZCL_ED_MASS_EXAMPLE' ).
   ENDMETHOD.
 
   METHOD zif_ed_mass~fill_table_with_db_data.

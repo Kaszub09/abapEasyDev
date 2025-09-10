@@ -44,10 +44,16 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
       ask_data_loss TYPE abap_bool,
       alv           TYPE REF TO zcl_ea_alv_table,
       mass          TYPE REF TO zif_ed_mass,
-      table         TYPE REF TO data.
+      table         TYPE REF TO data,
+      config        TYPE zif_ed_mass=>t_config.
 ENDCLASS.
 
 CLASS zcl_ed_mass IMPLEMENTATION.
+
+  METHOD zif_ed_screens_handler~pbo_change_header.
+    header = config-header_text.
+  ENDMETHOD.
+
   METHOD zif_ed_screens_handler~pai.
     CASE command.
       WHEN 'SAVE'.
@@ -64,7 +70,10 @@ CLASS zcl_ed_mass IMPLEMENTATION.
 
   METHOD run.
     ask_data_loss = abap_false.
+    config = VALUE #( save_button = VALUE #( icon = '@3W@' text = CONV #( TEXT-f05 ) confirmation_text = CONV #( TEXT-002 ) ) ).
     me->mass = mass.
+
+    mass->modify_config( CHANGING config = config ).
     table = mass->create_table( ).
 
     prepare_alv( ).
@@ -75,7 +84,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
 
   METHOD prepare_alv.
     DATA(container) = zcl_ed_screens=>prepare_next_screen( handler = me with_toolbar = abap_false ).
-    alv = NEW zcl_ea_alv_table( layout_key = mass->config-layout_key container = container ).
+    alv = NEW zcl_ea_alv_table( layout_key = config-layout_key container = container ).
 
     alv->set_data( table ).
 
@@ -91,20 +100,28 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     alv->columns->set_as_exception( column = c_fields-exception ).
 
     "Functions
-    IF mass->config-docu IS NOT INITIAL.
+    IF config-docu IS NOT INITIAL.
       alv->functions->add_function( function = VALUE #( function = c_functions-documentation icon = '@0S@'
           quickinfo = TEXT-f01 text = TEXT-f01 ) ).
     ENDIF.
-    alv->functions->add_function( function = VALUE #( function = c_functions-read_from_clipboard icon = '@2V@'
-        quickinfo = TEXT-f02 text = TEXT-f02 ) ).
-    alv->functions->add_function( function = VALUE #( function = c_functions-read_from_file icon = '@XE@'
-        quickinfo = TEXT-f03 text = TEXT-f03 ) ).
-    IF mass->config-disable_read_from_db = abap_false.
+
+    IF config-disable_read_from_clipboard = abap_false.
+      alv->functions->add_function( function = VALUE #( function = c_functions-read_from_clipboard icon = '@2V@'
+          quickinfo = TEXT-f02 text = TEXT-f02 ) ).
+    ENDIF.
+
+    IF config-disable_read_from_file = abap_false.
+      alv->functions->add_function( function = VALUE #( function = c_functions-read_from_file icon = '@XE@'
+          quickinfo = TEXT-f03 text = TEXT-f03 ) ).
+    ENDIF.
+
+    IF config-disable_read_from_db = abap_false.
       alv->functions->add_function( function = VALUE #( function = c_functions-read_from_db icon = '@3W@'
           quickinfo = TEXT-f04 text = TEXT-f04 ) ).
     ENDIF.
-    alv->functions->add_function( function = VALUE #( function = c_functions-save icon = '@2L@'
-        quickinfo = TEXT-f05 text = TEXT-f05 ) ).
+
+    alv->functions->add_function( function = VALUE #( function = c_functions-save icon = config-save_button-icon
+        quickinfo = config-save_button-text text = config-save_button-text ) ).
 
     mass->modify_alv( alv ).
   ENDMETHOD.
@@ -112,7 +129,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
   METHOD on_added_function.
     CASE e_ucomm.
       WHEN c_functions-documentation.
-        zcl_ed_docu=>show_alt( id = mass->config-docu-id object = mass->config-docu-object ).
+        zcl_ed_docu=>show_alt( id = config-docu-id object = config-docu-object ).
 
       WHEN c_functions-read_from_db.
         mass->fill_table_with_db_data( table ).
@@ -163,7 +180,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     ENDIF.
 
     DATA(target) = zcl_dtti_target_factory=>create_from_ref( table ).
-    "target->remove_field( c_fields-success ).
+    target->remove_field( c_fields-success ).
     target->remove_field( c_fields-msg ).
     target->remove_field( c_fields-logger ).
     target->remove_field( c_fields-color ).
@@ -180,6 +197,8 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     ASSIGN table->* TO FIELD-SYMBOL(<table>).
     ASSIGN target_table->* TO FIELD-SYMBOL(<target_table>).
     <table> = CORRESPONDING #( <target_table> ).
+
+    alv->refresh( ).
   ENDMETHOD.
 
   METHOD command_save.
@@ -235,7 +254,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    IF NOT zcl_ed_popup=>yes_no( question = TEXT-002 ).
+    IF NOT zcl_ed_popup=>yes_no( config-save_button-confirmation_text ).
       RETURN.
     ENDIF.
 
