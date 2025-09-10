@@ -1,5 +1,5 @@
 "! <p class="shorttext synchronized">Simple popups</p>
-"! <br/>TAGS: display; popup; question; user; confirm</p>
+"! <br/>TAGS: display; popup; question; user; confirm
 CLASS zcl_ed_popup DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
