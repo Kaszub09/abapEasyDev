@@ -33,7 +33,8 @@ INTERFACE zif_ed_selection PUBLIC.
             RETURNING VALUE(user_confirmed) TYPE abap_bool
             RAISING   zcx_ed_exception,
     "! <p class="shorttext synchronized" lang="en">Get all selections as single where clause with aliases if supplied.</p>
-    get_as_where_clause RETURNING VALUE(where) TYPE string.
+    "! @parameter add_aliases | <p class="shorttext synchronized">Adds alias (or table name if alias is not found ) to the field.</p>
+    get_as_where_clause IMPORTING add_aliases TYPE abap_bool DEFAULT abap_true RETURNING VALUE(where) TYPE string.
 
   DATA:
     "! Updated only after user confirms.

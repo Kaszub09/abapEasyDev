@@ -29,6 +29,12 @@
      <LANGU>E</LANGU>
      <DESCRIPT>User clicked confirmed, otherwise cancelled selection</DESCRIPT>
     </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_AS_WHERE_CLAUSE</CMPNAME>
+     <SCONAME>ADD_ALIASES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Adds alias (or table name if alias is not found ) to the fie</DESCRIPT>
+    </SEOSUBCOTX>
    </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>

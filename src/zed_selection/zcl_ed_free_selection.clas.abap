@@ -78,7 +78,7 @@ CLASS zcl_ed_free_selection IMPLEMENTATION.
 
     CALL FUNCTION 'F4_CONV_SELOPT_TO_WHERECLAUSE'
       EXPORTING
-        gen_alias_names = 'X'
+        gen_alias_names = add_aliases
       IMPORTING
         where_clause    = where
       TABLES
