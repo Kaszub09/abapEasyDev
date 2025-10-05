@@ -27,7 +27,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | RTTS | RTTS services helpers for struct/table description generation | |
 | Sapscript | Class for mass reading of sapscript texts from STXL; Programs/shortcuts for Sapscripts backup/transport/copy | |
 | Screens | Reusable screens to use directly from code (with PBO/PAI event handler interface ) without creating them every time | [Examples](src/zed_screens/zed_screens_examples/zed_screens_ex_simple_display.prog.abap)|
-| Selection | Wrapper for free selections for easy use | [Examples](src/zed_mass/zcl_ed_mass_example.clas.abap) |
+| Selection | Wrapper for free selections for easy use | [Examples](src/zed_selection/zed_selection_ex/zed_selection_ex_fields.prog.abap) |
 | Strings | String manipulation functions | |
 | Tables comparision | Compare records from tables after/before change - detects which rows were deleted/inserted/modified/duplicated. Works with index tables | |
 | Tables conversion | Convert between internal table and Excel file / CSV file / SALV table display | |
