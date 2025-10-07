@@ -5,9 +5,9 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
       zif_ed_screens_handler.
 
     METHODS:
-      run IMPORTING mass TYPE REF TO zif_ed_mass.
-
-  PROTECTED SECTION.
+      "! @parameter table_ref | <p class="shorttext synchronized" lang="en">Can be used to initialize with data,
+      "! should be same type as returned by ZIF_ED_MASS~CREATE_TABLE.</p>
+      run IMPORTING mass TYPE REF TO zif_ed_mass table_ref TYPE REF TO data OPTIONAL.
 
   PRIVATE SECTION.
     CONSTANTS:
@@ -49,7 +49,6 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
 ENDCLASS.
 
 CLASS zcl_ed_mass IMPLEMENTATION.
-
   METHOD zif_ed_screens_handler~pbo_change_header.
     header = config-header_text.
   ENDMETHOD.
@@ -74,7 +73,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     me->mass = mass.
 
     mass->modify_config( CHANGING config = config ).
-    table = mass->create_table( ).
+    table = COND #( WHEN table_ref IS BOUND THEN table_ref ELSE mass->create_table( ) ).
 
     prepare_alv( ).
     alv->display_data( it_toolbar_excluding = VALUE #( ( cl_gui_alv_grid=>mc_fc_info ) ( cl_gui_alv_grid=>mc_fc_graph )
