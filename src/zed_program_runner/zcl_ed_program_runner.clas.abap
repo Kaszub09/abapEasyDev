@@ -112,6 +112,9 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
         sequence = COND #( WHEN sort->up = abap_true THEN if_salv_c_sort=>sort_up
                            WHEN sort->down = abap_true THEN if_salv_c_sort=>sort_down
                            ELSE if_salv_c_sort=>sort_none ) ).
+      IF sort->subtot = abap_true AND sort->expa = abap_true.
+        converted-salv->get_sorts( )->set_compressed_subtotal( sort->fieldname ).
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
