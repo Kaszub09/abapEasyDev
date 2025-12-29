@@ -94,7 +94,7 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
       CATCH cx_root INTO DATA(cx_root).
         "^At least try to restore CD function-group if messed with earlier
         force_cd->clear_force_cd( force_marker = force_cd_on_all_fields table_name = tablename ).
-        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_longtext( ).
+        RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = cx_root->get_text( ).
 
     ENDTRY.
   ENDMETHOD.
