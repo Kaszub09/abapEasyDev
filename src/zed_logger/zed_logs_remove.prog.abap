@@ -22,13 +22,17 @@ SELECT-OPTIONS:
     s_has_e FOR zed_logs-has_errors.
 SELECTION-SCREEN END OF BLOCK b01.
 
+SELECTION-SCREEN BEGIN OF BLOCK b02 WITH FRAME TITLE TEXT-s02.
+PARAMETERS:
+    p_pack_s TYPE i DEFAULT 1000.
+SELECTION-SCREEN END OF BLOCK b02.
+
 INITIALIZATION.
   IF sy-batch = abap_false.
     DATA(container) = NEW cl_gui_docking_container( repid = sy-repid dynnr = '1000' ratio = 25 side = cl_gui_docking_container=>dock_at_top   ).
     SELECT COUNT( * ) AS count FROM zed_logs INTO @DATA(log_count).
-
     "Add about 492 from header row entry + about 28 from msg row info for better estimate
-    SELECT SUM( log_size + 520 ) FROM zed_logs_msg INTO @DATA(log_size_b).
+    SELECT SUM( CAST( ( log_size + 520 ) AS FLTP )  ) FROM zed_logs_msg INTO @DATA(log_size_b).
     DATA(log_size_kb) = round( val = CONV decfloat34( log_size_b ) / 1024 dec = 3 ).
     DATA(avg_log_size_kb) = COND decfloat34( WHEN log_count = 0 THEN 0 ELSE round( val = log_size_kb / log_count dec = 3 ) ).
   ENDIF.
@@ -36,7 +40,7 @@ INITIALIZATION.
 AT SELECTION-SCREEN OUTPUT.
   IF sy-batch = abap_false.
     cl_abap_browser=>show_html( container = container html_string = |<body><h4>Log count: { log_count
-      }</h4><h4 style="margin:0px";>Estimated log size (KB): { log_size_kb } </h4><h5>Average ( KB ): { avg_log_size_kb }</h5></body>|  ).
+      }</h4><h4 style="margin:0px";>Estimated log size (KB): { log_size_kb NUMBER = USER } </h4><h5>Average ( KB ): { avg_log_size_kb }</h5></body>|  ).
   ENDIF.
 
 START-OF-SELECTION.
@@ -47,21 +51,20 @@ START-OF-SELECTION.
       AND messsages_count IN @s_msg_c AND has_warnings IN @s_has_w AND has_errors IN @s_has_e
   INTO TABLE @DATA(uuid_tab).
 
-  "Remove in packages of 1000 in case range table is too large
+  "Remove in packages in case range table is too large
   DATA uuid_range TYPE RANGE OF zed_logs-uuid.
   LOOP AT uuid_tab REFERENCE INTO DATA(uuid).
+    DATA(index) = sy-tabix.
     APPEND VALUE #( sign = 'I' option = 'EQ' low = uuid->uuid ) TO uuid_range.
-    IF lines( uuid_range ) > 1000.
+    IF lines( uuid_range ) >= p_pack_s OR index = lines( uuid_tab ).
+      cl_progress_indicator=>progress_indicate( i_text = TEXT-002 i_msgv1 = index i_msgv2 = lines( uuid_tab )
+        i_output_immediately = abap_true i_processed = index i_total = lines( uuid_tab ) ).
+
       DELETE FROM zed_logs_msg WHERE uuid IN @uuid_range.
       DELETE FROM zed_logs WHERE uuid IN @uuid_range.
+      COMMIT WORK.
       CLEAR: uuid_range.
     ENDIF.
   ENDLOOP.
 
-  "Need to check otherwise could end up removing all
-  IF lines( uuid_range ) > 0.
-    DELETE FROM zed_logs_msg WHERE uuid IN @uuid_range.
-    DELETE FROM zed_logs WHERE uuid IN @uuid_range.
-  ENDIF.
-  COMMIT WORK AND WAIT.
   MESSAGE zcl_ed_msg=>get( text = TEXT-001 v1 = lines( uuid_tab ) ) TYPE 'S'.

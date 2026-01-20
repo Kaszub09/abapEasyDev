@@ -20,6 +20,12 @@
     </item>
     <item>
      <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Removing &amp;1 out of &amp;2...</ENTRY>
+     <LENGTH>44</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
      <KEY>S01</KEY>
      <ENTRY>Selection criteria</ENTRY>
      <LENGTH>18</LENGTH>
@@ -27,8 +33,8 @@
     <item>
      <ID>I</ID>
      <KEY>S02</KEY>
-     <ENTRY>Statistics</ENTRY>
-     <LENGTH>10</LENGTH>
+     <ENTRY>Settings</ENTRY>
+     <LENGTH>18</LENGTH>
     </item>
     <item>
      <ID>R</ID>
@@ -37,15 +43,9 @@
     </item>
     <item>
      <ID>S</ID>
-     <KEY>P_LOGCOU</KEY>
-     <ENTRY>Log count</ENTRY>
-     <LENGTH>17</LENGTH>
-    </item>
-    <item>
-     <ID>S</ID>
-     <KEY>P_MSGSKB</KEY>
-     <ENTRY>Estimated messages size (KB)</ENTRY>
-     <LENGTH>36</LENGTH>
+     <KEY>P_PACK_S</KEY>
+     <ENTRY>Remove in packages with size =</ENTRY>
+     <LENGTH>38</LENGTH>
     </item>
     <item>
      <ID>S</ID>
