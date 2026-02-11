@@ -20,6 +20,19 @@ CLASS zcl_ed_logger_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
                                         context       TYPE REF TO zcl_ed_logger_context OPTIONAL
                               RETURNING VALUE(logger) TYPE REF TO zif_ed_logger
                               RAISING   zcx_ed_exception,
+      "! <p class="shorttext synchronized" lang="en">Creates logger based on configuration from ZED_LOGGER_CONF table.</p>
+      "! Transaction ZED_LOGGER_CONFIG.
+      "! <br/>If logger is deactivated, empty implementation is returned - you can still make all the calls
+      "! without checking if logger is bound, they just don't do anything and shouldn't impact performance much.
+      "!
+      "! @parameter category | <p class="shorttext synchronized" lang="en">Will identify entry in config table.</p>
+      "! @parameter logger | <p class="shorttext synchronized" lang="en">Empty implementation if entry is deactivated.</p>
+      "! @raising zcx_ed_exception | <p class="shorttext synchronized" lang="en">Raised if entry is not found in config table.</p>
+      create_logger_from_config IMPORTING category      TYPE zted_log_category
+                                          ext_id        TYPE zted_log_external_identifier OPTIONAL
+                                          context       TYPE REF TO zcl_ed_logger_context OPTIONAL
+                                RETURNING VALUE(logger) TYPE REF TO zif_ed_logger
+                                RAISING   zcx_ed_exception,
       "! @parameter settings | <p class="shorttext synchronized">Uses default from <em>create_settings</em> if not supplied</p>
       open_logger IMPORTING uuid          TYPE zted_log_uuid
                             settings      TYPE REF TO zif_ed_logger=>t_settings OPTIONAL
@@ -80,6 +93,29 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
         settings = zcl_ed_logger_factory=>create_settings( autosave_use = abap_false ) ).
   ENDMETHOD.
 
+  METHOD create_logger_from_config.
+    SELECT SINGLE * FROM zed_logger_conf WHERE category = @category INTO @DATA(config).
+    IF sy-subrc <> 0.
+      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |Config for category '{ category }' not found in zed_logger_conf.|.
+    ENDIF.
+
+    IF config-activate = abap_true.
+      logger = create_logger( settings = create_settings( autosave_use = config-autosave_use
+                                                          autosave_only_if_errors = config-autosave_only_if_errors
+                                                          logging_level = config-logging_level )
+                              category = category
+                              ext_id = ext_id
+                              expiry_date = CONV #( sy-datum + config-days_till_expiration )
+                              context = context ).
+    ELSE.
+      DATA(logger_base) = NEW zcl_ed_logger_empty( ).
+      logger_base->zif_ed_logger~hex = NEW #( ).
+      logger_base->zif_ed_logger~settings = create_settings( ).
+      logger_base->zif_ed_logger~context = COND #( WHEN context IS BOUND THEN context ELSE zcl_ed_logger_context=>create_empty( ) ).
+      logger = logger_base.
+    ENDIF.
+  ENDMETHOD.
+
   METHOD open_logger.
     IF logger_mock IS BOUND.
       logger = logger_mock.
@@ -129,4 +165,6 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
 
     logger_base->zif_ed_logger~ext-msg = ext_msg.
   ENDMETHOD.
+
+
 ENDCLASS.

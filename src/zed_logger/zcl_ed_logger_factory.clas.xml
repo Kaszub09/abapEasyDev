@@ -21,11 +21,36 @@
    </TPOOL>
    <DESCRIPTIONS>
     <SEOCOMPOTX>
+     <CMPNAME>CREATE_LOGGER_FROM_CONFIG</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Creates logger based on configuration from ZED_LOGGER_CONF t</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
      <CMPNAME>CREATE_TEMPORARY_LOGGER</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Shortcut for creating logger &lt;br/&gt; which is not meant to be</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_LOGGER_FROM_CONFIG</CMPNAME>
+     <SCONAME>CATEGORY</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Will identify entry in config table.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_LOGGER_FROM_CONFIG</CMPNAME>
+     <SCONAME>LOGGER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Empty implementation if entry is deactivated.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_LOGGER_FROM_CONFIG</CMPNAME>
+     <SCONAME>ZCX_ED_EXCEPTION</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Raised if entry is not found in config table.</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
   </asx:values>
  </asx:abap>
 </abapGit>
