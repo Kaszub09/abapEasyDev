@@ -100,7 +100,7 @@ CLASS zcl_ed_sapscript_text IMPLEMENTATION.
 
   METHOD get_texts_tab.
     DATA(selection_filter) = cl_shdb_seltab=>combine_seltabs( it_named_seltabs = VALUE #(
-    ( name = 'OBJECTS' dref = REF #( objects )  ) ( name = 'IDS' dref = REF #( ids )  ) ( name = 'LANGS' dref = REF #( langs )  ) )
+    ( name = 'TDOBJECT' dref = REF #( objects )  ) ( name = 'TDNAME' dref = REF #( ids )  ) ( name = 'TDSPRAS' dref = REF #( langs )  ) )
     iv_client_field = 'MANDT' ).
 
     DATA names TYPE tt_name.
