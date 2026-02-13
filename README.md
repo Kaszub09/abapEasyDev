@@ -1,6 +1,8 @@
 # abapEasyDev
 Easy ABAP Development
 
+Also checkout https://github.com/Kaszub09/abapEasyDevDesign for ABAP design examples!
+
 ## Installation
 via https://github.com/abapGit/abapGit
 
