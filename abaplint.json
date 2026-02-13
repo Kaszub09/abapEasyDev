@@ -389,7 +389,7 @@
       "severity": "Error"
     },
     "parser_error": {
-      "exclude": [],
+      "exclude": ["src/zed_logger/zed_logs_remove.prog.abap"],
       "severity": "Error"
     },
     "parser_missing_space": {
