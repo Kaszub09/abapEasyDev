@@ -95,11 +95,7 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
 
   METHOD create_logger_from_config.
     SELECT SINGLE * FROM zed_logger_conf WHERE category = @category INTO @DATA(config).
-    IF sy-subrc <> 0.
-      RAISE EXCEPTION TYPE zcx_ed_exception EXPORTING custom_message = |Config for category '{ category }' not found in zed_logger_conf.|.
-    ENDIF.
-
-    IF config-activate = abap_true.
+    IF sy-subrc = 0 AND config-activate = abap_true.
       logger = create_logger( settings = create_settings( autosave_use = config-autosave_use
                                                           autosave_only_if_errors = config-autosave_only_if_errors
                                                           logging_level = config-logging_level )
