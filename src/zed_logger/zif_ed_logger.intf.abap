@@ -111,7 +111,11 @@ INTERFACE zif_ed_logger PUBLIC.
       RAISING   zcx_ed_exception,
     save RETURNING VALUE(logger) TYPE REF TO zif_ed_logger,
     "! <p class="shorttext synchronized" lang="en">Useful, if you e.g. use log to store and display check during document validation etc.</p>
-    clear_all_logs.
+    clear_all_logs RETURNING VALUE(logger) TYPE REF TO zif_ed_logger,
+    change_header IMPORTING category            TYPE REF TO zted_log_category OPTIONAL
+                            external_identifier TYPE REF TO zted_log_external_identifier OPTIONAL
+                            expiry_date         TYPE REF TO zted_log_expiry_date OPTIONAL
+                  RETURNING VALUE(logger)       TYPE REF TO zif_ed_logger.
 
   DATA:
     "! Can be changed any time

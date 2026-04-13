@@ -73,6 +73,8 @@ CLASS zcl_ed_logger IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_ed_logger~save.
+    logger = me.
+
     DATA(log_db) = CORRESPONDING zed_logs( log ).
     DATA(log_msg_db) = VALUE zed_logs_msg( uuid = log-uuid messages_hex = hex->messages_to_hex( log-messages ) ).
     log_msg_db-log_size = xstrlen( log_msg_db-messages_hex ).
@@ -89,7 +91,6 @@ CLASS zcl_ed_logger IMPLEMENTATION.
       MODIFY zed_logs FROM @log_db.
       MODIFY zed_logs_msg FROM @log_msg_db.
     ENDIF.
-    logger = me.
   ENDMETHOD.
 
   METHOD update_log_metainfo.
@@ -105,7 +106,23 @@ CLASS zcl_ed_logger IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_ed_logger~clear_all_logs.
+    logger = me.
+
     FREE: log-messages.
     update_log_metainfo( ).
+  ENDMETHOD.
+
+  METHOD zif_ed_logger~change_header.
+    logger = me.
+
+    IF category IS BOUND.
+      log-category = category->*.
+    ENDIF.
+    IF external_identifier IS BOUND.
+      log-external_identifier = external_identifier->*.
+    ENDIF.
+    IF category IS BOUND.
+      log-expiry_date = expiry_date->*.
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.

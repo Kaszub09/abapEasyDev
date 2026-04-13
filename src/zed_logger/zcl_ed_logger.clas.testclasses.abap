@@ -307,3 +307,44 @@ CLASS tcl_read IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals( act = logger_from_db->log exp = cut->log ).
   ENDMETHOD.
 ENDCLASS.
+
+"=================================================================
+"-----------------------------------------------------------------
+CLASS tcl_change_header DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
+
+  PRIVATE SECTION.
+    METHODS:
+      change_ext_id FOR TESTING,
+      change_all FOR TESTING .
+
+    DATA:
+      subrc TYPE sy-subrc,
+      cut   TYPE REF TO zif_ed_logger.
+ENDCLASS.
+
+CLASS tcl_change_header IMPLEMENTATION.
+  METHOD change_ext_id.
+    DATA(ext_id_before) = CONV  zted_log_external_identifier( |EXT ID BEFORE| ).
+    DATA(ext_id_after) = CONV  zted_log_external_identifier(  |EXT ID AFTER| ).
+    DATA(category) = CONV zted_log_category( |CATEGORY UNCHANGED| ).
+    cut = zcl_ed_logger_factory=>create_logger( category = category ext_id = ext_id_before ).
+
+    cut->change_header( external_identifier = REF #( ext_id_after ) ).
+
+    cl_abap_unit_assert=>assert_equals( act = cut->log-external_identifier exp = ext_id_after ).
+    cl_abap_unit_assert=>assert_equals( act = cut->log-category exp = category ).
+  ENDMETHOD.
+
+  METHOD change_all.
+    DATA(expiry_date) = CONV  zted_log_expiry_date( |12121212| ).
+    DATA(ext_id) = CONV  zted_log_external_identifier(  |EXT ID| ).
+    DATA(category) = CONV zted_log_category( |CATEGORY| ).
+    cut = zcl_ed_logger_factory=>create_logger( category = 'XXXXXX' ext_id = 'XXXXX' expiry_date = '00000000' ).
+
+    cut->change_header( expiry_date = REF #( expiry_date ) category = REF #( category ) external_identifier = REF #( ext_id ) ).
+
+    cl_abap_unit_assert=>assert_equals( act = cut->log-external_identifier exp = ext_id ).
+    cl_abap_unit_assert=>assert_equals( act = cut->log-expiry_date exp = expiry_date ).
+    cl_abap_unit_assert=>assert_equals( act = cut->log-category exp = category ).
+  ENDMETHOD.
+ENDCLASS.
