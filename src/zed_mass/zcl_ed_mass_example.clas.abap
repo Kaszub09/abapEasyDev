@@ -89,15 +89,15 @@ CLASS zcl_ed_mass_example IMPLEMENTATION.
           "You can even attach detailed log if necessary
           row->result-logger = zcl_ed_logger_factory=>create_temporary_logger( ).
           row->result-logger->e( 'Error' )->w( 'Warning' )->e( 'Some other error' ).
-          row->result-success = xsdbool( NOT row->result-logger->ext-msg->has_errors( ) ).
-          row->result-msg = |Details in log... { row->result-logger->ext-msg->get_errors_as_string( length_restriction = 128 ) }|.
+          row->result-success = xsdbool( NOT row->result-logger->ext->msg->has_errors( ) ).
+          row->result-msg = |Details in log... { row->result-logger->ext->msg->get_errors_as_string( length_restriction = 128 ) }|.
 
         WHEN 7.
           "You can even attach detailed log if necessary
           row->result-logger = zcl_ed_logger_factory=>create_temporary_logger( ).
           row->result-logger->w( 'Warning' )->w( 'Some other warnig' ).
-          row->result-success = xsdbool( NOT row->result-logger->ext-msg->has_errors( ) ).
-          row->result-msg = |Details in log... { row->result-logger->ext-msg->get_as_string( length_restriction = 128 ) }|.
+          row->result-success = xsdbool( NOT row->result-logger->ext->msg->has_errors( ) ).
+          row->result-msg = |Details in log... { row->result-logger->ext->msg->get_as_string( length_restriction = 128 ) }|.
       ENDCASE.
     ENDLOOP.
   ENDMETHOD.
