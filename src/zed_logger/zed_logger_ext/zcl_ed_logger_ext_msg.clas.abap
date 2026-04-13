@@ -1,8 +1,11 @@
-CLASS zcl_ed_logger_ext_msg DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIENDS zcl_ed_logger_factory.
+CLASS zcl_ed_logger_ext_msg DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIENDS zcl_ed_logger_ext_factory.
 
   PUBLIC SECTION.
     INTERFACES:
       zif_ed_logger_ext_msg.
+
+    METHODS:
+      constructor IMPORTING logger TYPE REF TO zif_ed_logger.
 
   PRIVATE SECTION.
     DATA:
@@ -10,6 +13,10 @@ CLASS zcl_ed_logger_ext_msg DEFINITION PUBLIC FINAL CREATE PRIVATE GLOBAL FRIEND
 ENDCLASS.
 
 CLASS zcl_ed_logger_ext_msg IMPLEMENTATION.
+  METHOD constructor.
+    me->logger = logger.
+  ENDMETHOD.
+
   METHOD zif_ed_logger_ext_msg~has_warnings.
     has_warnings = xsdbool( logger->log-has_warnings = abap_true ).
   ENDMETHOD.
@@ -46,6 +53,4 @@ CLASS zcl_ed_logger_ext_msg IMPLEMENTATION.
   METHOD zif_ed_logger_ext_msg~get_errors_as_string.
     errors_string = zif_ed_logger_ext_msg~get_as_string( length_restriction = length_restriction msgty_filter = 'E' ).
   ENDMETHOD.
-
-
 ENDCLASS.

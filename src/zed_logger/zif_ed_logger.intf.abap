@@ -73,7 +73,7 @@ INTERFACE zif_ed_logger PUBLIC.
     BEGIN OF c_line,
       eq     TYPE  string VALUE '================================================================================================================================',
       hyphen TYPE  string VALUE '--------------------------------------------------------------------------------------------------------------------------------',
-      under  TYPE  string VALUE '--------------------------------------------------------------------------------------------------------------------------------',
+      under  TYPE  string VALUE '________________________________________________________________________________________________________________________________',
     END OF c_line.
 
   METHODS:
@@ -125,8 +125,6 @@ INTERFACE zif_ed_logger PUBLIC.
     context  TYPE REF TO zcl_ed_logger_context READ-ONLY,
     "! Use for conversion between messages internal representation and hex in database representation
     hex      TYPE REF TO zcl_ed_logger_hex READ-ONLY,
-    "! Some additional functions for ease of use
-    BEGIN OF ext READ-ONLY,
-      msg TYPE REF TO zif_ed_logger_ext_msg,
-    END OF ext.
+    "! Some additional functions for ease of use. Check package ZED_LOGGER_EXT
+    ext      TYPE REF TO zif_ed_logger_ext.
 ENDINTERFACE.

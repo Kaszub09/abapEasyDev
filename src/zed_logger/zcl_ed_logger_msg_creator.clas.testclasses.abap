@@ -308,7 +308,7 @@ CLASS tcl_sap_msg IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD log_bdcmsgcoll.
-    DATA(msgs) = cut->get_msgs( settings = settings obj = VALUE bdcmsgcoll( msgtyp = c_msgty msgid = c_msgid msgnr = c_msgid
+    DATA(msgs) = cut->get_msgs( settings = settings obj = VALUE bdcmsgcoll( msgtyp = c_msgty msgid = c_msgid msgnr = c_msgnr
       msgv1 = c_p1 msgv2 = c_p2 msgv3 = c_p3 msgv4 = c_p4 ) msg_type = space ).
 
     cl_abap_unit_assert=>assert_true( xsdbool( lines( msgs ) = 1 ) ).

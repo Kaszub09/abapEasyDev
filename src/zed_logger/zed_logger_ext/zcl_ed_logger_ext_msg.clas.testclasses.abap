@@ -27,59 +27,59 @@ CLASS tcl_ext_msg IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD has_warnings.
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_warnings( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_warnings( ) ).
 
     log->e( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_warnings( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_warnings( ) ).
 
     log->w( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_true( log->ext-msg->has_warnings( ) ).
+    cl_abap_unit_assert=>assert_true( log->ext->msg->has_warnings( ) ).
 
     log->e( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_true( log->ext-msg->has_warnings( ) ).
+    cl_abap_unit_assert=>assert_true( log->ext->msg->has_warnings( ) ).
   ENDMETHOD.
 
   METHOD has_errors.
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_errors( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_errors( ) ).
 
     log->w( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_errors( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_errors( ) ).
 
     log->e( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_true( log->ext-msg->has_errors( ) ).
+    cl_abap_unit_assert=>assert_true( log->ext->msg->has_errors( ) ).
 
     log->s( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_true( log->ext-msg->has_errors( ) ).
+    cl_abap_unit_assert=>assert_true( log->ext->msg->has_errors( ) ).
   ENDMETHOD.
 
   METHOD has_warnings_no_errors.
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_warnings_no_errors( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_warnings_no_errors( ) ).
 
     log->s( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_warnings_no_errors( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_warnings_no_errors( ) ).
 
     log->w( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_true( log->ext-msg->has_warnings_no_errors( ) ).
+    cl_abap_unit_assert=>assert_true( log->ext->msg->has_warnings_no_errors( ) ).
 
     log->e( c_msg-msg2 ).
-    cl_abap_unit_assert=>assert_false( log->ext-msg->has_warnings_no_errors( ) ).
+    cl_abap_unit_assert=>assert_false( log->ext->msg->has_warnings_no_errors( ) ).
   ENDMETHOD.
 
   METHOD get_as_string.
     log->s( c_msg-msg1 )->s( c_msg-msg2 ).
     DATA(exp) = |{ c_msg-msg1 } { c_msg-msg2 }|.
 
-    cl_abap_unit_assert=>assert_equals( act = log->ext-msg->get_as_string( ) exp = exp ).
-    cl_abap_unit_assert=>assert_equals( act = log->ext-msg->get_as_string( length_restriction = log->ext-msg->c_max_alv_line_length )
-        exp = substring( val = exp len = log->ext-msg->c_max_alv_line_length ) ).
+    cl_abap_unit_assert=>assert_equals( act = log->ext->msg->get_as_string( ) exp = exp ).
+    cl_abap_unit_assert=>assert_equals( act = log->ext->msg->get_as_string( length_restriction = log->ext->msg->c_max_alv_line_length )
+        exp = substring( val = exp len = log->ext->msg->c_max_alv_line_length ) ).
   ENDMETHOD.
 
   METHOD get_errors_as_string.
     log->e( c_msg-msg1 )->w( c_msg-msg2 )->s( c_msg-msg1 ).
     DATA(exp) = |{ c_msg-msg1 }|.
 
-    cl_abap_unit_assert=>assert_equals( act = log->ext-msg->get_errors_as_string( ) exp = exp ).
-    cl_abap_unit_assert=>assert_equals( act = log->ext-msg->get_errors_as_string( length_restriction = log->ext-msg->c_max_alv_line_length )
-        exp = substring( val = exp len = log->ext-msg->c_max_alv_line_length ) ).
+    cl_abap_unit_assert=>assert_equals( act = log->ext->msg->get_errors_as_string( ) exp = exp ).
+    cl_abap_unit_assert=>assert_equals( act = log->ext->msg->get_errors_as_string( length_restriction = log->ext->msg->c_max_alv_line_length )
+        exp = substring( val = exp len = log->ext->msg->c_max_alv_line_length ) ).
   ENDMETHOD.
 ENDCLASS.

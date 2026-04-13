@@ -53,13 +53,10 @@ CLASS zcl_ed_logger_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
       create_display RETURNING VALUE(display) TYPE REF TO zif_ed_logger_display.
 
   PRIVATE SECTION.
-    CLASS-METHODS:
-      fill_logger_extensions IMPORTING logger_base TYPE REF TO zcl_ed_logger.
-
     CLASS-DATA:
       logger_mock         TYPE REF TO zif_ed_logger,
       logger_display_mock TYPE REF TO zif_ed_logger_display.
-ENDCLASS.
+  ENDCLASS.
 
 CLASS zcl_ed_logger_factory IMPLEMENTATION.
   METHOD create_logger.
@@ -83,7 +80,7 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
     logger_base->msg_creator = NEW #( ).
     logger_base->update_log_metainfo( ).
 
-    fill_logger_extensions( logger_base ).
+    logger_base->zif_ed_logger~ext = zcl_ed_logger_ext_factory=>create( logger_base ).
 
     logger = logger_base.
   ENDMETHOD.
@@ -154,13 +151,4 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
     ENDIF.
     display = NEW zcl_ed_logger_display( ).
   ENDMETHOD.
-
-  METHOD fill_logger_extensions.
-    DATA(ext_msg) = NEW zcl_ed_logger_ext_msg( ).
-    ext_msg->logger = logger_base.
-
-    logger_base->zif_ed_logger~ext-msg = ext_msg.
-  ENDMETHOD.
-
-
 ENDCLASS.
