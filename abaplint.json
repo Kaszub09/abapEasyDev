@@ -90,7 +90,8 @@
       "severity": "Error"
     },
 "check_syntax": {
-  "exclude": ["src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap","src/zed_icf_files/zcl_ed_icf_file_handler.clas.abap","src/zed_mass/zcl_ed_mass.clas.abap","src/zed_logger/zed_logs_remove.prog.abap"],
+  "exclude": ["src/zed_tables_conversion/zcl_ed_table_conversion_excel.clas.abap","src/zed_icf_files/zcl_ed_icf_file_handler.clas.abap","src/zed_mass/zcl_ed_mass.clas.abap",
+    "src/zed_logger/zed_logs_remove.prog.abap","src/zed_logger/zed_logger_display/zcl_ed_logger_display_modal.clas.abap","src/zed_logger/zed_logger_display/zcl_ed_logger_display_nonmodal.clas.abap"],
   "severity": "Error"
 },
     "check_transformation_exists": {
