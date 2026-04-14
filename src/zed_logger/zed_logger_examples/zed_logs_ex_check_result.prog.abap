@@ -34,8 +34,9 @@ START-OF-SELECTION.
 
     IF logger->log-has_errors = abap_true.
       MESSAGE 'Correct errors' TYPE 'I'.
-      "Preferably in popup so user can move and see delivery data
-      zcl_ed_logger_factory=>create_display( )->display_log( logger = logger start_column = 1 start_line = 1  ).
+      "Preferably in popup so user can move and see delivery data. Could also use nonmodal when you have actual screen to display.
+      logger->ext->display->get_display_modal( )->display( ).
+
     ELSE.
       MESSAGE 'All good' TYPE 'I'.
     ENDIF.

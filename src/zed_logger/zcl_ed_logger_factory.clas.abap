@@ -49,14 +49,12 @@ CLASS zcl_ed_logger_factory DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
                       RETURNING VALUE(settings)           TYPE REF TO zif_ed_logger=>t_settings,
       "! @parameter sample_data | <p class="shorttext synchronized" lang="en">Must be simple structure with dictionary data elements.</p>
       create_context_from_ref IMPORTING sample_data    TYPE REF TO data
-                              RETURNING VALUE(context) TYPE REF TO zcl_ed_logger_context,
-      create_display RETURNING VALUE(display) TYPE REF TO zif_ed_logger_display.
+                              RETURNING VALUE(context) TYPE REF TO zcl_ed_logger_context.
 
   PRIVATE SECTION.
     CLASS-DATA:
-      logger_mock         TYPE REF TO zif_ed_logger,
-      logger_display_mock TYPE REF TO zif_ed_logger_display.
-  ENDCLASS.
+      logger_mock         TYPE REF TO zif_ed_logger.
+ENDCLASS.
 
 CLASS zcl_ed_logger_factory IMPLEMENTATION.
   METHOD create_logger.
@@ -142,13 +140,5 @@ CLASS zcl_ed_logger_factory IMPLEMENTATION.
 
   METHOD create_context_from_ref.
     context = zcl_ed_logger_context=>create_from_ref( sample_data ).
-  ENDMETHOD.
-
-  METHOD create_display.
-    IF logger_display_mock IS BOUND.
-      display = logger_display_mock.
-      RETURN.
-    ENDIF.
-    display = NEW zcl_ed_logger_display( ).
   ENDMETHOD.
 ENDCLASS.

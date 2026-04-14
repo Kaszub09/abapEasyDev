@@ -31,4 +31,7 @@ logger->add( bapiret2_tab ).
 logger->i( logger->c_line-eq )->i( 'Some message bewteen eq signs to catch attenton' )->i( logger->c_line-eq ).
 
 "You can display log in full screen or popup
-zcl_ed_logger_factory=>create_display( )->display_log( logger = logger start_column = 1 start_line = 1 ).
+logger->ext->display->get_display_modal( )->display( ).
+
+"Alternative display method (also container and nonmodal):
+"zcl_ed_logger_display_factory=>create_modal( )->set_settings( logger = logger )->display( ).

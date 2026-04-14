@@ -9,6 +9,7 @@ CLASS zcl_ed_logger_ext_factory IMPLEMENTATION.
   METHOD create.
     DATA(ext_obj) = NEW zcl_ed_logger_ext( ).
     ext_obj->zif_ed_logger_ext~msg = NEW zcl_ed_logger_ext_msg( logger ).
+    ext_obj->zif_ed_logger_ext~display = NEW zcl_ed_logger_ext_display( logger ).
     ext = ext_obj.
   ENDMETHOD.
 ENDCLASS.

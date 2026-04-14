@@ -1,9 +1,18 @@
-CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_ed_logger_factory.
+CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
+  GLOBAL FRIENDS zcl_ed_logger_display_cont zcl_ed_logger_display_nonmodal zcl_ed_logger_display_modal.
 
-  PUBLIC SECTION.
-    INTERFACES:
-      zif_ed_logger_display,
-      zif_ed_screens_handler.
+  PROTECTED SECTION.
+    METHODS:
+      reset_state,
+      create_alv IMPORTING container TYPE REF TO cl_gui_container,
+      "! <p class="shorttext synchronized" lang="en">Loggers from all parameters are combined. Empty parameters are skipped.
+      "! <br/> So e.g. using only logger displays only it, using logger+selection display logger+all logs found by selection.</p>
+      "! @parameter messages_only | <p class="shorttext synchronized" lang="en">Can be true only if one logger is found!</p>
+      set_settings_base IMPORTING logger        TYPE REF TO zif_ed_logger OPTIONAL
+                                  logs          TYPE zif_ed_logger_display=>tt_log OPTIONAL
+                                  selection     TYPE zif_ed_logger_display=>t_selection OPTIONAL
+                                  messages_only TYPE abap_bool DEFAULT abap_true,
+      refresh_base.
 
   PRIVATE SECTION.
     TYPES:
@@ -27,22 +36,19 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
       tt_header TYPE STANDARD TABLE OF t_header WITH EMPTY KEY.
 
     METHODS:
-      reset_state,
-      select_headers IMPORTING sel TYPE zif_ed_logger_display~t_selection,
+      select_headers IMPORTING sel TYPE zif_ed_logger_display=>t_selection,
       create_headers_alv IMPORTING container TYPE REF TO cl_gui_container,
       create_messages_alv IMPORTING container TYPE REF TO cl_gui_container,
 
       display_messages IMPORTING logger TYPE REF TO zif_ed_logger,
       init_messages_display_tab IMPORTING logger TYPE REF TO zif_ed_logger RETURNING VALUE(display_tab) TYPE REF TO data,
       fill_messages_display_tab IMPORTING context TYPE REF TO zcl_ed_logger_context tab TYPE zif_ed_logger=>tt_log_message display_tab TYPE REF TO data,
-      set_messages_filter IMPORTING msg_type TYPE msgty,
-      refresh_single_log_display.
+      set_messages_filter IMPORTING msg_type TYPE msgty.
 
     METHODS:
       on_header_double_click FOR EVENT double_click OF cl_salv_events_table IMPORTING row column,
       on_header_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
-      on_msg_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
-      on_close FOR EVENT close OF cl_gui_dialogbox_container.
+      on_msg_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column.
 
     DATA:
       BEGIN OF headers,
@@ -53,97 +59,56 @@ CLASS zcl_ed_logger_display DEFINITION PUBLIC CREATE PRIVATE GLOBAL FRIENDS zcl_
         tab         TYPE zif_ed_logger=>tt_log_message,
         alv         TYPE REF TO zcl_ea_salv_table,
         display_tab TYPE REF TO data,
-      END OF messages,
-      BEGIN OF single_log,
-        is                      TYPE abap_bool,
-        logger                  TYPE REF TO zif_ed_logger,
-        is_modeless_window_open TYPE abap_bool,
-      END OF single_log,
-      container      TYPE REF TO cl_gui_container,
-      first_time_pbo TYPE abap_bool.
+        logger      TYPE REF TO zif_ed_logger,
+      END OF messages.
+
+    "--------------------------------------------------
+    TYPES:
+      BEGIN OF t_log_obj,
+        uuid   TYPE zted_log_uuid,
+        logger TYPE REF TO zif_ed_logger,
+      END OF t_log_obj,
+      tt_log_obj TYPE SORTED TABLE OF t_log_obj WITH UNIQUE KEY uuid.
+
+    METHODS:
+      add_logger IMPORTING logger TYPE REF TO zif_ed_logger,
+      get_logger IMPORTING uuid TYPE zted_log_uuid RETURNING VALUE(logger) TYPE REF TO zif_ed_logger.
+
+    DATA:
+      is_log_single TYPE abap_bool,
+      logs_obj      TYPE tt_log_obj,
+      messages_only TYPE abap_bool.
 ENDCLASS.
 
-CLASS zcl_ed_logger_display IMPLEMENTATION.
+CLASS zcl_ed_logger_display_base IMPLEMENTATION.
+  METHOD set_settings_base.
+    reset_state( ).
 
-  METHOD zif_ed_logger_display~display_log.
-    reset_state( ). "In case there are leftovers from modeless call.
-    single_log = VALUE #( is = abap_true logger = logger is_modeless_window_open = abap_false ).
-    APPEND CORRESPONDING #( single_log-logger->log ) TO headers-tab.
-
-    zcl_ed_screens=>prepare_next_screen( handler = me create_container = abap_false ).
-    zcl_ed_screens=>call_next_screen( start_column = start_column end_column = end_column start_line = start_line end_line = end_line ).
-    reset_state( ). "Free memory etc.
-  ENDMETHOD.
-
-  METHOD zif_ed_logger_display~display_log_in_modeless.
-    "Modeless window for this logger is already opened, so just refresh. Otherwise, create from scratch.
-    IF single_log-is = abap_true AND single_log-is_modeless_window_open = abap_true AND single_log-logger = logger.
-      refresh_single_log_display( ).
-      RETURN.
+    IF logger IS BOUND.
+      add_logger( logger ).
     ENDIF.
 
-    reset_state( ).
-    single_log = VALUE #( is = abap_true logger = logger is_modeless_window_open = abap_true ).
-    APPEND CORRESPONDING #( single_log-logger->log ) TO headers-tab.
+    LOOP AT logs INTO DATA(log).
+      add_logger( log ).
+    ENDLOOP.
 
-    container = NEW cl_gui_dialogbox_container( width = width height = height ).
-    SET HANDLER on_close FOR CAST cl_gui_dialogbox_container( container ).
-
-    zif_ed_screens_handler~pbo( sy-dynnr ).
-  ENDMETHOD.
-
-  METHOD zif_ed_logger_display~display_logs.
-    reset_state( ).
-    single_log = VALUE #( is = abap_false is_modeless_window_open = abap_false ).
-    select_headers( sel ).
-
-    zcl_ed_screens=>prepare_next_screen( handler = me create_container = abap_false ).
-    zcl_ed_screens=>call_next_screen( start_column = start_column end_column = end_column start_line = start_line end_line = end_line ).
-    reset_state( ).
-  ENDMETHOD.
-
-  METHOD zif_ed_logger_display~is_modeless_window_open.
-    is_open = single_log-is_modeless_window_open.
-  ENDMETHOD.
-
-
-  METHOD zif_ed_screens_handler~pai.
-    CASE command.
-      WHEN zif_ed_screens_handler~c_status_commands-back OR zif_ed_screens_handler~c_status_commands-cancel
-      OR zif_ed_screens_handler~c_status_commands-exit.
-        LEAVE TO SCREEN 0.
-    ENDCASE.
-  ENDMETHOD.
-
-  METHOD zif_ed_screens_handler~pbo.
-    IF first_time_pbo = abap_false.
-      RETURN.
+    IF selection IS NOT INITIAL.
+      select_headers( selection ).
     ENDIF.
-    first_time_pbo = abap_false.
 
-    IF single_log-is = abap_false OR single_log-is_modeless_window_open = abap_false.
-      "Must create there, otherwise modal popup will be empty
-      container = zcl_ed_screens=>get_screen_container( ).
-    ENDIF.
-    DATA(splitter) = NEW cl_gui_splitter_container( parent = container rows = 2 columns = 1 ).
-
-    create_headers_alv( splitter->get_container( row = 1 column = 1 ) ).
-    create_messages_alv( splitter->get_container( row = 2 column = 1 ) ).
-
-    IF single_log-is = abap_true.
-      "Display messages immediately
-      splitter->set_row_height( id = 1 height = 16 ).
-      display_messages( single_log-logger ).
+    me->messages_only = messages_only.
+    IF lines( headers-tab ) <> 1.
+      me->messages_only = abap_false.
     ENDIF.
   ENDMETHOD.
 
   METHOD reset_state.
-    IF container IS BOUND.
-      container->free( ).
-    ENDIF.
-    CLEAR: container, headers, single_log.
-    first_time_pbo = abap_true.
-    single_log-is = abap_false.
+    FREE:logs_obj, headers, messages.
+  ENDMETHOD.
+
+  METHOD add_logger.
+    INSERT VALUE #( uuid = logger->log-uuid logger = logger ) INTO TABLE logs_obj.
+    APPEND CORRESPONDING #( logger->log ) TO headers-tab.
   ENDMETHOD.
 
   METHOD select_headers.
@@ -154,7 +119,19 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
          AND is_batch IN @sel-is_batch AND last_change_by IN @sel-last_change_by
          AND last_change_date IN @sel-last_change_date AND last_change_time IN @sel-last_change_time
          AND messsages_count IN @sel-messsages_count AND has_warnings IN @sel-has_warnings AND has_errors IN @sel-has_errors
-    INTO CORRESPONDING FIELDS OF TABLE @headers-tab.
+    APPENDING CORRESPONDING FIELDS OF TABLE @headers-tab.
+  ENDMETHOD.
+
+  METHOD create_alv.
+    IF messages_only = abap_true.
+      create_messages_alv( container ).
+      display_messages( get_logger( headers-tab[ 1 ]-uuid ) ).
+
+    ELSE.
+      DATA(splitter) = NEW cl_gui_splitter_container( parent = container rows = 2 columns = 1 ).
+      create_headers_alv( splitter->get_container( row = 1 column = 1 ) ).
+      create_messages_alv( splitter->get_container( row = 2 column = 1 ) ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD create_headers_alv.
@@ -190,6 +167,7 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD display_messages.
+    messages-logger = logger.
     messages-tab = CORRESPONDING #( logger->log-messages ).
     messages-display_tab = init_messages_display_tab( logger ).
     fill_messages_display_tab( context = logger->context tab = messages-tab display_tab = messages-display_tab ).
@@ -258,22 +236,12 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
     messages-alv->alv_table->refresh( refresh_mode = if_salv_c_refresh=>full ).
   ENDMETHOD.
 
-  METHOD refresh_single_log_display.
-    CLEAR: headers.
-    APPEND CORRESPONDING #( single_log-logger->log ) TO headers-tab.
-    IF headers-alv IS BOUND.
-      headers-alv->alv_table->refresh( refresh_mode = if_salv_c_refresh=>full ).
-    ENDIF.
-    display_messages( single_log-logger ).
-  ENDMETHOD.
-
   METHOD on_header_double_click.
     IF row = 0.
       RETURN.
     ENDIF.
 
-    display_messages( COND #( WHEN single_log-is = abap_true THEN single_log-logger
-                                  ELSE zcl_ed_logger_factory=>open_logger( uuid = headers-tab[ row ]-uuid ) ) ).
+    display_messages( get_logger( headers-tab[ row ]-uuid ) ).
   ENDMETHOD.
 
   METHOD on_header_link_click.
@@ -283,8 +251,8 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
 
     CASE column.
       WHEN 'UUID' OR 'HAS_ERRORS' OR 'HAS_WARNINGS'.
-        display_messages( COND #( WHEN single_log-is = abap_true THEN single_log-logger
-                                      ELSE zcl_ed_logger_factory=>open_logger( uuid = headers-tab[ row ]-uuid ) ) ).
+        display_messages( get_logger( headers-tab[ row ]-uuid ) ).
+
         CASE column.
           WHEN 'HAS_ERRORS'. set_messages_filter( 'E' ).
           WHEN 'HAS_WARNINGS'. set_messages_filter( 'W' ).
@@ -316,11 +284,23 @@ CLASS zcl_ed_logger_display IMPLEMENTATION.
           cl_demo_output=>display( selected->msg ).
         ENDIF.
     ENDCASE.
-
   ENDMETHOD.
 
-  METHOD on_close.
-    reset_state( ).
+  METHOD get_logger.
+    logger = VALUE #( logs_obj[ uuid = uuid ]-logger OPTIONAL ).
+    IF logger IS NOT BOUND.
+      logger = zcl_ed_logger_factory=>open_logger( uuid ).
+      add_logger( logger ).
+    ENDIF.
   ENDMETHOD.
 
+  METHOD refresh_base.
+    IF headers-alv IS BOUND.
+      headers-alv->alv_table->refresh( ).
+    ENDIF.
+
+    IF messages-alv IS BOUND AND messages-logger IS BOUND.
+      display_messages( messages-logger ).
+    ENDIF.
+  ENDMETHOD.
 ENDCLASS.

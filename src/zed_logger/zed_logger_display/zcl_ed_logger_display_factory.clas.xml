@@ -3,14 +3,22 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>ZCL_ED_LOGGER_DISPLAY</CLSNAME>
+    <CLSNAME>ZCL_ED_LOGGER_DISPLAY_FACTORY</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Logger - display</DESCRIPT>
+    <DESCRIPT>Display logger in container</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Logs</ENTRY>
+     <LENGTH>14</LENGTH>
+    </item>
+   </TPOOL>
   </asx:values>
  </asx:abap>
 </abapGit>

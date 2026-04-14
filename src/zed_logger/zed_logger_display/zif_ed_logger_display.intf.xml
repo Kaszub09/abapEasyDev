@@ -10,13 +10,6 @@
     <STATE>1</STATE>
     <UNICODE>X</UNICODE>
    </VSEOINTERF>
-   <DESCRIPTIONS>
-    <SEOCOMPOTX>
-     <CMPNAME>DISPLAY_LOG_IN_MODELESS</CMPNAME>
-     <LANGU>E</LANGU>
-     <DESCRIPT>If modeless window exists and logger is the same as previous</DESCRIPT>
-    </SEOCOMPOTX>
-   </DESCRIPTIONS>
   </asx:values>
  </asx:abap>
 </abapGit>

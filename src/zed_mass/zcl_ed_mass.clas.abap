@@ -157,7 +157,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
 
     ASSIGN COMPONENT c_fields-logger OF STRUCTURE <table>[ e_row_id-index ] TO <logger>.
     IF <logger> IS BOUND.
-      zcl_ed_logger_factory=>create_display( )->display_log( logger = <logger> start_column = 1 start_line = 1 ).
+      <logger>->ext->display->get_display_modal( abap_false )->display( ).
     ENDIF.
   ENDMETHOD.
 

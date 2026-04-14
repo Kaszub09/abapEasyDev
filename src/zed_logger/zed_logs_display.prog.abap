@@ -26,20 +26,21 @@ SELECT-OPTIONS:
 SELECTION-SCREEN END OF BLOCK b01.
 
 START-OF-SELECTION.
-  DATA(display) = zcl_ed_logger_factory=>create_display( ).
-  display->display_logs( VALUE #(
-    uuid = s_uuid[]
-    category = s_cat[]
-    external_identifier = s_ext_id[]
-    created_by = s_cr_by[]
-    created_at_date = s_cr_dat[]
-    created_at_time = s_cr_tim[]
-    transaction = s_tcode[]
-    expiry_date = s_expdat[]
-    is_batch = s_is_bat[]
-    last_change_by = s_lc_by[]
-    last_change_date = s_lc_dat[]
-    last_change_time = s_lc_tim[]
-    messsages_count = s_msg_c[]
-    has_warnings = s_has_w[]
-    has_errors = s_has_e[] ) ).
+  zcl_ed_logger_display_factory=>create_modal(
+    )->set_settings( messages_only = abap_false
+                     selection = VALUE #(  uuid = s_uuid[]
+                                  category = s_cat[]
+                                  external_identifier = s_ext_id[]
+                                  created_by = s_cr_by[]
+                                  created_at_date = s_cr_dat[]
+                                  created_at_time = s_cr_tim[]
+                                  transaction = s_tcode[]
+                                  expiry_date = s_expdat[]
+                                  is_batch = s_is_bat[]
+                                  last_change_by = s_lc_by[]
+                                  last_change_date = s_lc_dat[]
+                                  last_change_time = s_lc_tim[]
+                                  messsages_count = s_msg_c[]
+                                  has_warnings = s_has_w[]
+                                  has_errors = s_has_e[] )
+   )->display( start_column = 0 start_line = 0 ).
