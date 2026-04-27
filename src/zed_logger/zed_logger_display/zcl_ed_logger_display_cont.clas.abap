@@ -8,7 +8,7 @@ CLASS zcl_ed_logger_display_cont DEFINITION PUBLIC INHERITING FROM zcl_ed_logger
       "! @parameter messages_only | <p class="shorttext synchronized" lang="en">Can be true only if one logger is found!</p>
       set_settings IMPORTING logger         TYPE REF TO zif_ed_logger OPTIONAL
                              logs           TYPE zif_ed_logger_display=>tt_log OPTIONAL
-                             selection      TYPE zif_ed_logger_display=>t_selection OPTIONAL
+                             selection      TYPE REF TO zif_ed_logger_display=>t_selection OPTIONAL
                              messages_only  TYPE abap_bool DEFAULT abap_true
                    RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_cont,
       refresh RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_cont.

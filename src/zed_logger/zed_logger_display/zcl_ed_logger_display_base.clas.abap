@@ -10,7 +10,7 @@ CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
       "! @parameter messages_only | <p class="shorttext synchronized" lang="en">Can be true only if one logger is found!</p>
       set_settings_base IMPORTING logger        TYPE REF TO zif_ed_logger OPTIONAL
                                   logs          TYPE zif_ed_logger_display=>tt_log OPTIONAL
-                                  selection     TYPE zif_ed_logger_display=>t_selection OPTIONAL
+                                  selection     TYPE REF TO zif_ed_logger_display=>t_selection OPTIONAL
                                   messages_only TYPE abap_bool DEFAULT abap_true,
       refresh_base.
 
@@ -92,8 +92,8 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
       add_logger( log ).
     ENDLOOP.
 
-    IF selection IS NOT INITIAL.
-      select_headers( selection ).
+    IF selection IS BOUND.
+      select_headers( selection->* ).
     ENDIF.
 
     me->messages_only = messages_only.

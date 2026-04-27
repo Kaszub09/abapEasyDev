@@ -28,7 +28,7 @@ SELECTION-SCREEN END OF BLOCK b01.
 START-OF-SELECTION.
   zcl_ed_logger_display_factory=>create_modal(
     )->set_settings( messages_only = abap_false
-                     selection = VALUE #(  uuid = s_uuid[]
+                     selection = NEW #(  uuid = s_uuid[]
                                   category = s_cat[]
                                   external_identifier = s_ext_id[]
                                   created_by = s_cr_by[]

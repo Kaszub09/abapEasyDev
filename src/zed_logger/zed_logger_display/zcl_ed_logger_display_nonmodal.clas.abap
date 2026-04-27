@@ -8,21 +8,21 @@ CLASS zcl_ed_logger_display_nonmodal DEFINITION PUBLIC INHERITING FROM zcl_ed_lo
       "! @parameter messages_only | <p class="shorttext synchronized" lang="en">Can be true only if one logger is found!</p>
       set_settings IMPORTING logger         TYPE REF TO zif_ed_logger OPTIONAL
                              logs           TYPE zif_ed_logger_display=>tt_log OPTIONAL
-                             selection      TYPE zif_ed_logger_display=>t_selection OPTIONAL
+                             selection      TYPE REF TO      zif_ed_logger_display=>t_selection OPTIONAL
                              messages_only  TYPE abap_bool DEFAULT abap_true
                    RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_nonmodal,
       refresh RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_nonmodal.
 
     METHODS:
       "! @parameter style | <p class="shorttext synchronized" lang="en">E.g CL_GUI_CONTROL=>WS_THICKFRAME</p>
-      display IMPORTING caption TYPE csequence DEFAULT TEXT-001
-                        style   TYPE i DEFAULT 0
-                        metric  TYPE i DEFAULT cl_gui_dialogbox_container=>metric_pixel
-                        width   TYPE i DEFAULT 1280
-                        height  TYPE i DEFAULT 720
-                        top     TYPE i DEFAULT 1
-                        left    TYPE i DEFAULT 1
-                        RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_nonmodal,
+      display IMPORTING caption        TYPE csequence DEFAULT TEXT-001
+                        style          TYPE i DEFAULT 0
+                        metric         TYPE i DEFAULT cl_gui_dialogbox_container=>metric_pixel
+                        width          TYPE i DEFAULT 1280
+                        height         TYPE i DEFAULT 720
+                        top            TYPE i DEFAULT 1
+                        left           TYPE i DEFAULT 1
+              RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_nonmodal,
       is_closed RETURNING VALUE(is_container_closed) TYPE abap_bool,
       close RETURNING VALUE(display) TYPE REF TO zcl_ed_logger_display_nonmodal.
 
