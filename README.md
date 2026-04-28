@@ -7,7 +7,7 @@ Also check out https://github.com/Kaszub09/abapEasyDevDesign for ABAP design exa
 via https://github.com/abapGit/abapGit
 
 ## Modules
-Most modules are independent. Some may depend on each other or on https://github.com/Kaszub09/abapEasyALV.
+Most modules are independent. Some may depend on each other or on https://github.com/Kaszub09/abapEasyALV. Config tables use https://github.com/Kaszub09/ZABAP_TABLE_EDIT.
 
 | Module | Description | Info |
 | - | - | - |
