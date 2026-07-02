@@ -49,7 +49,7 @@
       "severity": "Error"
     },
     "avoid_use": {
-      "exclude": ["src/zed_program_runner/zif_ed_program_runner.intf.abap"],
+      "exclude": ["src/zed_program_runner/zif_ed_program_runner.intf.abap","src/zed_sapscript/zcl_ed_text.clas.abap"],
       "severity": "Error",
       "skipQuickFix": false,
       "define": false,
@@ -66,7 +66,7 @@
       "severity": "Error"
     },
     "begin_single_include": {
-      "exclude": [],
+      "exclude": ["src/zed_idocs/zed_idocs_rep_cls.prog.abap"],
       "severity": "Error"
     },
     "call_transaction_authority_check": {
@@ -398,7 +398,7 @@
       "severity": "Error"
     },
     "prefer_returning_to_exporting": {
-      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap"],
+      "exclude": ["src/zed_sapscript/zcl_ed_sapscript_text.clas.abap","src/zed_sapscript/zcl_ed_text.clas.abap"],
       "severity": "Error"
     },
     "prefer_xsdbool": {
