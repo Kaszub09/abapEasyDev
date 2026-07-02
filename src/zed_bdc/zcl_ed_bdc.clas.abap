@@ -13,7 +13,8 @@ CLASS zcl_ed_bdc DEFINITION PUBLIC FINAL CREATE PUBLIC.
         subrc TYPE sy-subrc,
         msgs  TYPE tt_msg,
       END OF t_call_result,
-      t_mode TYPE c LENGTH 1.
+      t_mode   TYPE c LENGTH 1,
+      ttr_fnam TYPE RANGE OF fnam_____4.
 
     CONSTANTS:
       BEGIN OF c_mode,
@@ -28,6 +29,16 @@ CLASS zcl_ed_bdc DEFINITION PUBLIC FINAL CREATE PUBLIC.
         local        TYPE ctu_update VALUE 'L',
       END OF c_update.
 
+    CLASS-METHODS:
+      get_options IMPORTING dismode        TYPE ctu_mode DEFAULT c_mode-show_screen_on_error
+                            updmode        TYPE ctu_update DEFAULT c_update-synchronous
+                            cattmode       TYPE ctu_catt DEFAULT space
+                            defsize        TYPE ctu_defsze DEFAULT abap_false
+                            racommit       TYPE ctu_rafc DEFAULT abap_false
+                            nobinpt        TYPE ctu_nobim DEFAULT abap_false
+                            nobiend        TYPE ctu_noben DEFAULT abap_false
+                  RETURNING VALUE(options) TYPE ctu_params.
+
     METHODS:
       begin_screen IMPORTING program TYPE bdc_prog dynpro TYPE bdc_dynr RETURNING VALUE(self) TYPE REF TO zcl_ed_bdc,
       set_value IMPORTING fnam TYPE fnam_____4 fval TYPE bdc_fval RETURNING VALUE(self) TYPE REF TO zcl_ed_bdc,
@@ -37,14 +48,7 @@ CLASS zcl_ed_bdc DEFINITION PUBLIC FINAL CREATE PUBLIC.
                                  options            TYPE ctu_params
                        RETURNING VALUE(call_result) TYPE t_call_result
                        RAISING   zcx_ed_exception,
-      get_options IMPORTING dismode        TYPE ctu_mode DEFAULT c_mode-show_screen_on_error
-                            updmode        TYPE ctu_update DEFAULT c_update-synchronous
-                            cattmode       TYPE ctu_catt DEFAULT space
-                            defsize        TYPE ctu_defsze DEFAULT abap_false
-                            racommit       TYPE ctu_rafc DEFAULT abap_false
-                            nobinpt        TYPE ctu_nobim DEFAULT abap_false
-                            nobiend        TYPE ctu_noben DEFAULT abap_false
-                  RETURNING VALUE(options) TYPE ctu_params.
+      apply_fnam_filter IMPORTING filter TYPE ttr_fnam.
 
     DATA:
         tab TYPE tt_bdc READ-ONLY.
@@ -83,5 +87,9 @@ CLASS zcl_ed_bdc IMPLEMENTATION.
   METHOD get_options.
     options = VALUE #( dismode = dismode updmode = updmode cattmode = cattmode defsize = defsize
         racommit = racommit nobinpt = nobinpt nobiend = nobiend ).
+  ENDMETHOD.
+
+  METHOD apply_fnam_filter.
+    DELETE tab WHERE NOT fnam IN filter.
   ENDMETHOD.
 ENDCLASS.
