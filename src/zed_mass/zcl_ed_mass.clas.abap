@@ -69,7 +69,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
 
   METHOD run.
     ask_data_loss = abap_false.
-    config = VALUE #( save_button = VALUE #( icon = '@3W@' text = CONV #( TEXT-f05 ) confirmation_text = CONV #( TEXT-002 ) ) ).
+    config = VALUE #( save_button = VALUE #( icon = '@2L@' text = CONV #( TEXT-f05 ) confirmation_text = CONV #( TEXT-002 ) ) ).
     me->mass = mass.
 
     mass->modify_config( CHANGING config = config ).
