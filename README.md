@@ -18,6 +18,7 @@ Most modules are independent. Some may depend on each other or on https://github
 | Encoding | Encoding/decoding between different codepages; base64; |  
 | File explorer | File manipulation on aplication server and on user machine via GUI. File dialogue for file/directory picking. | |
 | ICF files | Easy upload/serving of files via ICF | [Screens](docs/icf_files.md)|
+| iDOC | Report for easy navigation between iDOC stuff (jump from iDOC to partner, type, called funciton module etc. | |
 | Images | Easy upload/display of images | |
 | Logger | Custom logging - without relying on standard SAP Application Log (BC-SRV-BAL) (BALLOG) | [Examples](src/zed_logger/zed_logger_examples/zed_logs_ex_simple_use.prog.abap) [Screens](docs/logger.md) |
 | MASS | Generic framework for mass change. Requires https://github.com/Kaszub09/abapDataToTableImport |[Examples](src/zed_mass/zcl_ed_mass_example.clas.abap)|
