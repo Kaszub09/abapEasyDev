@@ -125,12 +125,15 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
   METHOD create_alv.
     IF messages_only = abap_true.
       create_messages_alv( container ).
-      display_messages( get_logger( headers-tab[ 1 ]-uuid ) ).
 
     ELSE.
       DATA(splitter) = NEW cl_gui_splitter_container( parent = container rows = 2 columns = 1 ).
       create_headers_alv( splitter->get_container( row = 1 column = 1 ) ).
       create_messages_alv( splitter->get_container( row = 2 column = 1 ) ).
+    ENDIF.
+
+    IF lines( headers-tab ) = 1.
+      display_messages( get_logger( headers-tab[ 1 ]-uuid ) ).
     ENDIF.
   ENDMETHOD.
 
