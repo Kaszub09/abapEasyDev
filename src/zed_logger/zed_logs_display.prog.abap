@@ -9,7 +9,7 @@ DATA zed_logs TYPE zed_logs.
 SELECTION-SCREEN BEGIN OF BLOCK b01 WITH FRAME TITLE TEXT-s01.
 SELECT-OPTIONS:
     s_uuid FOR zed_logs-uuid,
-    s_cat FOR zed_logs-category,
+    s_cat FOR zed_logs-category MATCHCODE OBJECT zed_logs_category,
     s_ext_id FOR zed_logs-external_identifier,
     s_cr_by FOR zed_logs-created_by,
     s_cr_dat FOR zed_logs-created_at_date DEFAULT sy-datum SIGN I OPTION EQ,
