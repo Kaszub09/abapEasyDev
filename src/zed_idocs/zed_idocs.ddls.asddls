@@ -10,6 +10,7 @@ define view zed_idocs
 {
   //EDIDC
   docnum,
+  serial,
   docrel,
   status,
   hdr.status_exception_col_value,

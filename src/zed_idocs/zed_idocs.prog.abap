@@ -16,6 +16,7 @@ SELECTION-SCREEN BEGIN OF BLOCK b01 WITH FRAME TITLE TEXT-s01.
 SELECT-OPTIONS:
   s_credat FOR edidc-credat,
   s_docnum FOR edidc-docnum,
+  s_serial FOR edidc-serial,
   s_direct FOR edidc-direct,
   s_idoctp FOR edidc-idoctp,
   s_cimtyp FOR edidc-cimtyp,

@@ -21,11 +21,13 @@ define view zed_idocs_metainfo
                                   and edp21.mesfct = edidc.mesfct
                                   and edp21.test   = edidc.test
   left outer to one join tede2    on tede2.evcode = edp21.evcode
+  left outer to one join tbd52    on tbd52.evcode = edp21.evcode
   left outer to one join ede2t    on  ede2t.evcode = tede2.evcode
                                   and ede2t.langua = $session.system_language
 {
   //EDIDC
   edidc.docnum,
+  edidc.serial,
   edidc.docrel,
   edidc.status,
   //Check IDOC_TREE_CONTROLF01, line 527, before ICON_CREATE
@@ -33,8 +35,8 @@ define view zed_idocs_metainfo
        when stalight.stalight = '2' then '3'
        when stalight.stalight = '3' then '1'
        else '2'
-  end            as status_exception_col_value,
-  teds2.descrp   as stat_descrp,
+  end                                                                   as status_exception_col_value,
+  teds2.descrp                                                          as stat_descrp,
   edidc.doctyp,
   edidc.direct,
   edidc.rcvpor,
@@ -46,7 +48,7 @@ define view zed_idocs_metainfo
   edidc.credat,
   edidc.cretim,
   edidc.mestyp,
-  edimsgt.descrp as mestyp_descrp,
+  edimsgt.descrp                                                        as mestyp_descrp,
   edidc.idoctp,
   edidc.cimtyp,
   edidc.maxsegnum,
@@ -54,7 +56,7 @@ define view zed_idocs_metainfo
   edp21.evcode,
   //TEDE
   tede2.eventt,
-  tede2.evenid   as routid,
+  case when tede2.evenid = '' then tbd52.funcname else tede2.evenid end as routid,
   tede2.eventn,
   tede2.evenxx,
   ede2t.descrp
@@ -82,12 +84,14 @@ left outer to one join edp12    on  edp12.rcvprn = edp13.rcvprn
                                 and edp12.rcvpfc = edp13.rcvpfc
                                 and edp12.mestyp = edp13.mestyp
 left outer to one join tede1    on tede1.evcode = edp12.evcoda
+left outer to one join tbd52    on tbd52.evcode = edp12.evcoda
 left outer to one join ede1t    on  ede1t.evcoda = tede1.evcode
                                 and ede1t.langua = $session.system_language
 
 {
   //EDIDC
   edidc.docnum,
+  edidc.serial,
   edidc.docrel,
   edidc.status,
   //Check IDOC_TREE_CONTROLF01, line 527, before ICON_CREATE
@@ -95,8 +99,8 @@ left outer to one join ede1t    on  ede1t.evcoda = tede1.evcode
        when stalight.stalight = '2' then '3'
        when stalight.stalight = '3' then '1'
        else '2'
-  end            as status_exception_col_value,
-  teds2.descrp   as stat_descrp,
+  end                                                                   as status_exception_col_value,
+  teds2.descrp                                                          as stat_descrp,
   edidc.doctyp,
   edidc.direct,
   edidc.rcvpor,
@@ -108,15 +112,15 @@ left outer to one join ede1t    on  ede1t.evcoda = tede1.evcode
   edidc.credat,
   edidc.cretim,
   edidc.mestyp,
-  edimsgt.descrp as mestyp_descrp,
+  edimsgt.descrp                                                        as mestyp_descrp,
   edidc.idoctp,
   edidc.cimtyp,
   edidc.maxsegnum,
   //EDP21
-  edp12.evcoda   as evcode,
+  edp12.evcoda                                                          as evcode,
   //TEDE
   tede1.eventt,
-  tede1.routid,
+  case when tede1.routid = '' then tbd52.funcname else tede1.routid end as routid,
   tede1.eventn,
   tede1.evenxx,
   ede1t.descrp

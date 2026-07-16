@@ -33,7 +33,7 @@ ENDCLASS.
 CLASS lcl_report IMPLEMENTATION.
   METHOD prepare_report.
     SELECT * FROM zed_idocs
-    WHERE docnum IN @s_docnum AND credat IN @s_credat AND direct IN @s_direct AND idoctp IN @s_idoctp
+    WHERE docnum IN @s_docnum AND serial IN @s_serial AND credat IN @s_credat AND direct IN @s_direct AND idoctp IN @s_idoctp
         AND cimtyp IN @s_cimtyp AND mestyp IN @s_mestyp
     ORDER BY credat DESCENDING, cretim DESCENDING
     INTO CORRESPONDING FIELDS OF TABLE @output
@@ -77,6 +77,8 @@ CLASS lcl_report IMPLEMENTATION.
     columns->set_as_hotspot( 'SNDPOR' ).
     columns->set_as_hotspot( 'SNDPRT' ).
     columns->set_as_hotspot( 'SNDPRN' ).
+
+    columns->set_as_hotspot( 'MESTYP' ).
 
     columns->set_as_hotspot( 'IDOCTP' ).
     columns->set_as_hotspot( 'CIMTYP' ).
@@ -128,6 +130,19 @@ CLASS lcl_report IMPLEMENTATION.
           )->set_value( fnam = 'RS38L-NAME' fval = CONV #( row_ref->routid )
           )->set_code( '=WB_DISPLAY'
           )->call_transaction( tcode = 'SE37' options = zcl_ed_bdc=>get_options( nobinpt = abap_true ) ).
+
+      WHEN 'MESTYP'.
+        IF row_ref->mestyp = space.
+          RETURN.
+        ENDIF.
+        NEW zcl_ed_bdc(
+          )->begin_screen( program = 'SAPMSEDMESTYP' dynpro = '0100'
+          )->set_code( '=SEAR'
+          )->begin_screen( program = 'SAPMSEDMESTYP' dynpro = '0300'
+          )->set_value( fnam = 'EDI_HELP-MESTYP' fval = CONV #( row_ref->mestyp )
+          )->set_value( fnam = COND #( WHEN row_ref->direct = '2' THEN 'EDI_HELP-INCOMING' ELSE 'EDI_HELP-OUTGOING' ) fval = conv #( abap_true )
+          )->set_code( '=CONT'
+          )->call_transaction( tcode = 'WE64' options = zcl_ed_bdc=>get_options( nobinpt = abap_true ) ).
     ENDCASE.
   ENDMETHOD.
 

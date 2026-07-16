@@ -12,11 +12,6 @@
    </PROGDIR>
    <TPOOL>
     <item>
-     <ID>R</ID>
-     <ENTRY>iDOCs</ENTRY>
-     <LENGTH>5</LENGTH>
-    </item>
-    <item>
      <ID>I</ID>
      <KEY>001</KEY>
      <ENTRY>Select row.</ENTRY>
@@ -35,6 +30,23 @@
      <LENGTH>19</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>S01</KEY>
+     <ENTRY>Selection</ENTRY>
+     <LENGTH>19</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>S02</KEY>
+     <ENTRY>Display</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>R</ID>
+     <ENTRY>iDOCs</ENTRY>
+     <LENGTH>5</LENGTH>
+    </item>
+    <item>
      <ID>S</ID>
      <KEY>P_LAYOUT</KEY>
      <ENTRY>.</ENTRY>
@@ -46,18 +58,6 @@
      <KEY>P_ROWNUM</KEY>
      <ENTRY>Number of rows to select</ENTRY>
      <LENGTH>32</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>S01</KEY>
-     <ENTRY>Selection</ENTRY>
-     <LENGTH>19</LENGTH>
-    </item>
-    <item>
-     <ID>I</ID>
-     <KEY>S02</KEY>
-     <ENTRY>Display</ENTRY>
-     <LENGTH>17</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -97,6 +97,13 @@
     <item>
      <ID>S</ID>
      <KEY>S_MESTYP</KEY>
+     <ENTRY>.</ENTRY>
+     <LENGTH>9</LENGTH>
+     <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>S_SERIAL</KEY>
      <ENTRY>.</ENTRY>
      <LENGTH>9</LENGTH>
      <SPLIT>D</SPLIT>
