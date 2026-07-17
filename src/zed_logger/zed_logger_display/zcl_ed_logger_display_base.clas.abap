@@ -35,9 +35,15 @@ CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
       END OF t_header,
       tt_header TYPE STANDARD TABLE OF t_header WITH EMPTY KEY.
 
+    CONSTANTS:
+      BEGIN OF c_functions,
+        refresh TYPE  zcl_ea_salv_table_functions=>t_function VALUE 'ZREFRESH',
+      END OF c_functions.
+
     METHODS:
       select_headers IMPORTING sel TYPE zif_ed_logger_display=>t_selection,
       create_headers_alv IMPORTING container TYPE REF TO cl_gui_container,
+      refresh_headers_colors,
       create_messages_alv IMPORTING container TYPE REF TO cl_gui_container,
 
       display_messages IMPORTING logger TYPE REF TO zif_ed_logger,
@@ -48,7 +54,8 @@ CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
     METHODS:
       on_header_double_click FOR EVENT double_click OF cl_salv_events_table IMPORTING row column,
       on_header_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
-      on_msg_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column.
+      on_msg_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
+      on_added_function FOR EVENT added_function OF zcl_ea_salv_table_functions IMPORTING function.
 
     DATA:
       BEGIN OF headers,
@@ -75,9 +82,10 @@ CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
       get_logger IMPORTING uuid TYPE zted_log_uuid RETURNING VALUE(logger) TYPE REF TO zif_ed_logger.
 
     DATA:
-      is_log_single TYPE abap_bool,
-      logs_obj      TYPE tt_log_obj,
-      messages_only TYPE abap_bool.
+      is_log_single  TYPE abap_bool,
+      logs_obj       TYPE tt_log_obj,
+      messages_only  TYPE abap_bool,
+      last_selection TYPE REF TO zif_ed_logger_display=>t_selection.
 ENDCLASS.
 
 CLASS zcl_ed_logger_display_base IMPLEMENTATION.
@@ -94,6 +102,8 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
 
     IF selection IS BOUND.
       select_headers( selection->* ).
+      last_selection = NEW #( ). "Copy in case REF is lost after display
+      last_selection->* = selection->*.
     ENDIF.
 
     me->messages_only = messages_only.
@@ -103,7 +113,7 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD reset_state.
-    FREE:logs_obj, headers, messages.
+    FREE:logs_obj, headers, messages, last_selection.
   ENDMETHOD.
 
   METHOD add_logger.
@@ -130,6 +140,13 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
       DATA(splitter) = NEW cl_gui_splitter_container( parent = container rows = 2 columns = 1 ).
       create_headers_alv( splitter->get_container( row = 1 column = 1 ) ).
       create_messages_alv( splitter->get_container( row = 2 column = 1 ) ).
+
+      IF last_selection IS BOUND. "Refresh only makes sense if we have selection, so we can check DB for any new logs
+        headers-alv->functions->add_function( function = c_functions-refresh
+            description = VALUE #( icon_id = '@42@' icon_text = TEXT-f01 text = TEXT-f01 ) ).
+        SET HANDLER on_added_function FOR headers-alv->functions.
+        headers-alv->alv_table->refresh( ).
+      ENDIF.
     ENDIF.
 
     IF lines( headers-tab ) = 1.
@@ -151,14 +168,7 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
     SET HANDLER on_header_double_click FOR headers-alv->alv_table->get_event( ).
     SET HANDLER on_header_link_click FOR headers-alv->alv_table->get_event( ).
 
-    LOOP AT headers-tab REFERENCE INTO DATA(header).
-      IF header->has_errors = abap_true.
-        APPEND VALUE #( fname = 'HAS_ERRORS' color = VALUE #( col = 6 ) ) TO header->color.
-      ENDIF.
-      IF header->has_warnings = abap_true.
-        APPEND VALUE #( fname = 'HAS_WARNINGS' color = VALUE #( col = 7 ) ) TO header->color.
-      ENDIF.
-    ENDLOOP.
+    refresh_headers_colors( ).
 
     headers-alv->columns->set_optimize( ).
     headers-alv->display_data( ).
@@ -306,4 +316,26 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
       display_messages( messages-logger ).
     ENDIF.
   ENDMETHOD.
+
+  METHOD on_added_function.
+    CASE function.
+      WHEN c_functions-refresh.
+        CLEAR: headers-tab.
+        select_headers( last_selection->* ).
+        refresh_headers_colors( ).
+        headers-alv->alv_table->refresh( s_stable = VALUE #( row = abap_true col = abap_true ) refresh_mode = if_salv_c_refresh=>full ).
+    ENDCASE.
+  ENDMETHOD.
+
+  METHOD refresh_headers_colors.
+    LOOP AT headers-tab REFERENCE INTO DATA(header).
+      IF header->has_errors = abap_true.
+        APPEND VALUE #( fname = 'HAS_ERRORS' color = VALUE #( col = 6 ) ) TO header->color.
+      ENDIF.
+      IF header->has_warnings = abap_true.
+        APPEND VALUE #( fname = 'HAS_WARNINGS' color = VALUE #( col = 7 ) ) TO header->color.
+      ENDIF.
+    ENDLOOP.
+  ENDMETHOD.
+
 ENDCLASS.
