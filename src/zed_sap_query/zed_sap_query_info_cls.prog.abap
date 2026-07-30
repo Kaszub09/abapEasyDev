@@ -93,8 +93,9 @@ CLASS lcl_report IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD fill_transaction_info.
-    DATA: query_param TYPE RANGE OF tcode.
+    IF lines( output ) = 0. RETURN. ENDIF.
 
+    DATA: query_param TYPE RANGE OF tcode.
     query_param = VALUE #( FOR <query> IN output ( sign = 'I' option = 'CP' low = |*{ <query>-query }*| ) ).
 
     SELECT FROM tstcp
