@@ -5,12 +5,32 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_ED_MASS_EXAMPLE</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Example class for mass change</DESCRIPT>
+    <DESCRIPT>Example class for mass change. Run ZED_MASS with this class.</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>X</UNICODE>
    </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>Show msg</ENTRY>
+     <LENGTH>18</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+     <ENTRY>Do you want to save?</ENTRY>
+     <LENGTH>40</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>003</KEY>
+     <ENTRY>Select at least one row.</ENTRY>
+     <LENGTH>48</LENGTH>
+    </item>
+   </TPOOL>
    <LINES>
     <TLINE>
      <TDFORMAT>U1</TDFORMAT>

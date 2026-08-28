@@ -2,7 +2,8 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES:
-      zif_ed_screens_handler.
+      zif_ed_screens_handler,
+      zif_ed_mass_callback.
 
     METHODS:
       "! @parameter table_ref | <p class="shorttext synchronized" lang="en">Can be used to initialize with data,
@@ -11,14 +12,9 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
 
   PRIVATE SECTION.
     CONSTANTS:
-      BEGIN OF c_functions,
-        documentation       TYPE ui_func VALUE 'DOCUMENTATION',
-        read_from_clipboard TYPE ui_func VALUE 'READ_FROM_CLIPBOARD',
-        read_from_file      TYPE ui_func VALUE 'READ_FROM_FILE',
-        read_from_db        TYPE ui_func VALUE 'READ_FROM_DB',
-        save                TYPE ui_func VALUE 'SAVE',
-      END OF c_functions,
       BEGIN OF c_fields,
+        result    TYPE fieldname VALUE 'RESULT',
+        mass_int  TYPE fieldname VALUE 'MASS_INT',
         success   TYPE fieldname VALUE 'RESULT-SUCCESS',
         msg       TYPE fieldname VALUE 'RESULT-MSG',
         logger    TYPE fieldname VALUE 'RESULT-LOGGER',
@@ -35,10 +31,7 @@ CLASS zcl_ed_mass DEFINITION PUBLIC CREATE PUBLIC.
     METHODS:
       prepare_alv,
       read_dtti IMPORTING source TYPE REF TO zif_dtti_source,
-      confirm_data_loss RETURNING VALUE(confirmed) TYPE abap_bool,
-      confirm_save RETURNING VALUE(confirmed) TYPE abap_bool,
-      command_save,
-      update_rows_int_info IMPORTING table TYPE REF TO data.
+      confirm_data_loss RETURNING VALUE(confirmed) TYPE abap_bool.
 
     DATA:
       ask_data_loss TYPE abap_bool,
@@ -56,7 +49,7 @@ CLASS zcl_ed_mass IMPLEMENTATION.
   METHOD zif_ed_screens_handler~pai.
     CASE command.
       WHEN 'SAVE'.
-        command_save( ).
+        on_added_function( zif_ed_mass=>c_functions-save ).
 
       WHEN 'BACK' OR 'EXIT' OR 'CANCEL'.
         IF NOT confirm_data_loss( ).
@@ -68,11 +61,20 @@ CLASS zcl_ed_mass IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD run.
-    ask_data_loss = abap_false.
-    config = VALUE #( save_button = VALUE #( icon = '@2L@' text = CONV #( TEXT-f05 ) confirmation_text = CONV #( TEXT-002 ) ) ).
     me->mass = mass.
+    ask_data_loss = abap_false.
 
-    mass->modify_config( CHANGING config = config ).
+    APPEND VALUE #( function = zif_ed_mass=>c_functions-documentation icon = '@0S@' quickinfo = TEXT-f01 text = TEXT-f01 ) TO config-functions.
+    APPEND VALUE #( function = zif_ed_mass=>c_functions-read_from_clipboard icon = '@2V@' quickinfo = TEXT-f02 text = TEXT-f02 ) TO config-functions.
+    APPEND VALUE #( function = zif_ed_mass=>c_functions-read_from_file icon = '@XE@' quickinfo = TEXT-f03 text = TEXT-f03 ) TO config-functions.
+    APPEND VALUE #( function = zif_ed_mass=>c_functions-read_from_db icon = '@3W@' quickinfo = TEXT-f04 text = TEXT-f04 ) TO config-functions.
+    APPEND VALUE #( function = zif_ed_mass=>c_functions-save icon = '@2L@' quickinfo = TEXT-f05 text = TEXT-f05 ) TO config-functions.
+
+    mass->setup( EXPORTING callback = me CHANGING config = config ).
+    IF config-docu IS INITIAL.
+      DELETE config-functions WHERE function = zif_ed_mass=>c_functions-documentation.
+    ENDIF.
+
     table = COND #( WHEN table_ref IS BOUND THEN table_ref ELSE mass->create_table( ) ).
 
     prepare_alv( ).
@@ -99,49 +101,31 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     alv->columns->set_as_exception( column = c_fields-exception ).
 
     "Functions
-    IF config-docu IS NOT INITIAL.
-      alv->functions->add_function( function = VALUE #( function = c_functions-documentation icon = '@0S@'
-          quickinfo = TEXT-f01 text = TEXT-f01 ) ).
-    ENDIF.
-
-    IF config-disable_read_from_clipboard = abap_false.
-      alv->functions->add_function( function = VALUE #( function = c_functions-read_from_clipboard icon = '@2V@'
-          quickinfo = TEXT-f02 text = TEXT-f02 ) ).
-    ENDIF.
-
-    IF config-disable_read_from_file = abap_false.
-      alv->functions->add_function( function = VALUE #( function = c_functions-read_from_file icon = '@XE@'
-          quickinfo = TEXT-f03 text = TEXT-f03 ) ).
-    ENDIF.
-
-    IF config-disable_read_from_db = abap_false.
-      alv->functions->add_function( function = VALUE #( function = c_functions-read_from_db icon = '@3W@'
-          quickinfo = TEXT-f04 text = TEXT-f04 ) ).
-    ENDIF.
-
-    alv->functions->add_function( function = VALUE #( function = c_functions-save icon = config-save_button-icon
-        quickinfo = config-save_button-text text = config-save_button-text ) ).
+    LOOP AT config-functions REFERENCE INTO DATA(function).
+      alv->functions->add_function( function->* ).
+    ENDLOOP.
 
     mass->modify_alv( alv ).
   ENDMETHOD.
 
   METHOD on_added_function.
     CASE e_ucomm.
-      WHEN c_functions-documentation.
+      WHEN zif_ed_mass=>c_functions-documentation.
         zcl_ed_docu=>show_alt( id = config-docu-id object = config-docu-object ).
 
-      WHEN c_functions-read_from_db.
+      WHEN zif_ed_mass=>c_functions-read_from_db.
         mass->fill_table_with_db_data( table ).
         alv->refresh( ).
 
-      WHEN c_functions-read_from_clipboard.
+      WHEN zif_ed_mass=>c_functions-read_from_clipboard.
         read_dtti( zcl_dtti_source_factory=>create_from_clipboard( ) ).
 
-      WHEN c_functions-read_from_file.
+      WHEN zif_ed_mass=>c_functions-read_from_file.
         read_dtti( zcl_dtti_source_factory=>create_from_file( ) ).
 
-      WHEN c_functions-save.
-        command_save( ).
+      WHEN OTHERS.
+        mass->function( function = e_ucomm callback = me ).
+
     ENDCASE.
   ENDMETHOD.
 
@@ -200,103 +184,76 @@ CLASS zcl_ed_mass IMPLEMENTATION.
     alv->refresh( ).
   ENDMETHOD.
 
-  METHOD command_save.
-    IF NOT confirm_save( ).
-      RETURN.
-    ENDIF.
-
-    FIELD-SYMBOLS: <table> TYPE table.
-    ASSIGN table->* TO <table>.
-
-    alv->alv_grid->get_selected_rows( IMPORTING et_index_rows = DATA(et_index_rows) ).
-    DELETE et_index_rows WHERE index = '0000000000'.
-
+  METHOD zif_ed_mass_callback~get_hidden_columns.
     alv->alv_grid->get_frontend_fieldcatalog( IMPORTING et_fieldcatalog = DATA(fc) ).
     DELETE fc WHERE no_out = abap_false OR tech = abap_true.
-    DATA(hidden_columns) = VALUE zif_ed_mass=>tt_hidden_columns( FOR <fc_row> IN fc ( <fc_row>-fieldname ) ).
-
-    IF lines( et_index_rows ) = lines( <table> ).
-      "All rows selected
-      mass->save( table_ref = table hidden_columns = hidden_columns ).
-      update_rows_int_info( table ).
-
-    ELSE.
-      "Need to filter rows and pass only selected
-      DATA: selected_rows TYPE REF TO data.
-      CREATE DATA selected_rows LIKE <table>.
-      FIELD-SYMBOLS: <selected_rows> TYPE table.
-      ASSIGN selected_rows->* TO <selected_rows>.
-
-      LOOP AT et_index_rows REFERENCE INTO DATA(selected_index).
-        APPEND <table>[ selected_index->index ] TO <selected_rows>.
-      ENDLOOP.
-
-      mass->save( table_ref = selected_rows hidden_columns = hidden_columns ).
-      update_rows_int_info( selected_rows ).
-
-      "Assume row order was not changed
-      LOOP AT et_index_rows REFERENCE INTO selected_index.
-        DATA(tabix) = sy-tabix.
-        <table>[ selected_index->index ] = <selected_rows>[ tabix ].
-      ENDLOOP.
-    ENDIF.
-
-    ask_data_loss = abap_false.
-    alv->refresh( ).
+    hidden_columns = VALUE zif_ed_mass_callback=>tt_hidden_columns( FOR <fc_row> IN fc ( <fc_row>-fieldname ) ).
   ENDMETHOD.
 
-  METHOD confirm_save.
-    alv->alv_grid->get_selected_rows( IMPORTING et_index_rows = DATA(et_index_rows) ).
-    DELETE et_index_rows WHERE index = '0000000000'.
-    IF lines( et_index_rows ) = 0.
-      MESSAGE TEXT-001 TYPE 'S' DISPLAY LIKE 'E'.
-      RETURN.
-    ENDIF.
-
-    IF NOT zcl_ed_popup=>yes_no( config-save_button-confirmation_text ).
-      RETURN.
-    ENDIF.
-
-    confirmed = abap_true.
+  METHOD zif_ed_mass_callback~get_selected_rows.
+    alv->alv_grid->get_selected_rows( IMPORTING et_index_rows = rows ).
+    DELETE rows WHERE index = '0000000000'.
   ENDMETHOD.
 
-  METHOD update_rows_int_info.
-    FIELD-SYMBOLS:
-      <table>     TYPE table,
-      <success>   TYPE zted_success,
-      <logger>    TYPE REF TO zif_ed_logger,
-      <color>     TYPE lvc_t_scol,
-      <style>     TYPE lvc_t_styl,
-      <exception> TYPE c.
+  METHOD zif_ed_mass_callback~refresh_alv.
+    IF refresh_mass_int_info = abap_true.
+      FIELD-SYMBOLS: <table>    TYPE table.
+      ASSIGN table->* TO <table>.
 
-    ASSIGN table->* TO <table>.
-
-    LOOP AT <table> ASSIGNING FIELD-SYMBOL(<row>).
-      ASSIGN COMPONENT c_fields-success OF STRUCTURE <row> TO <success>.
-      ASSIGN COMPONENT c_fields-logger OF STRUCTURE <row> TO <logger>.
-      ASSIGN COMPONENT c_fields-color OF STRUCTURE <row> TO <color>.
-      ASSIGN COMPONENT c_fields-style OF STRUCTURE <row> TO <style>.
-      ASSIGN COMPONENT c_fields-exception OF STRUCTURE <row> TO <exception>.
-
-      IF <success> = abap_true.
-        <exception> = '3'.
-        <color> = VALUE #( color = VALUE #( col = 5 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
-      ELSE.
-        <exception> = '1'.
-        <color> = VALUE #( color = VALUE #( col = 6 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
+      DATA(selected_rows) = zif_ed_mass_callback~get_selected_rows( ).
+      IF only_selected_rows = abap_false.
+        CLEAR: selected_rows.
+        DATA(index) = 1.
+        WHILE index < lines( <table> ).
+          APPEND VALUE #( index = index ) TO selected_rows.
+          index = index + 1.
+        ENDWHILE.
       ENDIF.
 
-      CLEAR: <style>.
+      FIELD-SYMBOLS:
+        <result>   TYPE zif_ed_mass=>t_table_include-result,
+        <mass_int> TYPE zif_ed_mass=>t_table_include-mass_int.
 
-      IF <logger> IS BOUND.
-        <style> = VALUE #( ( fieldname = c_fields-msg style = cl_gui_alv_grid=>mc_style_hotspot ) ).
-        IF <logger>->log-has_warnings = abap_true AND <logger>->log-has_errors = abap_false.
-          <exception> = '2'.
-          <color> = VALUE #( color = VALUE #( col = 7 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
+      LOOP AT selected_rows REFERENCE INTO DATA(selected_row).
+        ASSIGN <table>[ selected_row->index ] TO FIELD-SYMBOL(<row>).
+        ASSIGN COMPONENT c_fields-result OF STRUCTURE <row> TO <result>.
+        ASSIGN COMPONENT c_fields-mass_int OF STRUCTURE <row> TO <mass_int>.
+
+        IF <result>-success = abap_true.
+          <mass_int>-exception = '3'.
+          <mass_int>-color = VALUE #( color = VALUE #( col = 5 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
+        ELSE.
+          <mass_int>-exception = '1'.
+          <mass_int>-color = VALUE #( color = VALUE #( col = 6 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
         ENDIF.
-      ENDIF.
-    ENDLOOP.
 
-    alv->refresh( ).
+        CLEAR: <mass_int>-style.
+
+        IF <result>-logger IS BOUND.
+          <mass_int>-style = VALUE #( ( fieldname = c_fields-msg style = cl_gui_alv_grid=>mc_style_hotspot ) ).
+          IF <result>-logger->log-has_warnings = abap_true AND <result>-logger->log-has_errors = abap_false.
+            <mass_int>-exception = '2'.
+            <mass_int>-color = VALUE #( color = VALUE #( col = 7 ) ( fname = c_fields-success ) ( fname = c_fields-msg ) ).
+          ENDIF.
+        ENDIF.
+      ENDLOOP.
+    ENDIF.
+
+    alv->alv_grid->refresh_table_display( is_stable = VALUE #( row = abap_true col = abap_true ) ).
+  ENDMETHOD.
+
+  METHOD zif_ed_mass_callback~get_table_ref.
+    table_ref = me->table.
+  ENDMETHOD.
+
+  METHOD zif_ed_mass_callback~are_rows_selected.
+    are_selected = xsdbool( lines( zif_ed_mass_callback~get_selected_rows( ) ) <> 0 ).
+    IF ask_for_sel_if_none_sel = abap_true AND are_selected = abap_false.
+      MESSAGE TEXT-001 TYPE 'S' DISPLAY LIKE 'E'.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD zif_ed_mass_callback~ask_confirm_save.
+    is_confirmed = zcl_ed_popup=>yes_no( TEXT-002 ).
   ENDMETHOD.
 ENDCLASS.

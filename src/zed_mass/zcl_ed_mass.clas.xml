@@ -15,13 +15,13 @@
     <item>
      <ID>I</ID>
      <KEY>001</KEY>
-     <ENTRY>Please select rows to save.</ENTRY>
+     <ENTRY>Please select at least one row.</ENTRY>
      <LENGTH>54</LENGTH>
     </item>
     <item>
      <ID>I</ID>
      <KEY>002</KEY>
-     <ENTRY>Are you sure you want to save data?</ENTRY>
+     <ENTRY>Do you want to save data?</ENTRY>
      <LENGTH>70</LENGTH>
     </item>
     <item>
