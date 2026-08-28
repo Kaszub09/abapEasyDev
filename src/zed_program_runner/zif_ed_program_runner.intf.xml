@@ -17,7 +17,7 @@
      <DESCRIPT>Standard report result (with SALV/ALV) is:</DESCRIPT>
     </SEOCOMPOTX>
     <SEOCOMPOTX>
-     <CMPNAME>CONVERT_DATA_REF</CMPNAME>
+     <CMPNAME>CONVERT_DATA_REF_TO_SALV</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>For simple export to xstring method &lt;em&gt;export_data_ref&lt;/em&gt;</DESCRIPT>
     </SEOCOMPOTX>
@@ -25,6 +25,11 @@
      <CMPNAME>EXPORT_DATA_REF</CMPNAME>
      <LANGU>E</LANGU>
      <DESCRIPT>Preferred method for export to xstring</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_RESULT_TABLE_FROM_DATA_REF</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Applies filters and column selection to result data</DESCRIPT>
     </SEOCOMPOTX>
    </DESCRIPTIONS>
   </asx:values>

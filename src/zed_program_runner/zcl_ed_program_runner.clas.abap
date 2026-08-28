@@ -76,7 +76,7 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
     cl_salv_bs_runtime_info=>clear_all( ).
   ENDMETHOD.
 
-  METHOD zif_ed_program_runner~convert_data_ref.
+  METHOD zif_ed_program_runner~convert_data_ref_to_salv.
     "create SALV
     converted-table_ref = data_ref_result-table_ref.
     ASSIGN converted-table_ref->* TO FIELD-SYMBOL(<table>).
@@ -125,6 +125,33 @@ CLASS zcl_ed_program_runner IMPLEMENTATION.
 
     cl_salv_bs_lex=>export_from_result_data_table( EXPORTING is_format = file_format ir_result_data_table = result_tab
           IMPORTING er_result_file = exported ).
+  ENDMETHOD.
+
+  METHOD zif_ed_program_runner~get_result_table_from_data_ref.
+    DATA(rtts_tab) = zcl_ed_rtts_table=>create_from_table_ref( data_ref_result-table_ref  ).
+    rtts_tab->set_table_type( key = VALUE #( ) key_kind = cl_abap_tabledescr=>keydefkind_empty ).
+
+    "Hide columns
+    LOOP AT data_ref_result-metadata-t_fcat REFERENCE INTO DATA(col) WHERE tech = abap_true OR no_out = abap_true.
+      rtts_tab->remove_field( col->fieldname ).
+    ENDLOOP.
+
+    "Get non-filtered result
+    FIELD-SYMBOLS:
+      <result_table> TYPE table,
+      <table_ref>    TYPE table.
+    ASSIGN data_ref_result-table_ref->* TO <result_table>.
+
+    result_table = rtts_tab->create_table( <result_table> ).
+    ASSIGN result_table->* TO <result_table>.
+
+    "Filter result
+    NEW cl_alv_lvc_filter_service( )->apply( EXPORTING rt_data = data_ref_result-table_ref t_filter = data_ref_result-metadata-t_filter
+       IMPORTING t_filter_index = DATA(t_filter_index) ).
+    SORT t_filter_index DESCENDING. "Start from end since rows are renumbered after deletion
+    LOOP AT t_filter_index INTO DATA(index).
+      DELETE <result_table> INDEX index.
+    ENDLOOP.
   ENDMETHOD.
 
 ENDCLASS.

@@ -16,9 +16,11 @@ INTERFACE zif_ed_program_runner PUBLIC.
     END OF t_converted_data_ref.
 
   METHODS:
-    run_with_list IMPORTING program_name TYPE programm variant_name TYPE variant OPTIONAL selection_table TYPE tt_selection_table OPTIONAL
-                  RETURNING VALUE(list) TYPE tt_list
-                  RAISING zcx_ed_exception,
+    run_with_list IMPORTING program_name    TYPE programm
+                            variant_name    TYPE variant OPTIONAL
+                            selection_table TYPE tt_selection_table OPTIONAL
+                  RETURNING VALUE(list)     TYPE tt_list
+                  RAISING   zcx_ed_exception,
     "! <p class="shorttext synchronized" lang="en">Standard report result (with SALV/ALV) is:</p>
     "! <br/> [PROGRAM TITLE] - sometimes not present
     "! <br/> ----------------------------
@@ -31,18 +33,25 @@ INTERFACE zif_ed_program_runner PUBLIC.
     "! <br/>
     "! <br/> Be careful with wide reports since the line could be broken if about 1000 characters is exceeded.
     "! <br/> Usual delimiter is vertical line '&#124;', present also before first and after last column.
-    clean_list IMPORTING rows_to_remove_from_start TYPE i DEFAULT 4 remove_last_row TYPE abap_bool DEFAULT abap_true
-                         remove_first_last_char TYPE abap_bool DEFAULT abap_true
-               CHANGING list TYPE tt_list,
-    run_with_data_ref IMPORTING program_name TYPE programm variant_name TYPE variant OPTIONAL selection_table TYPE tt_selection_table OPTIONAL
-                      RETURNING VALUE(result) TYPE t_run_with_data_ref
-                      RAISING cx_salv_bs_sc_runtime_info,
+    clean_list IMPORTING rows_to_remove_from_start TYPE i DEFAULT 4
+                         remove_last_row           TYPE abap_bool DEFAULT abap_true
+                         remove_first_last_char    TYPE abap_bool DEFAULT abap_true
+               CHANGING  list                      TYPE tt_list,
+    run_with_data_ref IMPORTING program_name    TYPE programm
+                                variant_name    TYPE variant OPTIONAL
+                                selection_table TYPE tt_selection_table OPTIONAL
+                      RETURNING VALUE(result)   TYPE t_run_with_data_ref
+                      RAISING   cx_salv_bs_sc_runtime_info,
     "! <p class="shorttext synchronized" lang="en">For simple export to xstring method <em>export_data_ref</em> is preferred,
     "! since it uses SAP internal classes. Use this method, if cl_salv_table is needed.</p>
-    convert_data_ref IMPORTING data_ref_result TYPE t_run_with_data_ref
-                     RETURNING VALUE(converted) TYPE t_converted_data_ref,
+    convert_data_ref_to_salv IMPORTING data_ref_result  TYPE t_run_with_data_ref
+                             RETURNING VALUE(converted) TYPE t_converted_data_ref,
     "! <p class="shorttext synchronized" lang="en">Preferred method for export to xstring</p>
     export_data_ref IMPORTING data_ref_result TYPE t_run_with_data_ref
-                              file_format TYPE if_salv_bs_lex_format=>ys_format DEFAULT if_salv_bs_lex_format=>mc_format_xlsx
-                     RETURNING VALUE(exported) TYPE xstring.
+                              file_format     TYPE if_salv_bs_lex_format=>ys_format DEFAULT if_salv_bs_lex_format=>mc_format_xlsx
+                    RETURNING VALUE(exported) TYPE xstring,
+
+    "! <p class="shorttext synchronized" lang="en">Applies filters and column selection to result data</p>
+    get_result_table_from_data_ref IMPORTING data_ref_result     TYPE t_run_with_data_ref
+                                   RETURNING VALUE(result_table) TYPE REF TO data.
 ENDINTERFACE.
