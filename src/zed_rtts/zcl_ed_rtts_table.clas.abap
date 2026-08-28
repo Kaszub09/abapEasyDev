@@ -118,6 +118,7 @@ CLASS zcl_ed_rtts_table IMPLEMENTATION.
   METHOD remove_field.
     DATA(components) = line_descr->get_components( ).
     DELETE components WHERE name = name.
+    DELETE key WHERE name = name.
     refresh_from_components( components ).
   ENDMETHOD.
 
