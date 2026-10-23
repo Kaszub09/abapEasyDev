@@ -55,7 +55,8 @@ CLASS zcl_ed_logger_display_base DEFINITION PUBLIC CREATE PRIVATE
       on_header_double_click FOR EVENT double_click OF cl_salv_events_table IMPORTING row column,
       on_header_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
       on_msg_link_click FOR EVENT link_click OF cl_salv_events_table IMPORTING row column,
-      on_added_function FOR EVENT added_function OF zcl_ea_salv_table_functions IMPORTING function.
+      on_added_function FOR EVENT added_function OF zcl_ea_salv_table_functions IMPORTING function,
+      on_msg_double_click FOR EVENT double_click OF cl_salv_events_table IMPORTING row column.
 
     DATA:
       BEGIN OF headers,
@@ -177,6 +178,7 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
   METHOD create_messages_alv.
     messages-alv = NEW #( container = container layout_key = VALUE #( report = sy-repid handle = 'MSG' )  ).
     SET HANDLER on_msg_link_click FOR messages-alv->alv_table->get_event( ).
+    SET HANDLER on_msg_double_click FOR messages-alv->alv_table->get_event( ).
   ENDMETHOD.
 
   METHOD display_messages.
@@ -284,7 +286,7 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
     DATA(selected) = REF #( messages-tab[ <tab_index> ] ).
 
     CASE column.
-      WHEN 'DETAILS_ICON'.
+      WHEN 'DETAILS_ICON' OR 'MSG'.
         IF selected->is_sap_msg = abap_true.
           zcl_ed_docu=>show( dokclass = 'NA' dokname = |{ selected->sap_msg-msgid }{ selected->sap_msg-msgno }|
               msg_var_1 = selected->sap_msg-msgv1 msg_var_2 = selected->sap_msg-msgv2
@@ -338,4 +340,7 @@ CLASS zcl_ed_logger_display_base IMPLEMENTATION.
     ENDLOOP.
   ENDMETHOD.
 
+  METHOD on_msg_double_click.
+    on_msg_link_click( row = row column = column ).
+  ENDMETHOD.
 ENDCLASS.
