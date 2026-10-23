@@ -40,6 +40,7 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_ed_change_doc~open.
+    self = me.
     CALL FUNCTION 'CHANGEDOCUMENT_OPEN'
       EXPORTING
         objectclass      = COND #( WHEN objectclass IS INITIAL THEN me->objectclass ELSE objectclass )
@@ -54,6 +55,7 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_ed_change_doc~change_single.
+    self = me.
     DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
     DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
 
@@ -101,6 +103,7 @@ CLASS zcl_ed_change_doc IMPLEMENTATION.
 
 
   METHOD zif_ed_change_doc~change_multi.
+    self = me.
     DATA(tablename) = COND tabname( WHEN table_name IS INITIAL THEN me->table_name ELSE table_name ).
     DATA(save_info) = get_save_info( save_fields_on_deletion = save_fields_on_deletion save_fields_on_insertion = save_fields_on_insertion ).
 

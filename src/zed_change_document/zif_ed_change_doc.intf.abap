@@ -15,6 +15,7 @@ INTERFACE zif_ed_change_doc PUBLIC.
     "! @parameter objectid | <p class="shorttext synchronized" lang="en">Taken from constructor parameter if not supplied</p>
     open IMPORTING objectclass TYPE cdobjectcl DEFAULT space
                    objectid    TYPE cdobjectv DEFAULT space
+         RETURNING VALUE(self) TYPE REF TO zif_ed_change_doc
          RAISING   zcx_ed_exception,
     "! <p class="shorttext synchronized">CD must be opened first.
     "! <br/>For deletions fill only parameter <em>before</em>.
@@ -32,6 +33,7 @@ INTERFACE zif_ed_change_doc PUBLIC.
                             after                    TYPE REF TO data OPTIONAL
                             save_fields_on_deletion  TYPE i DEFAULT c_save_mode-all
                             save_fields_on_insertion TYPE i DEFAULT c_save_mode-all
+                  RETURNING VALUE(self)              TYPE REF TO zif_ed_change_doc
                   RAISING   zcx_ed_exception,
     "! <p class="shorttext synchronized">CD must be opened first. All tables must be sorted.
     "! <br/>For deletions fill only parameter <em>before</em>.
@@ -49,6 +51,7 @@ INTERFACE zif_ed_change_doc PUBLIC.
                            after                    TYPE REF TO data OPTIONAL
                            save_fields_on_deletion  TYPE i DEFAULT c_save_mode-all
                            save_fields_on_insertion TYPE i DEFAULT c_save_mode-all
+                 RETURNING VALUE(self)              TYPE REF TO zif_ed_change_doc
                  RAISING   zcx_ed_exception,
     "! <p class="shorttext synchronized">CD must be opened first</p>
     "! @parameter objectclass | <p class="shorttext synchronized" lang="en">Taken from constructor parameter if not supplied</p>
