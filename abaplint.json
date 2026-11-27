@@ -103,7 +103,7 @@
       "severity": "Error"
     }, 
     "dangerous_statement": {
-      "exclude": ["src/zed_logger/zcl_ed_logger.clas.abap"],
+      "exclude": ["src/zed_logger/zcl_ed_logger.clas.abap", "zcl_ed_mass_example.clas.abap"],
       "severity": "Warning",
       "execSQL": true,
       "kernelCall": true,
