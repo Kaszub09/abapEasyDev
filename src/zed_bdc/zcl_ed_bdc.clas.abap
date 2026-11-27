@@ -56,11 +56,15 @@ ENDCLASS.
 
 CLASS zcl_ed_bdc IMPLEMENTATION.
   METHOD begin_screen.
+field-symbols: <tab1> type table,
+<tab2> type table.
+<tab1> = corresponding #( <tab2> ).
     self = me.
     APPEND VALUE #( program = program dynpro = dynpro dynbegin = 'X' ) TO tab.
   ENDMETHOD.
 
   METHOD set_value.
+
     self = me.
     APPEND VALUE #( fnam = fnam fval = fval ) TO tab.
   ENDMETHOD.
